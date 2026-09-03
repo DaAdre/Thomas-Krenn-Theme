@@ -1,0 +1,593 @@
+/* =========================================================================
+   TK Forum – IT-Infrastruktur Community
+   Design-System + Hero-Shell.  Inhalt der Slots liefern die Komponenten
+   "TK Kategorien" (Slot aside) und "TK News" (Slot news).
+   ========================================================================= */
+
+:root {
+  --tk-orange: #f7931e;
+  --tk-panel-border: rgba(247, 147, 30, 0.55);
+  --tk-hairline: rgba(255, 255, 255, 0.08);
+  --tk-card-bg: rgba(255, 255, 255, 0.02);
+  --tk-ink-muted: rgba(255, 255, 255, 0.55);
+  --tk-brand: "forum";
+}
+
+/* ---------- Basis / Typografie ------------------------------------------ */
+html,
+body {
+  background: var(--secondary);
+}
+
+body,
+button,
+input,
+select,
+textarea,
+.btn,
+.d-header {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  letter-spacing: -0.015em;
+}
+
+.btn-primary {
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+/* ---------- Header ----------------------------------------------------- */
+.d-header {
+  border-bottom: none;
+  box-shadow: none;
+}
+
+.d-header .contents {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.d-header .panel {
+  margin-left: auto;
+}
+
+/* Logo-Zeichen ( ≡ ) + Wortmarke */
+html.tk-logo .d-header .home-logo {
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    line-height: 1;
+    text-indent: 0;
+  }
+
+  img,
+  .logo-big,
+  .logo-small,
+  #site-text-logo {
+    display: none !important;
+  }
+
+  a::before {
+    content: "";
+    flex: 0 0 auto;
+    width: 34px;
+    height: 26px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='26'%3E%3Crect y='2' width='34' height='8' rx='4' fill='%23F7931E'/%3E%3Crect y='16' width='21' height='8' rx='4' fill='%23F7931E'/%3E%3C/svg%3E")
+      no-repeat center / contain;
+  }
+
+  a::after {
+    content: var(--tk-brand, "forum");
+    font-size: 1.85rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+  }
+}
+
+/* Zentrierte Kopf-Navigation */
+.tk-nav {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: 2.25rem;
+  white-space: nowrap;
+
+  a {
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.98rem;
+    font-weight: 500;
+
+    &:hover,
+    &:focus {
+      color: #fff;
+    }
+  }
+}
+
+@media (max-width: 1100px) {
+  .tk-nav {
+    display: none;
+  }
+}
+
+/* Auth-Buttons */
+.d-header .login-button,
+.d-header .sign-up-button {
+  border-radius: 8px;
+  padding: 0.5em 1.15em;
+  font-weight: 600;
+  min-height: 34px;
+
+  .d-icon {
+    display: none;
+  }
+}
+
+.d-header .login-button {
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+
+  &:hover,
+  &:focus {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: #fff;
+    color: #fff;
+  }
+}
+
+.d-header .sign-up-button {
+  background: var(--tk-orange);
+  border: 1px solid var(--tk-orange);
+  color: #1a1a1a;
+
+  &:hover,
+  &:focus {
+    filter: brightness(1.06);
+    color: #1a1a1a;
+  }
+}
+
+/* ---------- Startseiten-Feinschliff ---------------------------------- */
+html.tk-hide-list-nav.tk-home .navigation-container,
+html.tk-hide-list-nav.tk-home #navigation-bar,
+html.tk-hide-list-nav.tk-home .list-controls .category-breadcrumb {
+  display: none;
+}
+
+/* Linke Sidebar auf der Startseite ausblenden (Entwurf hat keine) */
+html.tk-hide-sidebar.tk-home {
+  .sidebar-wrapper {
+    display: none !important;
+  }
+
+  #main-outlet-wrapper {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .btn-sidebar-toggle {
+    display: none;
+  }
+}
+
+/* ---------- Hero (Outlet: below-site-header, Komponente tk-hero) ----- */
+.tk-hero-root {
+  margin: 22px auto 30px;
+  max-width: var(--d-max-width, 1110px);
+  padding-inline: 1rem;
+  box-sizing: border-box;
+}
+
+.tk-hero {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+  align-items: stretch;
+}
+
+/* Zweispaltig, sobald das Kategorien-Panel (Komp. "TK Kategorien") den
+   aside-Slot gefüllt hat. Klasse setzt die Komponente; die :has()-Regel ist
+   die gleichwertige Fallback-Variante. */
+.tk-hero-root.tk-has-aside .tk-hero,
+.tk-hero:has(.tk-hero-slot[data-tk-slot="aside"] > *) {
+  grid-template-columns: minmax(0, 1fr) 322px;
+}
+
+@media (max-width: 924px) {
+  .tk-hero-root.tk-has-aside .tk-hero,
+  .tk-hero:has(.tk-hero-slot[data-tk-slot="aside"] > *) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tk-hero-slot:empty {
+  display: none;
+}
+
+.tk-hero__main {
+  border: 1px solid var(--tk-panel-border);
+  border-radius: 16px;
+  background: var(--tk-card-bg);
+  padding: clamp(24px, 4vw, 46px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 30px;
+}
+
+.tk-hero__title {
+  margin: 0;
+  font-weight: 800;
+  font-size: clamp(1.8rem, 3.3vw, 2.95rem);
+  line-height: 1.13;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+
+  .tk-accent {
+    color: var(--tk-orange);
+  }
+
+  .tk-plain {
+    color: #fff;
+  }
+}
+
+/* ---- Suche: einfache Variante ---- */
+.tk-hero__search-simple input {
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 12px;
+  background: #fff;
+  color: #16181c;
+  font-size: 1rem;
+  padding: 16px 20px;
+
+  &::placeholder {
+    color: #8b9096;
+  }
+
+  &:focus {
+    outline: 2px solid var(--tk-orange);
+    outline-offset: 2px;
+  }
+}
+
+/* ---- Suche: echte Discourse-Suche (<SearchMenu>) ---- */
+.tk-hero__search {
+  position: relative;
+  width: 100%;
+
+  /* Core-Chrome von .search-menu / Welcome-Banner blocken -
+     das Aussehen steuert ausschliesslich dieses Theme. */
+  .search-menu,
+  .search-menu-container,
+  .menu-panel-composer,
+  .float-kit-panel,
+  &.welcome-banner__search-menu,
+  .welcome-banner__search-menu {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+    box-shadow: none;
+  }
+
+  /* die weisse Eingabeleiste */
+  .search-input {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 5px 12px;
+  }
+
+  #tk-hero-search-input,
+  input.search-context,
+  input[type="search"],
+  input[type="text"] {
+    flex: 1 1 auto;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    color: #16181c;
+    font-size: 1rem;
+    padding: 13px 8px;
+
+    &::placeholder {
+      color: #8b9096;
+    }
+  }
+
+  .btn,
+  .search-menu__advanced-btn,
+  .clear-search {
+    background: transparent;
+    color: #6b7076;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.06);
+      color: #16181c;
+    }
+  }
+
+  /* Ergebnis-Panel: an die Leiste andocken, volle Breite */
+  .search-menu-panel {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: none;
+
+    .results {
+      max-height: 60vh;
+      overflow-y: auto;
+    }
+  }
+}
+
+/* ---------- Slot-Inhalt: Kategorien-Panel (Komp. "TK Kategorien") ---- */
+.tk-panel {
+  border: 1px solid var(--tk-panel-border);
+  border-radius: 16px;
+  background: var(--tk-card-bg);
+  padding: 22px 20px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.tk-panel__head h2 {
+  margin: 0 0 6px;
+  color: var(--tk-orange);
+  font-size: 1.12rem;
+  font-weight: 800;
+}
+
+.tk-panel__head p {
+  margin: 0 0 14px;
+  color: var(--tk-ink-muted);
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.tk-cat-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.tk-cat {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 10px 6px;
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.9);
+
+  & + & {
+    border-top: 1px solid var(--tk-hairline);
+  }
+
+  &:hover {
+    background: rgba(247, 147, 30, 0.1);
+    color: #fff;
+  }
+}
+
+.tk-cat__icon {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  color: var(--tk-cat-color, var(--tk-orange));
+
+  svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    fill: none;
+  }
+}
+
+.tk-cat__label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.2;
+  flex: 1 1 auto;
+}
+
+.tk-cat__count {
+  flex: 0 0 auto;
+  color: var(--tk-ink-muted);
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Slot-Inhalt: News-/Event-Banner (Komp. "TK News") ------- */
+.tk-news {
+  position: relative;
+  overflow: hidden;
+  margin-top: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  min-height: 188px;
+  padding: 30px 34px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: #fff;
+  background: linear-gradient(115deg, #0b2027 0%, #123039 55%, #0b2027 100%);
+  background-size: cover;
+  background-position: center;
+
+  &.tk-news--orange {
+    background: linear-gradient(115deg, #3a1e05 0%, #6a3a0b 55%, #3a1e05 100%);
+  }
+
+  &.tk-news--dark {
+    background: linear-gradient(115deg, #141414 0%, #232326 55%, #141414 100%);
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 42%;
+    height: 66%;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent 0 12px,
+      rgba(255, 255, 255, 0.05) 12px 26px
+    );
+    -webkit-mask: linear-gradient(180deg, transparent, #000);
+    mask: linear-gradient(180deg, transparent, #000);
+    pointer-events: none;
+  }
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.tk-news__kicker {
+  color: var(--tk-orange);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  font-size: 0.92rem;
+}
+
+.tk-news__title {
+  font-size: clamp(1.9rem, 3.4vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.tk-news__label {
+  margin-top: 6px;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 700;
+}
+
+/* optionale Liste weiterer Meldungen unter dem Banner */
+.tk-news-list {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--tk-hairline);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.tk-news-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 16px;
+  color: rgba(255, 255, 255, 0.9);
+
+  & + & {
+    border-top: 1px solid var(--tk-hairline);
+  }
+
+  &:hover {
+    background: rgba(247, 147, 30, 0.08);
+    color: #fff;
+  }
+}
+
+.tk-news-item__kicker {
+  color: var(--tk-orange);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.tk-news-item__title {
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+/* ---------- "Letzte Beiträge" – Abschnittstitel ------------------- */
+.tk-section-title {
+  margin: 26px 0 10px;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+/* ---------- Themen-/Kategorienliste als Karten (Startseite) ------ */
+.tk-home #main-outlet .topic-list,
+.tk-home #main-outlet .category-list {
+  background: var(--tk-card-bg);
+  border: 1px solid var(--tk-hairline);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.tk-home #main-outlet .topic-list td {
+  border-top: none;
+}
+
+.tk-home #main-outlet .topic-list > tbody > tr {
+  border-bottom: 1px solid var(--tk-hairline);
+}
+
+.tk-home #main-outlet .topic-list-item:hover,
+.tk-home #main-outlet .latest-topic-list-item:hover {
+  background: rgba(247, 147, 30, 0.06);
+}
+
+.tk-home #main-outlet .latest-topic-list {
+  border: none;
+  background: transparent;
+
+  .latest-topic-list-item {
+    background: var(--tk-card-bg);
+    border: 1px solid var(--tk-hairline);
+    border-radius: 12px;
+    margin-bottom: 10px;
+  }
+}
+
+/* ---------- Kleinere Bildschirme -------------------------------- */
+@media (max-width: 924px) {
+  .tk-hero {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .tk-hero__main {
+    gap: 22px;
+  }
+
+  .tk-news {
+    padding: 24px 22px;
+    min-height: 150px;
+  }
+}

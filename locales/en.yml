@@ -1,0 +1,20 @@
+en:
+  theme_metadata:
+    description: "Dunkles, kartenbasiertes Discourse-Theme fuer herstellerunabhaengige IT-Infrastruktur-Foren. Liefert Header, Hero mit echter Forensuche und Slots fuer die Komponenten TK Kategorien und TK News."
+    settings:
+      brand_name: "Wortmarke rechts neben dem Logo-Zeichen im Header."
+      replace_logo: "Das Discourse-Logo durch das TK-Logo-Zeichen plus Wortmarke ersetzen."
+      show_top_nav: "Zentrierte Kopf-Navigation im Header anzeigen."
+      nav_links: "Kopf-Navigationslinks. Ein Eintrag pro Zeile: Titel,URL - optionales drittes Feld _blank oeffnet einen neuen Tab."
+      login_button_text: "Beschriftung des Anmelden-Buttons im Header."
+      signup_button_text: "Beschriftung des Beitreten-Buttons im Header."
+      show_hero: "Hero-Bereich auf der Startseite anzeigen."
+      hero_heading_accent: "Erster, orange hervorgehobener Teil der Hero-Ueberschrift."
+      hero_heading_rest: "Zweiter, weisser Teil der Hero-Ueberschrift."
+      search_style: "native = echte Discourse-Suche mit Live-Ergebnissen (SearchMenu). simple = Eingabefeld, das die Volltextsuche /search oeffnet."
+      hero_search_placeholder: "Platzhaltertext des Suchfelds im Hero (gilt fuer beide Such-Varianten)."
+      home_paths: "Pfade, die als Startseite gelten und den Hero erhalten."
+      hide_list_nav_on_home: "Discourse-Navigationsleiste/Filter auf der Startseite ausblenden."
+      hide_sidebar_on_home: "Die linke Discourse-Sidebar auf der Startseite ausblenden (entspricht dem Entwurf)."
+      show_latest_section_title: "Ueberschrift ueber der Themenliste der Startseite anzeigen."
+      latest_section_title: "Text dieser Ueberschrift, z. B. Letzte Beitraege."

@@ -1,0 +1,82 @@
+# =============================================================================
+#  TK Forum – IT-Infrastruktur Community  ·  Theme-Einstellungen
+#
+#  Kategorien-Panel  -> Komponente "TK Kategorien"
+#  News-/Event-Banner -> Komponente "TK News"
+#  Beide fuellen Slots, die dieses Theme im Hero bereitstellt.
+# =============================================================================
+
+# ---- Header / Logo ---------------------------------------------------------
+brand_name:
+  type: string
+  default: "forum"
+
+replace_logo:
+  type: bool
+  default: true
+
+show_top_nav:
+  type: bool
+  default: true
+
+nav_links:
+  type: list
+  list_type: simple
+  default: "Kategorien,/categories|Forum,/latest|Aktuelles,/tag/aktuelles|Über uns,/about"
+
+login_button_text:
+  type: string
+  default: "Anmelden"
+
+signup_button_text:
+  type: string
+  default: "Beitreten"
+
+# ---- Hero ----------------------------------------------------------------
+show_hero:
+  type: bool
+  default: true
+
+hero_heading_accent:
+  type: string
+  default: "Herstellerunabhängiger Fachaustausch"
+
+hero_heading_rest:
+  type: string
+  default: "für alle, die professionelle IT-Infrastruktur betreiben."
+
+# "native" = echte Discourse-Suche (SearchMenu, Live-Ergebnisse)
+# "simple" = Eingabefeld, das die Volltextsuche /search oeffnet
+search_style:
+  type: enum
+  default: native
+  choices:
+    - native
+    - simple
+
+hero_search_placeholder:
+  type: string
+  default: "Welche Frage hast du heute? z.B. ZFS, VLAN, Ansible, …"
+
+# ---- Startseite --------------------------------------------------------
+home_paths:
+  type: list
+  list_type: simple
+  default: "/|/latest|/categories|/top|/hot|/new|/unread"
+
+hide_list_nav_on_home:
+  type: bool
+  default: true
+
+# Linke Discourse-Sidebar auf der Startseite ausblenden (entspricht dem Entwurf)
+hide_sidebar_on_home:
+  type: bool
+  default: true
+
+show_latest_section_title:
+  type: bool
+  default: true
+
+latest_section_title:
+  type: string
+  default: "Letzte Beiträge"
