@@ -57,15 +57,29 @@ IT-Professionals und Administratoren mit Fokus auf Server, Storage, Netzwerk, Vi
 
 # Umsetzung
 
-Der Entwurf ist in **ein Theme + drei Komponenten** aufgeteilt. Das Theme liefert
-Design-System und Hero-Grundgerüst mit zwei leeren **Slots**; die Komponenten
-füllen diese Slots mit eigenen Inhalten. Keine Plugins nötig.
+**Ein Theme + zwei Komponenten**, verbunden über **Plugin-Outlets** und
+`api.renderInOutlet` (gleicher Ansatz wie
+[`discourse-minimal-category-boxes`](https://github.com/discourse/discourse-minimal-category-boxes)).
+Keine Plugins, keine DOM-Hacks – reguläre `.gjs`-Komponenten, deren Lebenszyklus
+Ember verwaltet.
 
 ```
-TK-Theme/Thomas-Krenn-Theme/     ← Theme  (Farben, Header, Hero-Shell, echte Suche, Slots)
-TK-Komponenten/TK-Kategorien/    ← Komponente  → Slot data-tk-slot="aside"  (dynamisches Kategorien-Panel)
-TK-Komponenten/TK-News/          ← Komponente  → Slot data-tk-slot="news"   (Aktuelles-/Event-Banner)
+TK-Theme/Thomas-Krenn-Theme/   ← Theme: Farben, Header, Custom Homepage, Hero-Shell + Outlets
+TK-Komponenten/TK-Kategorien/  ← rendert in  tk-hero-aside  +  above-discovery-categories
+TK-Komponenten/TK-News/        ← rendert in  tk-hero-news
 ```
+
+## Custom Homepage
+
+`about.json` setzt den Modifier `custom_homepage` → die Route `/` zeigt die
+**Landing-Page** (`<TkHomepage>` im Outlet `custom-homepage`) statt der
+Themenliste. Das Forum bleibt unter `/latest`, `/categories`, `/top` … erreichbar
+(Sidebar-Links, Header-Navigation).
+
+- `custom_homepage_enabled = false` → `/` leitet auf die normale Startliste um.
+- `latest_teaser_count` steuert den „Letzte Beiträge"-Teaser auf der Landing-Page.
+- `show_hero_on_discovery = true` → der Hero erscheint zusätzlich auf `/latest` …
+  (Komponente `<TkDiscoveryHero>` im Outlet `below-site-header`).
 
 ## Aufgabenteilung
 
@@ -74,67 +88,67 @@ TK-Komponenten/TK-News/          ← Komponente  → Slot data-tk-slot="news"   
 | **Farbschema** | Theme | Color Scheme *„TK Forum Dark"* in [`about.json`](about.json) – BG `#161719`, Header `#141414`, Akzent `#F7931E`. |
 | **Typografie** | Theme | Schrift **Inter** über [`common/head_tag.html`](common/head_tag.html). |
 | **Header** | Theme | Logo-Zeichen (≡) + Wortmarke, zentrierte **konfigurierbare** Navigation (`nav_links`), *Anmelden* (Outline) + *Beitreten* (orange). |
-| **Hero + Suche** | Theme | Komponente [`components/tk-hero.gjs`](javascripts/discourse/components/tk-hero.gjs), eingehängt via `renderInOutlet("below-site-header", …)`. Rendert die zweifarbige Headline und – Setting `search_style` – die **echte Discourse-Suche** (`<SearchMenu>` aus `discourse/components/search-menu`, Live-Ergebnisse als Dropdown) oder ein einfaches Feld, das `/search` öffnet. |
-| **Kategorien-Panel** | Komponente **TK Kategorien** | Baut das Panel aus den **echten Kategorien** des Forums (kein statischer Text). Icon je Kategorie per Heuristik (Slug/Name) oder Override. Neue Kategorie im Admin → erscheint automatisch. |
-| **Aktuelles / News** | Komponente **TK News** | Ein oder mehrere Einträge (`news_items`), erster als großes Banner (teal/orange/dark, optionales Bild). |
-| **Themenliste** | Theme | Discourse-Liste bekommt auf der Startseite Karten-Optik + Titel `latest_section_title`; Filterleiste wird ausgeblendet (`hide_list_nav_on_home`). |
+| **Hero + Suche** | Theme | [`components/tk-hero-body.gjs`](javascripts/discourse/components/tk-hero-body.gjs): zweifarbige Headline + – Setting `search_style` – die **echte Discourse-Suche** (`<SearchMenu>` aus `discourse/components/search-menu`, Live-Ergebnisse als Dropdown via `api.forceDropdownForMenuPanels`) oder ein einfaches `/search`-Feld. Stellt die Outlets `tk-hero-aside` und `tk-hero-news` bereit. |
+| **Kategorien** | Komponente **TK Kategorien** | (a) Hero-**Panel** (`tk-hero-aside`, aus `site.categories`) und (b) **Kategorienseite `/categories` als Kachel-Grid** (`above-discovery-categories`, `@outletArgs.categories`). Icon je Kategorie per Heuristik oder Override; Beschreibung = `description_excerpt` der Kategorie oder überschreibbar. Standard-Liste wird per `html.tk-category-tiles-active` ausgeblendet. |
+| **Aktuelles / News** | Komponente **TK News** | `tk-hero-news`. Ein/mehrere Einträge (`news_items`), erster als großes Banner (teal/orange/dark, optionales Bild). |
+| **Forenlisten** | Theme | `/latest` … bekommen Karten-Optik; Filterleiste + Sidebar optional aus (`hide_list_nav_on_home`, `hide_sidebar_on_home`). |
 
 ## Theme-Dateistruktur
 
 ```
 Thomas-Krenn-Theme/
-├── about.json                                  # Metadaten + Color Scheme
-├── settings.yml                                # Theme-Einstellungen
+├── about.json                       # Color Scheme + modifiers.custom_homepage
+├── settings.yml
 ├── common/
-│   ├── common.scss                             # Design-System + Styling ALLER Slot-Inhalte
-│   └── head_tag.html                           # Inter-Font
+│   ├── common.scss                  # Design-System + Styling ALLER Komponenten-Inhalte
+│   └── head_tag.html                # Inter-Font
 ├── javascripts/discourse/
 │   ├── components/
-│   │   └── tk-hero.gjs                          # Hero-Markup + <SearchMenu> + Slots, isHome-Gate
+│   │   ├── tk-hero-body.gjs         # Headline + <SearchMenu> + <PluginOutlet tk-hero-aside/news>
+│   │   ├── tk-homepage.gjs          # Outlet custom-homepage: Hero + Teaser (+ enable/redirect)
+│   │   └── tk-discovery-hero.gjs    # Outlet below-site-header: Hero auf /latest … (optional)
 │   └── api-initializers/
-│       ├── tk-hero.js                           # renderInOutlet(below-site-header) + Such-Dropdown
-│       └── tk-chrome.js                         # Header-Nav, Button-Texte, Body-Flags
+│       ├── tk-hero.js               # renderInOutlet(custom-homepage / below-site-header)
+│       └── tk-chrome.js             # Header-Nav, Button-Texte, Body-Flags
 └── locales/en.yml
 ```
 
-## Slot-Mechanik
+## Outlet-Mechanik
 
-Die Hero-Komponente rendert:
-
-```html
-<div class="tk-hero-slot" data-tk-slot="aside"></div>   <!-- TK Kategorien -->
-<div class="tk-hero-slot" data-tk-slot="news"></div>    <!-- TK News -->
-```
-
-Jede Komponente sucht nach jedem Seitenwechsel „ihren" Slot und füllt ihn. Fehlt
-eine Komponente, bleibt der Slot leer (`:empty { display:none }`) und der Hero
-wird einspaltig. Fehlt das Theme, gibt es keinen Slot – die Komponenten sind
-wirkungslos, ohne Fehler.
+`tk-hero-body.gjs` rendert `<PluginOutlet @name="tk-hero-aside" />` und
+`<PluginOutlet @name="tk-hero-news" />`. Die Komponenten hängen sich per
+`api.renderInOutlet("tk-hero-aside", …)` bzw. `("tk-hero-news", …)` ein –
+unabhängig von der Ladereihenfolge. Fehlt eine Komponente, bleibt der Outlet
+leer (`.tk-hero` wird einspaltig, `:has(.tk-panel--categories)`); fehlt das
+Theme, gibt es die Outlets `tk-hero-*` nicht – die Kategorienseite funktioniert
+trotzdem (nur ohne Theme-Styling).
 
 ## Installation (Reihenfolge beachten)
 
-1. **Theme** installieren: Ordner `Thomas-Krenn-Theme/` zippen → Admin →
-   **Anpassen → Themes → Installieren → Von deinem Gerät**. Als Standard-Theme
-   aktivieren, unter **Farben** Schema **„TK Forum Dark"** wählen.
-2. **TK Kategorien** installieren: Ordner `TK-Kategorien/` zippen → Admin →
-   **Themes → Komponente installieren → Von deinem Gerät** → dem TK Forum Theme
-   als übergeordnetes Theme zuweisen.
-3. **TK News** installieren: analog mit Ordner `TK-News/`.
-4. Discourse ≥ **3.4** (wegen `.gjs`/`<SearchMenu>` – sonst `search_style = simple`).
-
-Alle drei lassen sich alternativ per Git-Repo installieren.
+1. **Theme**: Ordner `Thomas-Krenn-Theme/` zippen → Admin → **Anpassen → Themes →
+   Installieren → Von deinem Gerät**. Als Standard-Theme aktivieren, unter
+   **Farben** Schema **„TK Forum Dark"** wählen.
+2. **TK Kategorien**: Ordner `TK-Kategorien/` zippen → **Komponente installieren**
+   → dem TK Forum Theme als übergeordnetes Theme zuweisen.
+3. **TK News**: analog mit Ordner `TK-News/`.
+4. Discourse ≥ **3.4** (`.gjs`, `<SearchMenu>`, `custom_homepage`-Modifier –
+   sonst `search_style = simple`).
 
 ## Einstellungen
 
 **Theme:** `brand_name`, `replace_logo`, `show_top_nav`, `nav_links`,
-`login_button_text`, `signup_button_text`, `hero_heading_accent`,
-`hero_heading_rest`, `search_style` (native/simple), `hero_search_placeholder`,
-`home_paths`, `hide_list_nav_on_home`, `hide_sidebar_on_home`,
-`show_latest_section_title`, `latest_section_title`.
+`login_button_text`, `signup_button_text`, `custom_homepage_enabled`,
+`latest_teaser_count`, `hero_heading_accent`, `hero_heading_rest`,
+`search_style` (native/simple), `hero_search_placeholder`,
+`show_hero_on_discovery`, `home_paths`, `hide_list_nav_on_home`,
+`hide_sidebar_on_home`, `show_latest_section_title`, `latest_section_title`.
 
-**TK Kategorien:** `panel_title`, `panel_subtitle`, `only_top_level`,
-`max_categories`, `show_topic_count`, `exclude_categories`, `icon_overrides`,
-`order_by`.
+**TK Kategorien:** `only_top_level`, `exclude_categories`, `icon_overrides`,
+`order_by` · Hero-Panel: `panel_title`, `panel_subtitle`, `max_categories`,
+`show_topic_count` · Kategorienseite: `enable_categories_page`,
+`categories_page_title`, `categories_page_intro`, `categories_page_columns`,
+`description_max_length`, `topics_label`, `category_descriptions`,
+`category_topics`.
 
 **TK News:** `news_enabled`, `news_items`, `news_style`, `news_image`,
 `news_open_new_tab`, `news_secondary_list`.
@@ -142,9 +156,8 @@ Alle drei lassen sich alternativ per Git-Repo installieren.
 ## Bewusste Abgrenzung
 
 - **„Meist diskutiert"** als eigenes Daten-Widget ist nicht enthalten – dafür
-  wäre der `discourse-topic-list`-Ansatz/ein Plugin nötig. Die reguläre
-  Discourse-Liste („Letzte Beiträge") wird stattdessen in Karten-Optik gebracht.
+  wäre der `discourse-topic-list`-Ansatz/ein Plugin nötig.
 - Logo wird per CSS/Wortmarke nachgebaut (`replace_logo`). Echtes Logo hochladen
   → `replace_logo = false`.
-- Styling **aller** Slot-Inhalte liegt zentral im Theme (`common.scss`) – die
-  Komponenten liefern nur Markup und benötigen daher das Theme.
+- Styling **aller** Komponenten-Inhalte liegt zentral im Theme (`common.scss`) –
+  die Komponenten liefern nur Markup und benötigen daher das Theme.

@@ -181,12 +181,24 @@ html.tk-hide-sidebar.tk-home {
   }
 }
 
-/* ---------- Hero (Outlet: below-site-header, Komponente tk-hero) ----- */
+/* ---------- Hero (Komponente <TkHeroBody>) --------------------------- */
+/* <TkHomepage> rendert im #main-outlet (schon content-breit).
+   <TkDiscoveryHero> rendert in below-site-header (voll breit) -> begrenzen. */
+.tk-homepage {
+  margin: 22px 0 30px;
+}
+
 .tk-hero-root {
-  margin: 22px auto 30px;
   max-width: var(--d-max-width, 1110px);
+  margin: 22px auto 30px;
   padding-inline: 1rem;
   box-sizing: border-box;
+}
+
+.tk-homepage .tk-hero-root {
+  max-width: none;
+  margin: 0;
+  padding-inline: 0;
 }
 
 .tk-hero {
@@ -196,23 +208,15 @@ html.tk-hide-sidebar.tk-home {
   align-items: stretch;
 }
 
-/* Zweispaltig, sobald das Kategorien-Panel (Komp. "TK Kategorien") den
-   aside-Slot gefüllt hat. Klasse setzt die Komponente; die :has()-Regel ist
-   die gleichwertige Fallback-Variante. */
-.tk-hero-root.tk-has-aside .tk-hero,
-.tk-hero:has(.tk-hero-slot[data-tk-slot="aside"] > *) {
+/* Zweispaltig, sobald "TK Kategorien" das Panel in den Outlet gerendert hat. */
+.tk-hero:has(.tk-panel--categories) {
   grid-template-columns: minmax(0, 1fr) 322px;
 }
 
 @media (max-width: 924px) {
-  .tk-hero-root.tk-has-aside .tk-hero,
-  .tk-hero:has(.tk-hero-slot[data-tk-slot="aside"] > *) {
+  .tk-hero:has(.tk-panel--categories) {
     grid-template-columns: 1fr;
   }
-}
-
-.tk-hero-slot:empty {
-  display: none;
 }
 
 .tk-hero__main {
@@ -540,6 +544,46 @@ html.tk-hide-sidebar.tk-home {
   color: #fff;
 }
 
+/* ---------- Custom-Homepage-Teaser (<TkHomepage>) --------------- */
+.tk-teaser-list {
+  display: flex;
+  flex-direction: column;
+  background: var(--tk-card-bg);
+  border: 1px solid var(--tk-hairline);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.tk-teaser {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 14px 20px;
+  color: var(--primary);
+
+  & + & {
+    border-top: 1px solid var(--tk-hairline);
+  }
+
+  &:hover {
+    background: rgba(247, 147, 30, 0.06);
+  }
+}
+
+.tk-teaser__title {
+  font-weight: 600;
+  font-size: 0.98rem;
+}
+
+.tk-teaser__meta {
+  margin-left: auto;
+  flex: 0 0 auto;
+  color: var(--tk-ink-muted);
+  font-size: 0.8rem;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
 /* ---------- Themen-/Kategorienliste als Karten (Startseite) ------ */
 .tk-home #main-outlet .topic-list,
 .tk-home #main-outlet .category-list {
@@ -571,6 +615,142 @@ html.tk-hide-sidebar.tk-home {
     border: 1px solid var(--tk-hairline);
     border-radius: 12px;
     margin-bottom: 10px;
+  }
+}
+
+/* ---------- Kategorienseite als Kachel-Grid (Komp. "TK Kategorien") -- */
+/* <TkCategoryTiles> setzt diese Klasse, solange die Kacheln sichtbar sind
+   (analog discourse-minimal-category-boxes) -> Standard-Liste ausblenden. */
+html.tk-category-tiles-active #main-outlet {
+  .navigation-container,
+  .list-controls,
+  .categories-and-latest,
+  .category-list,
+  .categories-list,
+  .category-boxes,
+  .category-boxes-with-topics,
+  .category-boxes-with-subcategories,
+  .subcategory-list,
+  .contents > .category-list,
+  .contents > .categories-list {
+    display: none !important;
+    visibility: hidden;
+  }
+}
+
+.tk-categories-page {
+  max-width: var(--d-max-width, 1110px);
+  margin: 14px auto 60px;
+  padding-inline: 1rem;
+  box-sizing: border-box;
+}
+
+.tk-categories-page__title {
+  margin: 6px 0 12px;
+  color: var(--tk-orange);
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.tk-categories-page__intro {
+  max-width: 90ch;
+  margin: 0 0 28px;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.tk-cat-tiles {
+  display: grid;
+  grid-template-columns: repeat(var(--tk-cols, 3), minmax(0, 1fr));
+  gap: 20px;
+}
+
+.tk-cat-tile {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+  padding: 22px;
+  border: 1px solid var(--tk-hairline);
+  border-radius: 14px;
+  background: var(--tk-card-bg);
+  color: inherit;
+
+  &:hover {
+    border-color: var(--tk-panel-border);
+    background: rgba(247, 147, 30, 0.04);
+  }
+}
+
+.tk-cat-tile__icon {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 10px;
+  color: var(--tk-cat-color, var(--tk-orange));
+
+  svg {
+    width: 22px;
+    height: 22px;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    fill: none;
+  }
+}
+
+.tk-cat-tile__body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.tk-cat-tile__name {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.tk-cat-tile__desc {
+  color: var(--tk-ink-muted);
+  font-size: 0.85rem;
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+
+  p {
+    margin: 0;
+  }
+}
+
+.tk-cat-tile__topics {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.8rem;
+  line-height: 1.5;
+
+  strong {
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 700;
+  }
+}
+
+@media (max-width: 1000px) {
+  .tk-cat-tiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .tk-cat-tiles {
+    grid-template-columns: 1fr;
   }
 }
 

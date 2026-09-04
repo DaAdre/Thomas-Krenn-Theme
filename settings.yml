@@ -1,9 +1,10 @@
 # =============================================================================
 #  TK Forum – IT-Infrastruktur Community  ·  Theme-Einstellungen
 #
-#  Kategorien-Panel  -> Komponente "TK Kategorien"
-#  News-/Event-Banner -> Komponente "TK News"
-#  Beide fuellen Slots, die dieses Theme im Hero bereitstellt.
+#  Kategorien-Panel + Kategorienseite -> Komponente "TK Kategorien"
+#  News-/Event-Banner                 -> Komponente "TK News"
+#  Beide rendern in Outlets, die dieses Theme bereitstellt
+#  (tk-hero-aside, tk-hero-news).
 # =============================================================================
 
 # ---- Header / Logo ---------------------------------------------------------
@@ -32,11 +33,20 @@ signup_button_text:
   type: string
   default: "Beitreten"
 
-# ---- Hero ----------------------------------------------------------------
-show_hero:
+# ---- Startseite (Custom Homepage) ------------------------------------------
+# Das Theme setzt den Modifier `custom_homepage` -> "/" zeigt die Landing-Page
+# statt der Themenliste. Das eigentliche Forum liegt unter /latest, /categories …
+custom_homepage_enabled:
   type: bool
   default: true
 
+latest_teaser_count:
+  type: integer
+  default: 6
+  min: 0
+  max: 20
+
+# ---- Hero ----------------------------------------------------------------
 hero_heading_accent:
   type: string
   default: "Herstellerunabhängiger Fachaustausch"
@@ -58,17 +68,21 @@ hero_search_placeholder:
   type: string
   default: "Welche Frage hast du heute? z.B. ZFS, VLAN, Ansible, …"
 
-# ---- Startseite --------------------------------------------------------
+# Hero zusätzlich auf den Forenlisten (/latest, /categories …) einblenden
+show_hero_on_discovery:
+  type: bool
+  default: false
+
 home_paths:
   type: list
   list_type: simple
   default: "/|/latest|/categories|/top|/hot|/new|/unread"
 
+# ---- Feinschliff der Forenlisten -------------------------------------
 hide_list_nav_on_home:
   type: bool
   default: true
 
-# Linke Discourse-Sidebar auf der Startseite ausblenden (entspricht dem Entwurf)
 hide_sidebar_on_home:
   type: bool
   default: true

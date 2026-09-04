@@ -1,18 +1,25 @@
 import { apiInitializer } from "discourse/lib/api";
 import { schedule } from "@ember/runloop";
-import TkHero from "../components/tk-hero";
+import TkDiscoveryHero from "../components/tk-discovery-hero";
+import TkHomepage from "../components/tk-homepage";
 
 /**
- * Hängt den Hero über dem Hauptinhalt ein (Outlet `below-site-header`) und
- * sorgt dafür, dass die Ergebnisse der eingebetteten <SearchMenu> als
- * andockendes Dropdown erscheinen – nicht als seitenbreite Leiste.
+ * Bindet die Startseiten-Komponenten in die passenden Outlets ein:
+ *   custom-homepage    -> <TkHomepage>       (Landing-Page unter "/")
+ *   below-site-header  -> <TkDiscoveryHero>  (optional auf /latest …)
+ *
+ * Ausserdem: Such-Ergebnisse der <SearchMenu> als andockendes Dropdown,
+ * Platzhaltertext des Suchfelds an den Entwurf angleichen.
  */
 export default apiInitializer((api) => {
-  api.renderInOutlet("below-site-header", TkHero);
+  api.renderInOutlet("custom-homepage", TkHomepage);
+
+  if (settings.show_hero_on_discovery) {
+    api.renderInOutlet("below-site-header", TkDiscoveryHero);
+  }
 
   api.forceDropdownForMenuPanels?.("search-menu-panel");
 
-  // Platzhaltertext der echten Suche an den Entwurf angleichen.
   const placeholder = String(settings.hero_search_placeholder || "").trim();
   if (placeholder) {
     api.onPageChange(() => {

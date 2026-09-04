@@ -7,9 +7,9 @@ import { schedule } from "@ember/runloop";
  *  - Umbenennung der Anmelden-/Beitreten-Buttons
  *  - Body-Flags (`tk-home`, `tk-logo`, `tk-hide-list-nav`) + Wortmarke
  *
- * Der Hero selbst wird von der Komponente `components/tk-hero.gjs` gerendert
- * (Outlet `below-site-header`); Kategorien-Panel und News-Banner kommen aus
- * eigenen Theme-Komponenten.
+ * Der Hero selbst kommt aus `components/tk-hero-body.gjs` (in den Outlets
+ * `custom-homepage` bzw. `below-site-header`); Kategorien-Panel und News-Banner
+ * rendern eigene Theme-Komponenten in die Outlets `tk-hero-aside` / `tk-hero-news`.
  */
 function splitList(value) {
   const raw = Array.isArray(value) ? value.join("|") : String(value || "");
