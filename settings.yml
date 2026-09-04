@@ -33,6 +33,26 @@ signup_button_text:
   type: string
   default: "Beitreten"
 
+# ---- Custom Fonts -------------------------------------------------------
+# Standard: mitgelieferte Schrift aus assets/fonts/ (in about.json registriert).
+# Alternative: eigene Schrift hier hochladen (wird als "TK Theme Font"
+# eingebunden). Siehe assets/fonts/README.md.
+custom_font_variable:
+  type: upload
+  default: ""
+
+custom_font_regular:
+  type: upload
+  default: ""
+
+custom_font_medium:
+  type: upload
+  default: ""
+
+custom_font_bold:
+  type: upload
+  default: ""
+
 # ---- Startseite (Custom Homepage) ------------------------------------------
 # Das Theme setzt den Modifier `custom_homepage` -> "/" zeigt die Landing-Page
 # statt der Themenliste. Das eigentliche Forum liegt unter /latest, /categories …
@@ -45,6 +65,11 @@ latest_teaser_count:
   default: 6
   min: 0
   max: 20
+
+# Autoren im Teaser mit Klarnamen statt @Username anzeigen (falls gesetzt)
+teaser_prefer_name:
+  type: bool
+  default: false
 
 # ---- Hero ----------------------------------------------------------------
 hero_heading_accent:
@@ -83,9 +108,10 @@ hide_list_nav_on_home:
   type: bool
   default: true
 
+# Standard: aus -> die Discourse-Sidebar bleibt sichtbar (Admin-Panel usw.).
 hide_sidebar_on_home:
   type: bool
-  default: true
+  default: false
 
 show_latest_section_title:
   type: bool

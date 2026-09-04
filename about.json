@@ -6,7 +6,12 @@
   "theme_version": "1.2.0",
   "minimum_discourse_version": "3.4.0",
   "component": false,
-  "assets": {},
+  "assets": {
+    "tk-font-light": "assets/fonts/Thomas-Krenn-Light.ttf",
+    "tk-font-regular": "assets/fonts/Thomas-Krenn-Regular.ttf",
+    "tk-font-bold": "assets/fonts/Thomas-Krenn-Bold.ttf",
+    "tk-font-italic": "assets/fonts/Thomas-Krenn-Italic.ttf"
+  },
   "modifiers": {
     "custom_homepage": true
   },

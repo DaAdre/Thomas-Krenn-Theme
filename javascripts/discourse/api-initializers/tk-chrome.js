@@ -58,11 +58,23 @@ export default apiInitializer("1.14.0", (api) => {
 
   function buildTopNav() {
     if (!s.show_top_nav) {
-      document.querySelector(".d-header .contents .tk-nav")?.remove();
+      document.querySelector(".d-header .tk-nav")?.remove();
       return;
     }
-    const contents = document.querySelector(".d-header .contents");
-    if (!contents || contents.querySelector(".tk-nav")) {
+    if (document.querySelector(".d-header .tk-nav")) {
+      return;
+    }
+
+    const logo =
+      document.querySelector(
+        ".d-header .home-logo, .d-header .header-sidebar-toggle + *, .d-header .home-logo-wrapper"
+      ) || null;
+    const contents =
+      (logo && logo.parentElement) ||
+      document.querySelector(".d-header .contents") ||
+      document.querySelector(".d-header-wrap .contents") ||
+      document.querySelector(".d-header");
+    if (!contents) {
       return;
     }
 
@@ -88,12 +100,43 @@ export default apiInitializer("1.14.0", (api) => {
       nav.appendChild(a);
     });
 
-    const logo = contents.querySelector(".home-logo");
-    if (logo && logo.nextSibling) {
-      contents.insertBefore(nav, logo.nextSibling);
+    if (logo && logo.parentElement === contents) {
+      logo.after(nav);
     } else {
-      contents.appendChild(nav);
+      contents.insertBefore(nav, contents.firstChild);
     }
+  }
+
+  function markActiveNav() {
+    const nav = document.querySelector(".d-header .tk-nav");
+    if (!nav) {
+      return;
+    }
+    const path = window.location.pathname.replace(/\/+$/, "") || "/";
+    nav.querySelectorAll("a").forEach((a) => {
+      let linkPath = "";
+      try {
+        linkPath =
+          new URL(a.href, window.location.origin).pathname.replace(
+            /\/+$/,
+            ""
+          ) || "/";
+      } catch {
+        linkPath = a.getAttribute("href") || "";
+      }
+      const external = a.target === "_blank";
+      const active =
+        !external &&
+        linkPath.startsWith("/") &&
+        (path === linkPath ||
+          (linkPath !== "/" && path.startsWith(`${linkPath}/`)));
+      a.classList.toggle("active", active);
+      if (active) {
+        a.setAttribute("aria-current", "page");
+      } else {
+        a.removeAttribute("aria-current");
+      }
+    });
   }
 
   function relabelAuthButtons() {
@@ -130,8 +173,9 @@ export default apiInitializer("1.14.0", (api) => {
     }
     observing = true;
     new MutationObserver(() => {
-      if (!document.querySelector(".d-header .contents .tk-nav")) {
+      if (!document.querySelector(".d-header .tk-nav")) {
         buildTopNav();
+        markActiveNav();
         relabelAuthButtons();
       }
     }).observe(header, { childList: true, subtree: true });
@@ -142,6 +186,7 @@ export default apiInitializer("1.14.0", (api) => {
       try {
         setFlags();
         buildTopNav();
+        markActiveNav();
         relabelAuthButtons();
         watchHeader();
       } catch (error) {

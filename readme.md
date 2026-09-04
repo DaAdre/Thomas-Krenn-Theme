@@ -86,7 +86,7 @@ Themenliste. Das Forum bleibt unter `/latest`, `/categories`, `/top` … erreich
 | Bereich | Wo | Details |
 | --- | --- | --- |
 | **Farbschema** | Theme | Color Scheme *„TK Forum Dark"* in [`about.json`](about.json) – BG `#161719`, Header `#141414`, Akzent `#F7931E`. |
-| **Typografie** | Theme | Schrift **Inter** über [`common/head_tag.html`](common/head_tag.html). |
+| **Typografie** | Theme | Mitgelieferte Schrift aus [`assets/fonts/`](assets/fonts/) (in `about.json` → `"assets"` registriert), als `@font-face "TK Theme Font"` in `common/common.scss` eingebunden → CSS-Variable `--tk-font`. Fallback **Inter** ([`common/head_tag.html`](common/head_tag.html)) → System-Sans. Eigene Schrift per `assets/fonts/` + `about.json` oder Upload-Einstellungen. |
 | **Header** | Theme | Logo-Zeichen (≡) + Wortmarke, zentrierte **konfigurierbare** Navigation (`nav_links`), *Anmelden* (Outline) + *Beitreten* (orange). |
 | **Hero + Suche** | Theme | [`components/tk-hero-body.gjs`](javascripts/discourse/components/tk-hero-body.gjs): zweifarbige Headline + – Setting `search_style` – die **echte Discourse-Suche** (`<SearchMenu>` aus `discourse/components/search-menu`, Live-Ergebnisse als Dropdown via `api.forceDropdownForMenuPanels`) oder ein einfaches `/search`-Feld. Stellt die Outlets `tk-hero-aside` und `tk-hero-news` bereit. |
 | **Kategorien** | Komponente **TK Kategorien** | (a) Hero-**Panel** (`tk-hero-aside`, aus `site.categories`) und (b) **Kategorienseite `/categories` als Kachel-Grid** (`above-discovery-categories`, `@outletArgs.categories`). Icon je Kategorie per Heuristik oder Override; Beschreibung = `description_excerpt` der Kategorie oder überschreibbar. Standard-Liste wird per `html.tk-category-tiles-active` ausgeblendet. |
@@ -97,11 +97,12 @@ Themenliste. Das Forum bleibt unter `/latest`, `/categories`, `/top` … erreich
 
 ```
 Thomas-Krenn-Theme/
-├── about.json                       # Color Scheme + modifiers.custom_homepage
+├── about.json                       # Color Scheme + modifiers.custom_homepage + assets
 ├── settings.yml
+├── assets/fonts/                    # eigene Schriftdateien ablegen (siehe README dort)
 ├── common/
-│   ├── common.scss                  # Design-System + Styling ALLER Komponenten-Inhalte
-│   └── head_tag.html                # Inter-Font
+│   ├── common.scss                  # Design-System + @font-face (assets/fonts/) + Styling
+│   └── head_tag.html                # Inter (Fallback-Schrift)
 ├── javascripts/discourse/
 │   ├── components/
 │   │   ├── tk-hero-body.gjs         # Headline + <SearchMenu> + <PluginOutlet tk-hero-aside/news>
@@ -138,10 +139,12 @@ trotzdem (nur ohne Theme-Styling).
 
 **Theme:** `brand_name`, `replace_logo`, `show_top_nav`, `nav_links`,
 `login_button_text`, `signup_button_text`, `custom_homepage_enabled`,
-`latest_teaser_count`, `hero_heading_accent`, `hero_heading_rest`,
-`search_style` (native/simple), `hero_search_placeholder`,
+`latest_teaser_count`, `teaser_prefer_name`, `hero_heading_accent`,
+`hero_heading_rest`, `search_style` (native/simple), `hero_search_placeholder`,
 `show_hero_on_discovery`, `home_paths`, `hide_list_nav_on_home`,
-`hide_sidebar_on_home`, `show_latest_section_title`, `latest_section_title`.
+`hide_sidebar_on_home`, `show_latest_section_title`, `latest_section_title` ·
+Fonts: `custom_font_family_name`, `custom_font_variable`, `custom_font_regular`,
+`custom_font_medium`, `custom_font_bold` (Details: `assets/fonts/README.md`).
 
 **TK Kategorien:** `only_top_level`, `exclude_categories`, `icon_overrides`,
 `order_by` · Hero-Panel: `panel_title`, `panel_subtitle`, `max_categories`,

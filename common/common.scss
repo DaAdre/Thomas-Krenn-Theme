@@ -1,14 +1,118 @@
 /* =========================================================================
    TK Forum – IT-Infrastruktur Community
-   Design-System + Hero-Shell.  Inhalt der Slots liefern die Komponenten
-   "TK Kategorien" (Slot aside) und "TK News" (Slot news).
+   Design-System + Hero-Shell.  Inhalte kommen aus den Komponenten
+   "TK Kategorien" und "TK News" (Outlets tk-hero-aside / tk-hero-news).
    ========================================================================= */
 
+/* ---------- Custom Fonts -----------------------------------------------
+   Schriftdateien in  assets/fonts/  ablegen und in about.json unter "assets"
+   registrieren (tk-font-light / -regular / -medium / -bold / -italic /
+   -variable). Nur registrierte Assets werden eingebunden (variable-exists).
+   -------------------------------------------------------------------- */
+@if variable-exists("tk-font-light") {
+  @font-face {
+    font-family: "TK Theme Font";
+    src: url($tk-font-light);
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+  }
+}
+@if variable-exists("tk-font-regular") {
+  @font-face {
+    font-family: "TK Theme Font";
+    src: url($tk-font-regular);
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+}
+@if variable-exists("tk-font-medium") {
+  @font-face {
+    font-family: "TK Theme Font";
+    src: url($tk-font-medium);
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+}
+@if variable-exists("tk-font-bold") {
+  @font-face {
+    font-family: "TK Theme Font";
+    src: url($tk-font-bold);
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+}
+@if variable-exists("tk-font-italic") {
+  @font-face {
+    font-family: "TK Theme Font";
+    src: url($tk-font-italic);
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+  }
+}
+@if variable-exists("tk-font-variable") {
+  @font-face {
+    font-family: "TK Theme Font";
+    src: url($tk-font-variable);
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+  }
+}
+
+/* Alternativ: Schrift ueber die Theme-Einstellungen hochladen. */
+@if $custom_font_variable and $custom_font_variable != "" {
+  @font-face {
+    font-family: "TK Theme Font";
+    src: url($custom_font_variable);
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+  }
+}
+@if $custom_font_regular and $custom_font_regular != "" {
+  @font-face {
+    font-family: "TK Theme Font";
+    src: url($custom_font_regular);
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+}
+@if $custom_font_medium and $custom_font_medium != "" {
+  @font-face {
+    font-family: "TK Theme Font";
+    src: url($custom_font_medium);
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+}
+@if $custom_font_bold and $custom_font_bold != "" {
+  @font-face {
+    font-family: "TK Theme Font";
+    src: url($custom_font_bold);
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+}
+
 :root {
+  /* "TK Theme Font" greift nur, wenn oben ein @font-face registriert wurde -
+     sonst faellt der Stack automatisch auf Inter -> System-Sans zurueck. */
+  --tk-font: "TK Theme Font", "Inter", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial,
+    sans-serif;
+
   --tk-orange: #f7931e;
-  --tk-panel-border: rgba(247, 147, 30, 0.55);
-  --tk-hairline: rgba(255, 255, 255, 0.08);
-  --tk-card-bg: rgba(255, 255, 255, 0.02);
+  --tk-panel-border: rgba(247, 147, 30, 0.6);
+  --tk-hairline: rgba(255, 255, 255, 0.09);
+  --tk-card-bg: rgba(255, 255, 255, 0.035);
   --tk-ink-muted: rgba(255, 255, 255, 0.55);
   --tk-brand: "forum";
 }
@@ -26,8 +130,7 @@ select,
 textarea,
 .btn,
 .d-header {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--tk-font);
 }
 
 h1,
@@ -49,12 +152,18 @@ h4 {
 }
 
 .d-header .contents {
-  position: relative;
   display: flex;
   align-items: center;
 }
 
-.d-header .panel {
+/* dreiteilige Verteilung: Logo | Nav | Panel (beide auto-Margins teilen den
+   freien Platz -> Nav sitzt mittig) */
+.d-header .contents .tk-nav {
+  margin-left: auto;
+}
+
+.d-header .panel,
+.d-header .header-buttons {
   margin-left: auto;
 }
 
@@ -95,29 +204,59 @@ html.tk-logo .d-header .home-logo {
 
 /* Zentrierte Kopf-Navigation */
 .tk-nav {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
   display: flex;
-  gap: 2.25rem;
+  align-items: center;
+  gap: 2rem;
   white-space: nowrap;
 
   a {
+    position: relative;
     color: rgba(255, 255, 255, 0.82);
     font-size: 0.98rem;
     font-weight: 500;
+    line-height: 1;
+    padding-block: 4px;
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    /* animierter Unterstrich */
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -4px;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--tk-orange);
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
     &:hover,
-    &:focus {
+    &:focus-visible,
+    &.active {
       color: #fff;
     }
+
+    &:hover::after,
+    &:focus-visible::after,
+    &.active::after {
+      transform: scaleX(1);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tk-nav a::after {
+    transition: none;
   }
 }
 
 @media (max-width: 1100px) {
   .tk-nav {
-    display: none;
+    display: none !important;
   }
 }
 
@@ -208,12 +347,16 @@ html.tk-hide-sidebar.tk-home {
   align-items: stretch;
 }
 
-/* Zweispaltig, sobald "TK Kategorien" das Panel in den Outlet gerendert hat. */
+/* Zweispaltig, sobald "TK Kategorien" das Panel in den Outlet gerendert hat.
+   Klasse setzt die Komponente ({{didInsert}}); :has() ist die gleichwertige
+   Variante ohne JS. */
+.tk-hero.tk-has-aside,
 .tk-hero:has(.tk-panel--categories) {
   grid-template-columns: minmax(0, 1fr) 322px;
 }
 
 @media (max-width: 924px) {
+  .tk-hero.tk-has-aside,
   .tk-hero:has(.tk-panel--categories) {
     grid-template-columns: 1fr;
   }
@@ -396,8 +539,26 @@ html.tk-hide-sidebar.tk-home {
   }
 }
 
-.tk-cat__icon {
+/* Basis-Sicherung: Icon nie größer als sein Rahmen (auch ohne die Regeln unten) */
+.tk-cat-icon,
+.tk-cat__icon,
+.tk-cat-tile__icon {
   flex: 0 0 auto;
+  overflow: hidden;
+
+  svg {
+    display: block;
+    width: 18px;
+    height: 18px;
+    max-width: 100%;
+    max-height: 100%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+  }
+}
+
+.tk-cat__icon {
   width: 34px;
   height: 34px;
   display: grid;
@@ -405,14 +566,6 @@ html.tk-hide-sidebar.tk-home {
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 8px;
   color: var(--tk-cat-color, var(--tk-orange));
-
-  svg {
-    width: 18px;
-    height: 18px;
-    stroke: currentColor;
-    stroke-width: 1.7;
-    fill: none;
-  }
 }
 
 .tk-cat__label {
@@ -556,8 +709,8 @@ html.tk-hide-sidebar.tk-home {
 
 .tk-teaser {
   display: flex;
-  align-items: baseline;
-  gap: 16px;
+  align-items: flex-start;
+  gap: 18px;
   padding: 14px 20px;
   color: var(--primary);
 
@@ -570,18 +723,75 @@ html.tk-hide-sidebar.tk-home {
   }
 }
 
+.tk-teaser__main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 .tk-teaser__title {
   font-weight: 600;
   font-size: 0.98rem;
 }
 
-.tk-teaser__meta {
-  margin-left: auto;
-  flex: 0 0 auto;
+.tk-teaser__byline {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   color: var(--tk-ink-muted);
   font-size: 0.8rem;
-  white-space: nowrap;
+}
+
+.tk-teaser__meta {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  text-align: right;
+  color: var(--tk-ink-muted);
+  font-size: 0.78rem;
   font-variant-numeric: tabular-nums;
+}
+
+.tk-teaser__replies {
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 600;
+}
+
+.tk-teaser__last {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.tk-teaser__sep {
+  opacity: 0.5;
+}
+
+.tk-teaser__avatar {
+  flex: 0 0 auto;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+@media (max-width: 560px) {
+  .tk-teaser {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .tk-teaser__meta {
+    align-items: flex-start;
+    text-align: left;
+    flex-direction: row;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
 }
 
 /* ---------- Themen-/Kategorienliste als Karten (Startseite) ------ */
