@@ -560,8 +560,8 @@ html.tk-hide-sidebar.tk-home {
 
   svg {
     display: block;
-    width: 18px;
-    height: 18px;
+    width: 22px;
+    height: 22px;
     max-width: 100%;
     max-height: 100%;
   }
@@ -572,12 +572,12 @@ html.tk-hide-sidebar.tk-home {
 }
 
 .tk-cat__icon {
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   display: grid;
   place-items: center;
   border: 1px solid var(--tk-border-strong);
-  border-radius: 8px;
+  border-radius: 9px;
   color: var(--tk-cat-color, var(--tk-orange));
 }
 
@@ -888,19 +888,20 @@ html.tk-category-tiles-active #main-outlet {
 .tk-cat-tiles {
   display: grid;
   grid-template-columns: repeat(var(--tk-cols, 3), minmax(0, 1fr));
-  gap: 20px;
+  gap: 24px;
 }
 
 .tk-cat-tile {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
-  gap: 18px;
+  gap: 22px;
   align-items: start;
-  padding: 22px;
+  padding: 30px 28px;
   border: 1px solid var(--tk-hairline);
-  border-radius: 14px;
+  border-radius: 16px;
   background: var(--tk-card-bg);
   color: inherit;
+  transition: border-color 0.15s ease, background 0.15s ease;
 
   &:hover {
     border-color: var(--tk-panel-border);
@@ -909,36 +910,37 @@ html.tk-category-tiles-active #main-outlet {
 }
 
 .tk-cat-tile__icon {
-  width: 44px;
-  height: 44px;
+  width: 58px;
+  height: 58px;
   display: grid;
   place-items: center;
   border: 1px solid var(--tk-border-strong);
-  border-radius: 10px;
+  border-radius: 14px;
   color: var(--tk-cat-color, var(--tk-orange));
 
   svg {
-    width: 22px;
-    height: 22px;
+    width: 34px;
+    height: 34px;
   }
 }
 
 .tk-cat-tile__body {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 9px;
   min-width: 0;
 }
 
 .tk-cat-tile__name {
   color: var(--tk-text);
-  font-size: 1rem;
+  font-size: 1.12rem;
   font-weight: 700;
+  line-height: 1.25;
 }
 
 .tk-cat-tile__desc {
   color: var(--tk-ink-muted);
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   line-height: 1.55;
   display: -webkit-box;
   -webkit-line-clamp: 3;
