@@ -3,14 +3,15 @@
   "about_url": "https://meta.discourse.org/t/beginners-guide-to-using-discourse-themes/91966",
   "license_url": "https://opensource.org/licenses/MIT",
   "authors": "Adrian Zillner",
-  "theme_version": "1.2.0",
+  "theme_version": "1.3.0",
   "minimum_discourse_version": "3.4.0",
   "component": false,
   "assets": {
     "tk-font-light": "assets/fonts/Thomas-Krenn-Light.ttf",
     "tk-font-regular": "assets/fonts/Thomas-Krenn-Regular.ttf",
     "tk-font-bold": "assets/fonts/Thomas-Krenn-Bold.ttf",
-    "tk-font-italic": "assets/fonts/Thomas-Krenn-Italic.ttf"
+    "tk-font-italic": "assets/fonts/Thomas-Krenn-Italic.ttf",
+    "icons-sprite": "assets/icons/tk-icons.svg"
   },
   "modifiers": {
     "custom_homepage": true
@@ -27,6 +28,18 @@
       "danger": "e2564d",
       "success": "2ea56a",
       "love": "fa6c8d"
+    },
+    "TK Forum Light": {
+      "primary": "1c1e21",
+      "secondary": "f7f8fa",
+      "tertiary": "d97e12",
+      "quaternary": "d97e12",
+      "header_background": "141414",
+      "header_primary": "ffffff",
+      "highlight": "f7931e",
+      "danger": "c4362b",
+      "success": "1e874b",
+      "love": "d63e77"
     }
   }
 }

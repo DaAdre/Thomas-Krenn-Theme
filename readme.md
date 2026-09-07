@@ -85,8 +85,9 @@ Themenliste. Das Forum bleibt unter `/latest`, `/categories`, `/top` … erreich
 
 | Bereich | Wo | Details |
 | --- | --- | --- |
-| **Farbschema** | Theme | Color Scheme *„TK Forum Dark"* in [`about.json`](about.json) – BG `#161719`, Header `#141414`, Akzent `#F7931E`. |
+| **Farbschema** | Theme | Zwei Color Schemes in [`about.json`](about.json): **„TK Forum Dark"** (BG `#161719`) und **„TK Forum Light"** (BG `#f7f8fa`). Der Header bleibt in beiden dunkel. Alle Inhalts-Farben leiten sich in `common.scss` aus `--primary` / `--secondary` / `--tertiary` ab und flippen automatisch. |
 | **Typografie** | Theme | Mitgelieferte Schrift aus [`assets/fonts/`](assets/fonts/) (in `about.json` → `"assets"` registriert), als `@font-face "TK Theme Font"` in `common/common.scss` eingebunden → CSS-Variable `--tk-font`. Fallback **Inter** ([`common/head_tag.html`](common/head_tag.html)) → System-Sans. Eigene Schrift per `assets/fonts/` + `about.json` oder Upload-Einstellungen. |
+| **Icons** | Theme | Icon-Sprache **Streamline „Streamline Light"** über das SVG-Sprite [`assets/icons/tk-icons.svg`](assets/icons/tk-icons.svg) (`about.json` → `"assets": {"icons-sprite": …}`, 15 Platzhalter `tk-server … tk-default`). Streamline-Exporte via [`assets/icons/build-sprite.mjs`](assets/icons/build-sprite.mjs) zu `<symbol>` bündeln, Namen in `svg_icon_subset` eintragen. Nutzbar als `{{d-icon "tk-…"}}`, `api.replaceIcon(...)` oder in *TK Kategorien* (`icon_overrides` bzw. `use_sprite_icons = an` für das ganze Panel). Details: [`assets/icons/README.md`](assets/icons/README.md). |
 | **Header** | Theme | Logo-Zeichen (≡) + Wortmarke, zentrierte **konfigurierbare** Navigation (`nav_links`), *Anmelden* (Outline) + *Beitreten* (orange). |
 | **Hero + Suche** | Theme | [`components/tk-hero-body.gjs`](javascripts/discourse/components/tk-hero-body.gjs): zweifarbige Headline + – Setting `search_style` – die **echte Discourse-Suche** (`<SearchMenu>` aus `discourse/components/search-menu`, Live-Ergebnisse als Dropdown via `api.forceDropdownForMenuPanels`) oder ein einfaches `/search`-Feld. Stellt die Outlets `tk-hero-aside` und `tk-hero-news` bereit. |
 | **Kategorien** | Komponente **TK Kategorien** | (a) Hero-**Panel** (`tk-hero-aside`, aus `site.categories`) und (b) **Kategorienseite `/categories` als Kachel-Grid** (`above-discovery-categories`, `@outletArgs.categories`). Icon je Kategorie per Heuristik oder Override; Beschreibung = `description_excerpt` der Kategorie oder überschreibbar. Standard-Liste wird per `html.tk-category-tiles-active` ausgeblendet. |
@@ -97,9 +98,10 @@ Themenliste. Das Forum bleibt unter `/latest`, `/categories`, `/top` … erreich
 
 ```
 Thomas-Krenn-Theme/
-├── about.json                       # Color Scheme + modifiers.custom_homepage + assets
+├── about.json                       # Color Schemes + modifiers.custom_homepage + assets
 ├── settings.yml
-├── assets/fonts/                    # eigene Schriftdateien ablegen (siehe README dort)
+├── assets/fonts/                    # eigene Schriftdateien (siehe README dort)
+├── assets/icons/tk-icons.svg        # eigenes Icon-Sprite (siehe README dort)
 ├── common/
 │   ├── common.scss                  # Design-System + @font-face (assets/fonts/) + Styling
 │   └── head_tag.html                # Inter (Fallback-Schrift)
@@ -127,8 +129,11 @@ trotzdem (nur ohne Theme-Styling).
 ## Installation (Reihenfolge beachten)
 
 1. **Theme**: Ordner `Thomas-Krenn-Theme/` zippen → Admin → **Anpassen → Themes →
-   Installieren → Von deinem Gerät**. Als Standard-Theme aktivieren, unter
-   **Farben** Schema **„TK Forum Dark"** wählen.
+   Installieren → Von deinem Gerät**. Als Standard-Theme aktivieren. Unter dem
+   Theme das Standard-Schema wählen (**„TK Forum Dark"** oder **„TK Forum Light"**);
+   für automatisches Umschalten das jeweils andere als *dunkles Farbschema*
+   eintragen. Beide auf *vom Benutzer wählbar* stellen, damit Mitglieder in ihren
+   Einstellungen wechseln können.
 2. **TK Kategorien**: Ordner `TK-Kategorien/` zippen → **Komponente installieren**
    → dem TK Forum Theme als übergeordnetes Theme zuweisen.
 3. **TK News**: analog mit Ordner `TK-News/`.

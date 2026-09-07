@@ -109,11 +109,20 @@
     "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial,
     sans-serif;
 
-  --tk-orange: #f7931e;
-  --tk-panel-border: rgba(247, 147, 30, 0.6);
-  --tk-hairline: rgba(255, 255, 255, 0.09);
-  --tk-card-bg: rgba(255, 255, 255, 0.035);
-  --tk-ink-muted: rgba(255, 255, 255, 0.55);
+  /* Alle Inhalts-Farben leiten sich aus dem aktiven Color Scheme ab
+     (--primary / --secondary / --tertiary) und flippen so automatisch
+     zwischen "TK Forum Dark" und "TK Forum Light". Der Header bleibt in
+     beiden Schemata dunkel (header_background). */
+  --tk-orange: var(--tertiary);
+  --tk-text: var(--primary);
+  --tk-text-soft: rgba(var(--primary-rgb), 0.82);
+  --tk-ink-muted: rgba(var(--primary-rgb), 0.6);
+  --tk-ink-dim: rgba(var(--primary-rgb), 0.45);
+  --tk-hairline: rgba(var(--primary-rgb), 0.1);
+  --tk-border-strong: rgba(var(--primary-rgb), 0.16);
+  --tk-card-bg: rgba(var(--primary-rgb), 0.04);
+  --tk-hover: rgba(var(--tertiary-rgb), 0.09);
+  --tk-panel-border: rgba(var(--tertiary-rgb), 0.6);
   --tk-brand: "forum";
 }
 
@@ -386,15 +395,15 @@ html.tk-hide-sidebar.tk-home {
   }
 
   .tk-plain {
-    color: #fff;
+    color: var(--tk-text);
   }
 }
 
-/* ---- Suche: einfache Variante ---- */
+/* ---- Suche: einfache Variante (weisse Leiste in beiden Schemata) ---- */
 .tk-hero__search-simple input {
   width: 100%;
   box-sizing: border-box;
-  border: none;
+  border: 1px solid var(--tk-border-strong);
   border-radius: 12px;
   background: #fff;
   color: #16181c;
@@ -441,7 +450,7 @@ html.tk-hide-sidebar.tk-home {
     align-items: center;
     gap: 4px;
     background: #fff;
-    border: none;
+    border: 1px solid var(--tk-border-strong);
     border-radius: 12px;
     padding: 5px 12px;
   }
@@ -527,19 +536,22 @@ html.tk-hide-sidebar.tk-home {
   gap: 13px;
   padding: 10px 6px;
   border-radius: 10px;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--tk-text-soft);
 
   & + & {
     border-top: 1px solid var(--tk-hairline);
   }
 
   &:hover {
-    background: rgba(247, 147, 30, 0.1);
-    color: #fff;
+    background: var(--tk-hover);
+    color: var(--tk-text);
   }
 }
 
-/* Basis-Sicherung: Icon nie größer als sein Rahmen (auch ohne die Regeln unten) */
+/* Basis-Sicherung: Icon nie größer als sein Rahmen (auch ohne die Regeln unten).
+   fill / stroke / stroke-width NICHT erzwingen -> Line-Icons (inline) und
+   Streamline-Light-Sprite-Symbole bringen das selbst mit; Sprite-/FA-Icons
+   (.d-icon) erben `fill: currentColor` von Discourse. */
 .tk-cat-icon,
 .tk-cat__icon,
 .tk-cat-tile__icon {
@@ -552,9 +564,10 @@ html.tk-hide-sidebar.tk-home {
     height: 18px;
     max-width: 100%;
     max-height: 100%;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 1.7;
+  }
+
+  .d-icon {
+    fill: currentColor;
   }
 }
 
@@ -563,7 +576,7 @@ html.tk-hide-sidebar.tk-home {
   height: 34px;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  border: 1px solid var(--tk-border-strong);
   border-radius: 8px;
   color: var(--tk-cat-color, var(--tk-orange));
 }
@@ -665,15 +678,15 @@ html.tk-hide-sidebar.tk-home {
   flex-direction: column;
   gap: 2px;
   padding: 12px 16px;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--tk-text-soft);
 
   & + & {
     border-top: 1px solid var(--tk-hairline);
   }
 
   &:hover {
-    background: rgba(247, 147, 30, 0.08);
-    color: #fff;
+    background: var(--tk-hover);
+    color: var(--tk-text);
   }
 }
 
@@ -694,7 +707,7 @@ html.tk-hide-sidebar.tk-home {
   margin: 26px 0 10px;
   font-size: 1.3rem;
   font-weight: 800;
-  color: #fff;
+  color: var(--tk-text);
 }
 
 /* ---------- Custom-Homepage-Teaser (<TkHomepage>) --------------- */
@@ -712,14 +725,14 @@ html.tk-hide-sidebar.tk-home {
   align-items: flex-start;
   gap: 18px;
   padding: 14px 20px;
-  color: var(--primary);
+  color: var(--tk-text);
 
   & + & {
     border-top: 1px solid var(--tk-hairline);
   }
 
   &:hover {
-    background: rgba(247, 147, 30, 0.06);
+    background: var(--tk-hover);
   }
 }
 
@@ -757,7 +770,7 @@ html.tk-hide-sidebar.tk-home {
 }
 
 .tk-teaser__replies {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--tk-text-soft);
   font-weight: 600;
 }
 
@@ -813,7 +826,7 @@ html.tk-hide-sidebar.tk-home {
 
 .tk-home #main-outlet .topic-list-item:hover,
 .tk-home #main-outlet .latest-topic-list-item:hover {
-  background: rgba(247, 147, 30, 0.06);
+  background: var(--tk-hover);
 }
 
 .tk-home #main-outlet .latest-topic-list {
@@ -866,7 +879,7 @@ html.tk-category-tiles-active #main-outlet {
 .tk-categories-page__intro {
   max-width: 90ch;
   margin: 0 0 28px;
-  color: rgba(255, 255, 255, 0.82);
+  color: var(--tk-text-soft);
   font-size: 0.95rem;
   font-weight: 600;
   line-height: 1.6;
@@ -891,7 +904,7 @@ html.tk-category-tiles-active #main-outlet {
 
   &:hover {
     border-color: var(--tk-panel-border);
-    background: rgba(247, 147, 30, 0.04);
+    background: rgba(var(--tertiary-rgb), 0.05);
   }
 }
 
@@ -900,16 +913,13 @@ html.tk-category-tiles-active #main-outlet {
   height: 44px;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  border: 1px solid var(--tk-border-strong);
   border-radius: 10px;
   color: var(--tk-cat-color, var(--tk-orange));
 
   svg {
     width: 22px;
     height: 22px;
-    stroke: currentColor;
-    stroke-width: 1.7;
-    fill: none;
   }
 }
 
@@ -921,7 +931,7 @@ html.tk-category-tiles-active #main-outlet {
 }
 
 .tk-cat-tile__name {
-  color: #fff;
+  color: var(--tk-text);
   font-size: 1rem;
   font-weight: 700;
 }
@@ -942,12 +952,12 @@ html.tk-category-tiles-active #main-outlet {
 }
 
 .tk-cat-tile__topics {
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--tk-ink-dim);
   font-size: 0.8rem;
   line-height: 1.5;
 
   strong {
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--tk-text-soft);
     font-weight: 700;
   }
 }

@@ -1,6 +1,6 @@
 en:
   theme_metadata:
-    description: "Dunkles, kartenbasiertes Discourse-Theme fuer herstellerunabhaengige IT-Infrastruktur-Foren. Custom Homepage mit Hero und echter Forensuche, plus Outlets fuer die Komponenten TK Kategorien und TK News."
+    description: "Modernes Discourse Theme Designed von MBOXLEITNER umgesetzt von AZILLNER."
     settings:
       brand_name: "Wortmarke rechts neben dem Logo-Zeichen im Header."
       replace_logo: "Das Discourse-Logo durch das TK-Logo-Zeichen plus Wortmarke ersetzen."
