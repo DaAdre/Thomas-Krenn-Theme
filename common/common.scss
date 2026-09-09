@@ -307,6 +307,37 @@ html.tk-logo .d-header .home-logo {
   }
 }
 
+/* Header-Icon-Buttons (Suche · Menü · Konto · Chat …)
+   Bug: Core faerbt Hover-/Aktiv-Hintergrund aus der Inhalts-Palette -> im
+   Dark-Scheme hell, das weisse Icon wird unsichtbar. Fest auf die
+   Header-Farbwelt ziehen (transparent + zarter Weiss-Ton). */
+.d-header .d-header-icons .btn,
+.d-header .d-header-icons .icon,
+.d-header #search-button,
+.d-header #toggle-hamburger-menu {
+  color: #fff;
+  background: transparent;
+  border-radius: 8px;
+  transition: background-color 0.15s ease;
+
+  .d-icon {
+    color: #fff;
+  }
+
+  &:hover,
+  &:focus,
+  &:focus-visible,
+  &.active,
+  &[aria-expanded="true"] {
+    background: rgba(255, 255, 255, 0.12) !important;
+    color: #fff;
+
+    .d-icon {
+      color: #fff;
+    }
+  }
+}
+
 /* ---------- Startseiten-Feinschliff ---------------------------------- */
 html.tk-hide-list-nav.tk-home .navigation-container,
 html.tk-hide-list-nav.tk-home #navigation-bar,
