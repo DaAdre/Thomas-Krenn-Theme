@@ -351,35 +351,74 @@ html.tk-hide-sidebar.tk-home {
 
 .tk-hero {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 22px;
+  gap: 18px;
   align-items: stretch;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "main"
+    "aside"
+    "news";
+}
+
+.tk-hero__main {
+  grid-area: main;
+  min-width: 0;
+  border: 1px solid var(--tk-panel-border);
+  border-radius: 16px;
+  background: var(--tk-card-bg);
+  padding: clamp(26px, 3.4vw, 40px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 24px;
+}
+
+.tk-hero__aside {
+  grid-area: aside;
+  min-width: 0;
+
+  &:empty {
+    display: none;
+  }
+}
+
+/* Panel spannt beide Zeilen und fuellt die Hoehe (main + News) aus. */
+.tk-hero__aside .tk-panel {
+  height: 100%;
+}
+
+.tk-hero__news {
+  grid-area: news;
+  align-self: start;
+  min-width: 0;
+
+  &:empty {
+    display: none;
+  }
 }
 
 /* Zweispaltig, sobald "TK Kategorien" das Panel in den Outlet gerendert hat.
    Klasse setzt die Komponente ({{didInsert}}); :has() ist die gleichwertige
-   Variante ohne JS. */
+   Variante ohne JS. Das Panel spannt beide Zeilen, das News-Banner fuellt
+   die Flaeche links unter dem Hero. */
 .tk-hero.tk-has-aside,
 .tk-hero:has(.tk-panel--categories) {
   grid-template-columns: minmax(0, 1fr) 322px;
+  grid-template-areas:
+    "main  aside"
+    "news  aside";
 }
 
 @media (max-width: 924px) {
+  .tk-hero,
   .tk-hero.tk-has-aside,
   .tk-hero:has(.tk-panel--categories) {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      "main"
+      "aside"
+      "news";
   }
-}
-
-.tk-hero__main {
-  border: 1px solid var(--tk-panel-border);
-  border-radius: 16px;
-  background: var(--tk-card-bg);
-  padding: clamp(24px, 4vw, 46px);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 30px;
 }
 
 .tk-hero__title {
@@ -506,7 +545,7 @@ html.tk-hide-sidebar.tk-home {
   border: 1px solid var(--tk-panel-border);
   border-radius: 16px;
   background: var(--tk-card-bg);
-  padding: 22px 20px;
+  padding: 20px 18px;
   height: 100%;
   box-sizing: border-box;
 }
@@ -519,7 +558,7 @@ html.tk-hide-sidebar.tk-home {
 }
 
 .tk-panel__head p {
-  margin: 0 0 14px;
+  margin: 0 0 12px;
   color: var(--tk-ink-muted);
   font-size: 0.8rem;
   line-height: 1.45;
@@ -530,13 +569,30 @@ html.tk-hide-sidebar.tk-home {
   flex-direction: column;
 }
 
+/* Kategorien: Schrift immer weiss. Ungelesene nur durch fette Schrift +
+   neutralen Zaehler-Badge markiert - kein Orange. */
 .tk-cat {
   display: flex;
   align-items: center;
-  gap: 13px;
-  padding: 10px 6px;
+  gap: 12px;
+  padding: 9px 8px;
   border-radius: 10px;
-  color: var(--tk-text-soft);
+  color: var(--tk-text);
+  transition: background-color 0.15s ease;
+
+  /* alle Link-Zustaende festnageln - sonst gewinnt Core `a:visited` (Orange).
+     !important, weil Core den besuchten Link ggf. per ID-Selektor einfaerbt. */
+  &:link,
+  &:visited,
+  &:hover,
+  &:focus,
+  &:active {
+    color: var(--tk-text) !important;
+  }
+
+  .tk-cat__label {
+    color: inherit;
+  }
 
   & + & {
     border-top: 1px solid var(--tk-hairline);
@@ -544,8 +600,30 @@ html.tk-hide-sidebar.tk-home {
 
   &:hover {
     background: var(--tk-hover);
-    color: var(--tk-text);
   }
+
+  &:hover .tk-cat__icon {
+    color: var(--tk-text-soft);
+    border-color: var(--tk-border-strong);
+  }
+}
+
+.tk-cat--unread .tk-cat__label {
+  font-weight: 600;
+}
+
+.tk-cat__badge {
+  flex: 0 0 auto;
+  min-width: 1.25rem;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: rgba(var(--primary-rgb), 0.1);
+  color: var(--tk-text-soft);
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.5;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
 }
 
 /* Basis-Sicherung: Icon nie größer als sein Rahmen (auch ohne die Regeln unten).
@@ -572,13 +650,14 @@ html.tk-hide-sidebar.tk-home {
 }
 
 .tk-cat__icon {
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   display: grid;
   place-items: center;
-  border: 1px solid var(--tk-border-strong);
+  border: 1px solid var(--tk-hairline);
   border-radius: 9px;
-  color: var(--tk-cat-color, var(--tk-orange));
+  color: var(--tk-cat-color, var(--tk-ink-muted));
+  transition: color 0.15s ease, border-color 0.15s ease;
 }
 
 .tk-cat__label {
@@ -596,22 +675,29 @@ html.tk-hide-sidebar.tk-home {
 }
 
 /* ---------- Slot-Inhalt: News-/Event-Banner (Komp. "TK News") ------- */
+/* Kompakter Block. Jede Meldung kann per Feld `color` eine eigene Farbwelt
+   tragen (teal / orange / dark); `standard` erbt die globale news_style. */
 .tk-news {
   position: relative;
   overflow: hidden;
-  margin-top: 22px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 6px;
-  min-height: 188px;
-  padding: 30px 34px;
-  border-radius: 16px;
+  gap: 4px;
+  height: 100%;
+  min-height: 118px;
+  box-sizing: border-box;
+  padding: 18px 22px;
+  border-radius: 14px;
   border: 1px solid rgba(255, 255, 255, 0.06);
   color: #fff;
   background: linear-gradient(115deg, #0b2027 0%, #123039 55%, #0b2027 100%);
   background-size: cover;
   background-position: center;
+
+  &.tk-news--teal {
+    background: linear-gradient(115deg, #0b2027 0%, #123039 55%, #0b2027 100%);
+  }
 
   &.tk-news--orange {
     background: linear-gradient(115deg, #3a1e05 0%, #6a3a0b 55%, #3a1e05 100%);
@@ -626,8 +712,8 @@ html.tk-hide-sidebar.tk-home {
     position: absolute;
     right: 0;
     bottom: 0;
-    width: 42%;
-    height: 66%;
+    width: 38%;
+    height: 70%;
     background: repeating-linear-gradient(
       90deg,
       transparent 0 12px,
@@ -648,41 +734,44 @@ html.tk-hide-sidebar.tk-home {
   color: var(--tk-orange);
   font-weight: 700;
   letter-spacing: 0.05em;
-  font-size: 0.92rem;
+  font-size: 0.78rem;
+}
+
+.tk-news--orange .tk-news__kicker {
+  color: #ffd9b0;
 }
 
 .tk-news__title {
-  font-size: clamp(1.9rem, 3.4vw, 2.5rem);
+  font-size: clamp(1.3rem, 2vw, 1.65rem);
   font-weight: 800;
   letter-spacing: -0.02em;
+  line-height: 1.15;
 }
 
 .tk-news__label {
-  margin-top: 6px;
-  color: rgba(255, 255, 255, 0.8);
+  margin-top: 3px;
+  color: rgba(255, 255, 255, 0.78);
   font-weight: 700;
+  font-size: 0.8rem;
 }
 
-/* optionale Liste weiterer Meldungen unter dem Banner */
+/* optionale Liste weiterer Meldungen: einzelne kleine Karten */
 .tk-news-list {
-  margin-top: 12px;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--tk-hairline);
-  border-radius: 12px;
-  overflow: hidden;
+  gap: 8px;
 }
 
 .tk-news-item {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  padding: 12px 16px;
+  padding: 10px 14px;
+  border: 1px solid var(--tk-hairline);
+  border-left: 3px solid var(--tk-orange);
+  border-radius: 10px;
   color: var(--tk-text-soft);
-
-  & + & {
-    border-top: 1px solid var(--tk-hairline);
-  }
 
   &:hover {
     background: var(--tk-hover);
@@ -690,21 +779,41 @@ html.tk-hide-sidebar.tk-home {
   }
 }
 
+.tk-news-item--teal {
+  border-left-color: #4f9aa9;
+}
+
+.tk-news-item--orange {
+  border-left-color: var(--tk-orange);
+}
+
+.tk-news-item--dark {
+  border-left-color: rgba(var(--primary-rgb), 0.3);
+}
+
 .tk-news-item__kicker {
   color: var(--tk-orange);
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.04em;
 }
 
+.tk-news-item--teal .tk-news-item__kicker {
+  color: #7cc0ce;
+}
+
+.tk-news-item--dark .tk-news-item__kicker {
+  color: var(--tk-ink-muted);
+}
+
 .tk-news-item__title {
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   font-weight: 600;
 }
 
 /* ---------- "Letzte Beiträge" – Abschnittstitel ------------------- */
 .tk-section-title {
-  margin: 26px 0 10px;
+  margin: 34px 0 12px;
   font-size: 1.3rem;
   font-weight: 800;
   color: var(--tk-text);
@@ -976,20 +1085,130 @@ html.tk-category-tiles-active #main-outlet {
   }
 }
 
-/* ---------- Kleinere Bildschirme -------------------------------- */
-@media (max-width: 924px) {
-  .tk-hero {
-    grid-template-columns: 1fr;
+/* ---------- Kategorie-Header (Komp. "TK Kategorien") --------------- */
+.tk-cat-header {
+  --tk-cat-accent: var(--tk-orange);
+  border-bottom: 1px solid var(--tk-hairline);
+  padding: 46px 1rem 40px;
+  background:
+    radial-gradient(
+      130% 150% at 50% -10%,
+      rgba(var(--tertiary-rgb), 0.12),
+      transparent 62%
+    ),
+    var(--tk-card-bg);
+}
+
+.tk-cat-header__inner {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+}
+
+.tk-cat-header .tk-cat-header__icon {
+  flex: 0 0 auto;
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--tk-cat-accent);
+  border-radius: 15px;
+  color: var(--tk-cat-accent);
+  overflow: hidden;
+
+  svg {
+    width: 30px;
+    height: 30px;
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  .d-icon {
+    fill: currentColor;
   }
 }
 
+.tk-cat-header__title {
+  margin: 0;
+  font-size: clamp(1.7rem, 3vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--tk-text);
+}
+
+.tk-cat-header__desc {
+  max-width: 620px;
+  color: var(--tk-ink-muted);
+  font-size: 0.98rem;
+  line-height: 1.6;
+
+  p {
+    margin: 0;
+  }
+
+  a {
+    color: var(--tk-cat-accent);
+  }
+}
+
+.tk-cat-header__subs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.tk-cat-header__sub {
+  padding: 5px 13px;
+  border: 1px solid var(--tk-hairline);
+  border-radius: 999px;
+  font-size: 0.82rem;
+  color: var(--tk-text-soft);
+
+  &:hover {
+    border-color: var(--tk-cat-accent);
+    color: var(--tk-text);
+  }
+}
+
+.tk-cat-header__count {
+  margin-top: 4px;
+  color: var(--tk-ink-dim);
+  font-size: 0.82rem;
+  letter-spacing: 0.03em;
+}
+
+.tk-cat-header__count-n {
+  color: var(--tk-text-soft);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
 @media (max-width: 700px) {
+  .tk-cat-header {
+    padding: 34px 1rem 30px;
+  }
+}
+
+/* ---------- Kleinere Bildschirme -------------------------------- */
+/* (einspaltiges Raster: siehe @media 924px oben bei .tk-hero) */
+@media (max-width: 700px) {
+  .tk-hero {
+    gap: 14px;
+  }
+
   .tk-hero__main {
     gap: 22px;
   }
 
   .tk-news {
-    padding: 24px 22px;
-    min-height: 150px;
+    padding: 16px 18px;
+    min-height: 104px;
   }
 }

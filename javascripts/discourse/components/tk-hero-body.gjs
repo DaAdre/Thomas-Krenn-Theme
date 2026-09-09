@@ -29,6 +29,10 @@ export default class TkHeroBody extends Component {
   }
 
   <template>
+    {{!-- Ein Raster steuert alle drei Zonen: main (Titel + Suche) und news
+      (Aktuelles-Banner) links, aside (Kategorien-Panel) rechts ueber beide
+      Zeilen. So rueckt das News-Banner neben das Panel statt voll unter den
+      Hero. --}}
     <div class="tk-hero">
       <div class="tk-hero__main">
         <h1 class="tk-hero__title">
@@ -59,9 +63,13 @@ export default class TkHeroBody extends Component {
         </div>
       </div>
 
-      <PluginOutlet @name="tk-hero-aside" />
-    </div>
+      <div class="tk-hero__aside">
+        <PluginOutlet @name="tk-hero-aside" />
+      </div>
 
-    <PluginOutlet @name="tk-hero-news" />
+      <div class="tk-hero__news">
+        <PluginOutlet @name="tk-hero-news" />
+      </div>
+    </div>
   </template>
 }

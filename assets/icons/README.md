@@ -81,6 +81,12 @@ Font-Awesome-Icons (falls doch mal nötig): kein SVG, nur den Namen in
 | `tk-support` | Contact Us Customer Support Chat |
 | `tk-calendar` | Calendar Date 5 |
 | `tk-team` | Programming Team Chat |
+| `tk-faq` | Contact Us Faq |
+| `tk-rules` | Rules Book Todo |
+| `tk-mail` | Send Email Envelope |
+| `tk-welcome` | Messages Bubble Laptop Hi |
+| `tk-wiki` | Book Library |
+| `tk-cart` | Shopping Cart Add |
 
 **Noch Line-Platzhalter** (Streamline-Icon reinkopieren): `tk-edge`, `tk-ops`,
 `tk-cloud`, `tk-wrench`, `tk-book`, `tk-default`.
@@ -97,7 +103,7 @@ Font-Awesome-Icons (falls doch mal nötig): kein SVG, nur den Namen in
 **`svg_icon_subset`** (alle Sprite-Namen, kommasepariert):
 
 ```
-tk-server, tk-storage, tk-network, tk-edge, tk-linux, tk-virt, tk-automation, tk-ops, tk-chip, tk-shield, tk-cloud, tk-wrench, tk-book, tk-chat, tk-default, tk-support, tk-calendar, tk-team
+tk-server, tk-storage, tk-network, tk-edge, tk-linux, tk-virt, tk-automation, tk-ops, tk-chip, tk-shield, tk-cloud, tk-wrench, tk-book, tk-chat, tk-default, tk-support, tk-calendar, tk-team, tk-faq, tk-rules, tk-mail, tk-welcome, tk-wiki, tk-cart
 ```
 
 Referenz: [Custom SVG icons in a theme](https://meta.discourse.org/t/replace-discourses-default-svg-icons-with-custom-icons-in-a-theme/115736)
