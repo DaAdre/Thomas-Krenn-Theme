@@ -1,8 +1,8 @@
 {
-  "name": "TK Forum – IT-Infrastruktur Community",
-  "about_url": "https://meta.discourse.org/t/beginners-guide-to-using-discourse-themes/91966",
+  "name": "TK Forum Theme",
+  "about_url": "https://www.thomas-krenn.com/",
   "license_url": "https://opensource.org/licenses/MIT",
-  "authors": "Adrian Zillner",
+  "authors": "Adrian Zillner, Miriam Boxleitner",
   "theme_version": "1.3.0",
   "minimum_discourse_version": "3.4.0",
   "component": false,
