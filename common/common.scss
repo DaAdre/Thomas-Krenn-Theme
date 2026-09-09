@@ -307,12 +307,15 @@ html.tk-logo .d-header .home-logo {
   }
 }
 
-/* Header-Icon-Buttons (Suche · Menü · Konto · Chat …)
+/* Header-Icon-Buttons (Suche · Menü · Konto · Chat …) — NUR die Ausloeser,
+   nicht die geoeffneten Panels darunter (daher direkte Kind-Kombinatoren).
    Bug: Core faerbt Hover-/Aktiv-Hintergrund aus der Inhalts-Palette -> im
    Dark-Scheme hell, das weisse Icon wird unsichtbar. Fest auf die
    Header-Farbwelt ziehen (transparent + zarter Weiss-Ton). */
-.d-header .d-header-icons .btn,
-.d-header .d-header-icons .icon,
+.d-header .d-header-icons > li > .btn,
+.d-header .d-header-icons > li > .icon,
+.d-header .d-header-icons > li > .header-dropdown-toggle > .btn,
+.d-header .d-header-icons > .header-dropdown-toggle > .btn,
 .d-header #search-button,
 .d-header #toggle-hamburger-menu {
   color: #fff;
@@ -335,6 +338,85 @@ html.tk-logo .d-header .home-logo {
     .d-icon {
       color: #fff;
     }
+  }
+}
+
+/* Geoeffnete Header-Panels (Suchergebnisse, Menü, Konto-/Benachrichtigungs-
+   Menü) laufen in der Inhalts-Palette – nicht die Header-Weisstoene erben. */
+.d-header .menu-panel,
+.d-header .search-menu,
+.d-header .search-menu-panel,
+.d-header .user-menu,
+.d-header .revamped {
+  .btn,
+  a,
+  .d-icon,
+  .widget-link {
+    color: var(--primary);
+  }
+
+  .btn:hover,
+  .btn:focus,
+  .btn.active,
+  a:hover,
+  a:focus,
+  li a:focus {
+    background: var(--primary-low);
+    color: var(--primary);
+
+    .d-icon {
+      color: var(--primary);
+    }
+  }
+}
+
+/* ---------- Dropdown-Listen (select-kit · DMenu) ------------------- */
+/* Bug: hervorgehobene / fokussierte / gewaehlte Zeile bekommt (aus einem
+   hellen Core-Token) einen hellen Hintergrund, die Schrift bleibt hell und
+   ist damit unlesbar – z. B. Benachrichtigungs-Level, Themen-Admin-Menü.
+   Aktiv-Zustaende fest auf die Inhalts-Palette. */
+.select-kit-collection .select-kit-row,
+.dropdown-menu__item .btn,
+.dropdown-menu li > a {
+  color: var(--primary);
+
+  .name,
+  .item-label {
+    color: var(--primary);
+  }
+
+  .desc {
+    color: var(--primary-medium);
+  }
+
+  .d-icon {
+    color: var(--primary-medium);
+  }
+}
+
+.select-kit-collection .select-kit-row.is-highlighted,
+.select-kit-collection .select-kit-row.is-selected,
+.select-kit-collection .select-kit-row.is-focused,
+.select-kit-collection .select-kit-row:hover,
+.dropdown-menu__item .btn:hover,
+.dropdown-menu__item .btn:focus,
+.dropdown-menu__item .btn:focus-visible,
+.dropdown-menu li > a:hover,
+.dropdown-menu li > a:focus {
+  background: var(--primary-low) !important;
+  color: var(--primary) !important;
+
+  .name,
+  .item-label {
+    color: var(--primary);
+  }
+
+  .desc {
+    color: var(--primary-high);
+  }
+
+  .d-icon {
+    color: var(--primary);
   }
 }
 
