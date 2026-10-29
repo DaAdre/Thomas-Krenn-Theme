@@ -44,9 +44,17 @@ export default apiInitializer("1.14.0", (api) => {
     return homePaths.includes(path);
   }
 
+  // /t/<slug>/<id>[/<post>] -> Core zeigt dort den Themen-Titel im Header
+  // an (ersetzt das Logo, zeitpunkt/Klasse dafuer ist Core-intern und nicht
+  // zuverlaessig per CSS greifbar) - unsere Nav wuerde sich damit ueberlappen.
+  function isTopic() {
+    return /^\/t\//.test(window.location.pathname);
+  }
+
   function setFlags() {
     const root = document.documentElement;
     root.classList.toggle("tk-home", isHome());
+    root.classList.toggle("tk-topic", isTopic());
     root.classList.toggle("tk-logo", !!s.replace_logo);
     root.classList.toggle("tk-hide-list-nav", !!s.hide_list_nav_on_home);
     root.classList.toggle("tk-hide-sidebar", !!s.hide_sidebar_on_home);

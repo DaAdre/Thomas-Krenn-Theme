@@ -7,6 +7,11 @@
 #  (tk-hero-aside, tk-hero-news).
 # =============================================================================
 
+svg_icons:
+  type: list
+  list_type: compact
+  default: "tk-server|tk-storage|tk-network|tk-edge|tk-linux|tk-virt|tk-automation|tk-ops|tk-chip|tk-shield|tk-cloud|tk-wrench|tk-book|tk-chat|tk-default|tk-support|tk-calendar|tk-team"
+
 # ---- Header / Logo ---------------------------------------------------------
 brand_name:
   type: string

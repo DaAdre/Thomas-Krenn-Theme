@@ -1,0 +1,1390 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TK Icon-Manager</title>
+<style>
+  :root {
+    --bg: #161719;
+    --card: #1c1e21;
+    --card-2: #202226;
+    --border: #2b2d31;
+    --border-soft: #232529;
+    --text: #f2f4f7;
+    --text-soft: rgba(242, 244, 247, 0.72);
+    --text-muted: rgba(242, 244, 247, 0.5);
+    --orange: #f7931e;
+    --orange-dim: rgba(247, 147, 30, 0.14);
+    --danger: #e2564d;
+    --success: #2ea56a;
+    --radius: 12px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 14px/1.5 "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto,
+      Helvetica, Arial, sans-serif;
+  }
+
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: #141414;
+    border-bottom: 1px solid var(--border);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+
+  header h1 {
+    font-size: 1.05rem;
+    font-weight: 800;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+  }
+
+  header h1 .bars {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  header h1 .bars span {
+    display: block;
+    height: 6px;
+    background: var(--orange);
+    border-radius: 3px;
+  }
+
+  header h1 .bars span:first-child { width: 22px; }
+  header h1 .bars span:last-child { width: 14px; }
+
+  #file-status {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  #file-status .dirty {
+    color: var(--orange);
+    font-weight: 700;
+  }
+
+  .spacer { flex: 1 1 auto; }
+
+  .toolbar { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  button {
+    font: inherit;
+    cursor: pointer;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--card-2);
+    color: var(--text);
+    padding: 8px 14px;
+    font-weight: 600;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+  }
+
+  button:hover { border-color: rgba(255, 255, 255, 0.35); }
+  button:disabled { opacity: 0.45; cursor: not-allowed; }
+
+  button.primary {
+    background: var(--orange);
+    border-color: var(--orange);
+    color: #1a1a1a;
+  }
+  button.primary:hover { filter: brightness(1.07); }
+
+  button.danger-ghost {
+    background: transparent;
+    border-color: rgba(226, 86, 77, 0.5);
+    color: var(--danger);
+  }
+  button.danger-ghost:hover { background: rgba(226, 86, 77, 0.12); }
+
+  button.small { padding: 4px 9px; font-size: 0.78rem; border-radius: 6px; }
+  button.icon-btn {
+    padding: 5px 7px;
+    line-height: 1;
+    font-size: 0.85rem;
+  }
+
+  main {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 22px 20px 80px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 380px;
+    gap: 22px;
+    align-items: start;
+  }
+
+  @media (max-width: 980px) {
+    main { grid-template-columns: 1fr; }
+  }
+
+  section.panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px 18px 20px;
+  }
+
+  .panel-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+
+  .panel-head h2 {
+    font-size: 1rem;
+    font-weight: 800;
+    margin: 0;
+    color: var(--orange);
+  }
+
+  .count-pill {
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 999px;
+    padding: 2px 9px;
+  }
+
+  input[type="text"], input[type="search"], textarea {
+    font: inherit;
+    background: #101113;
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 8px;
+    padding: 8px 10px;
+    width: 100%;
+  }
+
+  input[type="text"]:focus, input[type="search"]:focus, textarea:focus {
+    outline: 2px solid var(--orange);
+    outline-offset: 1px;
+    border-color: var(--orange);
+  }
+
+  #search { max-width: 260px; margin-left: auto; }
+
+  #empty-state {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    padding: 30px 10px;
+    text-align: center;
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+  }
+
+  #icon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+  }
+
+  .icon-card {
+    background: var(--card-2);
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .icon-card .preview-tile {
+    width: 100%;
+    height: 56px;
+    display: grid;
+    place-items: center;
+    background: #14161a;
+    border: 1px solid var(--border-soft);
+    border-radius: 8px;
+    color: var(--orange);
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+  }
+
+  .icon-card .preview-tile:hover {
+    border-color: var(--orange);
+  }
+
+  .icon-card .preview-tile svg {
+    width: 26px;
+    height: 26px;
+    fill: none;
+  }
+
+  .icon-card .name-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .icon-card .name-text {
+    font-size: 0.78rem;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .icon-card .name-edit {
+    display: none;
+    gap: 4px;
+  }
+
+  .icon-card.editing .name-row { display: none; }
+  .icon-card.editing .name-edit { display: flex; }
+
+  .icon-card .name-edit input {
+    font-size: 0.78rem;
+    padding: 5px 7px;
+  }
+
+  .icon-card .meta {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .icon-card .actions {
+    display: flex;
+    gap: 4px;
+  }
+
+  .icon-card .actions button { flex: 1 1 auto; }
+
+  #drop-zone {
+    border: 1.5px dashed var(--border);
+    border-radius: 12px;
+    padding: 22px 14px;
+    text-align: center;
+    color: var(--text-soft);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+  }
+
+  #drop-zone:hover, #drop-zone.drag {
+    border-color: var(--orange);
+    background: var(--orange-dim);
+  }
+
+  #drop-zone strong { color: var(--orange); }
+
+  #staging-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .staged-item {
+    display: grid;
+    grid-template-columns: 44px 1fr auto;
+    align-items: center;
+    gap: 10px;
+    background: var(--card-2);
+    border: 1px solid var(--border-soft);
+    border-radius: 10px;
+    padding: 8px;
+  }
+
+  .staged-item .preview-tile {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    background: #14161a;
+    border: 1px solid var(--border-soft);
+    border-radius: 8px;
+    color: var(--orange);
+  }
+
+  .staged-item .preview-tile svg { width: 22px; height: 22px; }
+
+  .staged-item .staged-fields {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .staged-item .staged-fields .filename {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .staged-item .staged-fields input {
+    font-size: 0.8rem;
+    padding: 5px 8px;
+  }
+
+  .staged-item .staged-fields .warn {
+    font-size: 0.68rem;
+    color: var(--danger);
+    display: none;
+  }
+
+  .staged-item.invalid .staged-fields .warn { display: block; }
+  .staged-item.invalid input { border-color: var(--danger); }
+
+  .staged-item .staged-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  #paste-toggle {
+    margin-top: 10px;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    background: none;
+    border: none;
+    padding: 0;
+    text-decoration: underline;
+    font-weight: 500;
+  }
+
+  #paste-area { margin-top: 10px; display: none; }
+  #paste-area.open { display: block; }
+  #paste-area textarea { min-height: 110px; font-family: ui-monospace, Consolas, monospace; font-size: 0.78rem; }
+  #paste-area .paste-row { display: flex; gap: 8px; margin-top: 8px; }
+  #paste-area .paste-row input { flex: 1 1 auto; }
+
+  #bulk-add-row {
+    margin-top: 12px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  #toast {
+    position: fixed;
+    left: 50%;
+    bottom: 22px;
+    transform: translateX(-50%);
+    background: #101113;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 20;
+    max-width: 90vw;
+  }
+
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(-4px); }
+  #toast.error { border-color: rgba(226, 86, 77, 0.6); color: #ffb4ae; }
+  #toast.success { border-color: rgba(46, 165, 106, 0.6); color: #9be6bf; }
+
+  .hint {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+    margin: 0 0 14px;
+  }
+
+  .hint code {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    padding: 1px 5px;
+    font-size: 0.76rem;
+  }
+
+  #no-fsa-banner {
+    display: none;
+    background: rgba(247, 147, 30, 0.1);
+    border: 1px solid rgba(247, 147, 30, 0.4);
+    color: #ffd9a8;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 0.8rem;
+    margin: 0 20px 0;
+    max-width: 1320px;
+    margin-inline: auto;
+    margin-top: 16px;
+  }
+
+  details.prefix-settings {
+    margin-top: 14px;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+
+  details.prefix-settings summary {
+    cursor: pointer;
+    color: var(--text-soft);
+    font-weight: 600;
+  }
+
+  details.prefix-settings .row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  details.prefix-settings input { max-width: 120px; }
+
+  #edit-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 30;
+    padding: 20px;
+  }
+
+  #edit-modal-overlay.open { display: flex; }
+
+  #edit-modal {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 640px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 20px;
+  }
+
+  .edit-modal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .edit-modal-head h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--orange);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .edit-modal-head code { color: var(--text); font-weight: 700; }
+
+  .edit-preview-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+
+  .edit-preview-row .preview-tile {
+    width: 84px;
+    height: 84px;
+    flex: 0 0 auto;
+    cursor: default;
+  }
+
+  .edit-preview-row .preview-tile svg { width: 44px; height: 44px; }
+
+  .edit-viewbox-field { flex: 1 1 auto; }
+
+  .edit-viewbox-field label,
+  .edit-markup-label {
+    display: block;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  #edit-drop-zone {
+    border: 1.5px dashed var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+    color: var(--text-soft);
+    font-size: 0.8rem;
+    cursor: pointer;
+    margin-bottom: 12px;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+  }
+
+  #edit-drop-zone:hover, #edit-drop-zone.drag {
+    border-color: var(--orange);
+    background: var(--orange-dim);
+  }
+
+  #edit-drop-zone strong { color: var(--orange); }
+
+  #edit-markup {
+    min-height: 160px;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 0.76rem;
+    white-space: pre;
+    resize: vertical;
+  }
+
+  .edit-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 16px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>
+    <span class="bars"><span></span><span></span></span>
+    Icon-Manager
+  </h1>
+  <div id="file-status">Keine Datei geladen.</div>
+  <div class="spacer"></div>
+  <div class="toolbar">
+    <button id="btn-open">Sprite öffnen…</button>
+    <button id="btn-reload" disabled>Neu laden</button>
+    <button id="btn-subset" disabled>svg_icon_subset kopieren</button>
+    <button id="btn-download" disabled>Als Kopie herunterladen</button>
+    <button id="btn-save" class="primary" disabled>Speichern</button>
+  </div>
+</header>
+
+<div id="no-fsa-banner">
+  Dieser Browser unterstützt kein direktes Speichern in Dateien (File System
+  Access API). Nutze zum Bearbeiten am besten <strong>Chrome</strong> oder
+  <strong>Edge</strong>. Es funktioniert trotzdem: „Sprite öffnen…“ lädt die
+  Datei, „Als Kopie herunterladen“ liefert die geänderte Version zum manuellen
+  Ersetzen.
+</div>
+
+<main>
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Vorhandene Icons</h2>
+      <span class="count-pill" id="icon-count">0</span>
+      <input type="search" id="search" placeholder="Suchen…" disabled />
+    </div>
+    <p class="hint">
+      Klick auf das <strong>Vorschau-Bild</strong> öffnet den SVG-Editor für
+      dieses Icon (Inhalt ersetzen oder von Hand anpassen). Klick auf den
+      Stift benennt es um. Änderungen betreffen nur <code>tk-icons.svg</code>
+      – falls die ID in <code>category_icons</code>, <code>icon_overrides</code>
+      oder <code>svg_icon_subset</code> verwendet wird, dort ebenfalls anpassen.
+    </p>
+    <div id="empty-state">Noch keine Datei geladen. Oben auf „Sprite öffnen…“ klicken.</div>
+    <div id="icon-grid"></div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Icon hinzufügen</h2>
+    </div>
+    <p class="hint">
+      SVG-Datei(en) reinziehen oder auswählen. Schwarze/orange Konturfarben
+      werden automatisch zu <code>currentColor</code>, der Inhalt in
+      <code>&lt;g fill="none" stroke="currentColor"…&gt;</code> gewrappt –
+      genau wie beim bestehenden Workflow (<code>build-sprite.mjs</code>).
+    </p>
+    <div id="drop-zone">
+      <strong>SVG hierher ziehen</strong><br />
+      oder klicken zum Auswählen (mehrere möglich)
+    </div>
+    <input type="file" id="file-input" accept=".svg,image/svg+xml" multiple hidden />
+
+    <button id="paste-toggle" type="button">…oder SVG-Markup einfügen</button>
+    <div id="paste-area">
+      <textarea id="paste-textarea" placeholder="&lt;svg viewBox=&quot;0 0 24 24&quot;&gt;…&lt;/svg&gt;"></textarea>
+      <div class="paste-row">
+        <input type="text" id="paste-name" placeholder="Name, z. B. tk-hash" />
+        <button id="paste-add" class="small">Hinzufügen</button>
+      </div>
+    </div>
+
+    <div id="staging-list"></div>
+    <div id="bulk-add-row"></div>
+
+    <details class="prefix-settings">
+      <summary>Einstellungen</summary>
+      <div class="row">
+        <span>Namens-Präfix</span>
+        <input type="text" id="prefix-input" value="tk-" />
+      </div>
+    </details>
+  </section>
+</main>
+
+<div id="edit-modal-overlay">
+  <div id="edit-modal" role="dialog" aria-modal="true" aria-labelledby="edit-modal-id">
+    <div class="edit-modal-head">
+      <h3>SVG ändern: <code id="edit-modal-id"></code></h3>
+      <button id="edit-modal-close" class="icon-btn" title="Schließen">✕</button>
+    </div>
+
+    <div class="edit-preview-row">
+      <div class="preview-tile" id="edit-preview"></div>
+      <div class="edit-viewbox-field">
+        <label for="edit-viewbox">viewBox</label>
+        <input type="text" id="edit-viewbox" />
+      </div>
+    </div>
+
+    <div id="edit-drop-zone">
+      <strong>Neue SVG-Datei hierher ziehen</strong><br />
+      oder klicken, um den Inhalt zu ersetzen (automatische currentColor-Konvertierung)
+    </div>
+    <input type="file" id="edit-file-input" accept=".svg,image/svg+xml" hidden />
+
+    <label class="edit-markup-label" for="edit-markup">SVG-Inhalt (innerhalb &lt;symbol&gt;)</label>
+    <textarea id="edit-markup" spellcheck="false"></textarea>
+
+    <div class="edit-modal-actions">
+      <button id="edit-cancel">Abbrechen</button>
+      <button id="edit-apply" class="primary">Übernehmen</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- Status ---------- */
+  let rawText = null;
+  let fileHandle = null;
+  let dirty = false;
+  let stagedUploads = []; // { key, filename, name, viewBox, inner, rawSvg }
+  let stagedSeq = 0;
+
+  const $ = (sel) => document.querySelector(sel);
+  const fileStatusEl = $("#file-status");
+  const iconGrid = $("#icon-grid");
+  const emptyState = $("#empty-state");
+  const iconCount = $("#icon-count");
+  const searchInput = $("#search");
+  const stagingList = $("#staging-list");
+  const bulkAddRow = $("#bulk-add-row");
+  const prefixInput = $("#prefix-input");
+
+  const btnOpen = $("#btn-open");
+  const btnReload = $("#btn-reload");
+  const btnSave = $("#btn-save");
+  const btnDownload = $("#btn-download");
+  const btnSubset = $("#btn-subset");
+
+  const hasFSA = !!window.showOpenFilePicker;
+  if (!hasFSA) {
+    $("#no-fsa-banner").style.display = "block";
+  }
+
+  /* ---------- Helpers ---------- */
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, (c) => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+    }[c]));
+  }
+
+  function escapeRegExp(s) {
+    return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  }
+
+  function attrSafe(s) {
+    return String(s == null ? "" : s).replace(/"/g, "&quot;");
+  }
+
+  function slugify(name) {
+    return String(name || "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+  }
+
+  function prefix() {
+    return (prefixInput.value || "tk-").trim() || "tk-";
+  }
+
+  function withPrefix(slug) {
+    const p = prefix();
+    if (!slug) return "";
+    return slug.startsWith(p) ? slug : p + slug;
+  }
+
+  function setDirty(v) {
+    dirty = v;
+    fileStatusEl.querySelector(".dirty")?.remove();
+    if (v) {
+      const span = document.createElement("span");
+      span.className = "dirty";
+      span.textContent = " • ungespeichert";
+      fileStatusEl.appendChild(span);
+    }
+    btnSave.disabled = !rawText;
+  }
+
+  let toastTimer = null;
+  function toast(message, kind) {
+    const el = $("#toast");
+    el.textContent = message;
+    el.className = "show" + (kind ? " " + kind : "");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { el.className = ""; }, 3200);
+  }
+
+  /* ---------- Parsing (Lesen) ---------- */
+  function parseSvgDoc(text) {
+    let doc = new DOMParser().parseFromString(text, "image/svg+xml");
+    if (doc.querySelector("parsererror")) {
+      doc = new DOMParser().parseFromString(text, "text/html");
+    }
+    return doc;
+  }
+
+  function parseSymbols(text) {
+    const doc = parseSvgDoc(text);
+    return Array.from(doc.querySelectorAll("symbol")).map((el) => ({
+      id: el.getAttribute("id") || "",
+      viewBox: el.getAttribute("viewBox") || "0 0 24 24",
+      inner: el.innerHTML.trim(),
+    }));
+  }
+
+  /* ---------- Text-Chirurgie (Schreiben) ---------- */
+  function findSymbolBlock(text, id) {
+    const re = new RegExp(
+      '<symbol\\b[^>]*\\bid=(["\'])' + escapeRegExp(id) + '\\1[^>]*>',
+      "i"
+    );
+    const m = re.exec(text);
+    if (!m) return null;
+    const openStart = m.index;
+    const openEnd = openStart + m[0].length;
+    const closeIdx = text.indexOf("</symbol>", openEnd);
+    if (closeIdx === -1) return null;
+    return { openStart, openEnd, blockEnd: closeIdx + "</symbol>".length, openTag: m[0] };
+  }
+
+  function renameSymbolInText(text, oldId, newId) {
+    const block = findSymbolBlock(text, oldId);
+    if (!block) throw new Error('Symbol "' + oldId + '" nicht gefunden.');
+    const newOpenTag = block.openTag.replace(
+      new RegExp('\\bid=(["\'])' + escapeRegExp(oldId) + "\\1"),
+      'id="' + attrSafe(newId) + '"'
+    );
+    return text.slice(0, block.openStart) + newOpenTag + text.slice(block.openEnd);
+  }
+
+  // Ersetzt Inhalt (viewBox + inneres Markup) eines vorhandenen Symbols,
+  // die id bleibt erhalten. Genutzt vom SVG-Editor (Klick aufs Vorschau-Bild).
+  function replaceSymbolInText(text, id, viewBox, inner) {
+    const block = findSymbolBlock(text, id);
+    if (!block) throw new Error('Symbol "' + id + '" nicht gefunden.');
+    const newSymbol =
+      '<symbol id="' + attrSafe(id) + '" viewBox="' + attrSafe(viewBox) + '">' + inner + "</symbol>";
+    return text.slice(0, block.openStart) + newSymbol + text.slice(block.blockEnd);
+  }
+
+  function deleteSymbolInText(text, id) {
+    const block = findSymbolBlock(text, id);
+    if (!block) throw new Error('Symbol "' + id + '" nicht gefunden.');
+    let start = block.openStart;
+    let end = block.blockEnd;
+    if (text[end] === "\n") end += 1;
+    const lineStart = text.lastIndexOf("\n", start - 1) + 1;
+    if (/^\s*$/.test(text.slice(lineStart, start))) start = lineStart;
+    return text.slice(0, start) + text.slice(end);
+  }
+
+  function addSymbolToText(text, symbolMarkup) {
+    const marker = "<!-- ===== Vom Icon-Manager hinzugefuegt ===== -->";
+    const closeIdx = text.lastIndexOf("</svg>");
+    if (closeIdx === -1) throw new Error('Kein "</svg>" gefunden - Datei nicht erkannt.');
+    const needsMarker = !text.includes(marker);
+    const block = (needsMarker ? "\n  " + marker + "\n\n" : "") + "  " + symbolMarkup + "\n\n";
+    return text.slice(0, closeIdx) + block + text.slice(closeIdx);
+  }
+
+  /* ---------- SVG -> Symbol-Markup (wie build-sprite.mjs) ---------- */
+  function svgToParts(rawSvgText) {
+    const viewBox = (rawSvgText.match(/viewBox="([^"]+)"/) || [])[1] || "0 0 24 24";
+    let inner = (rawSvgText.match(/<svg[^>]*>([\s\S]*?)<\/svg>/i) || [])[1] || rawSvgText;
+    inner = inner
+      .replace(/<\?xml[\s\S]*?\?>/gi, "")
+      .replace(/<!--[\s\S]*?-->/g, "")
+      .replace(/<title>[\s\S]*?<\/title>/gi, "")
+      .replace(/<desc>[\s\S]*?<\/desc>/gi, "")
+      .replace(/(stroke|fill)="(#000000|#000|black|#ff7d00|#F7931E|#f7931e)"/gi, '$1="currentColor"')
+      .replace(/(stroke|fill):\s*(#000000|#000|black|#ff7d00|#F7931E|#f7931e)/gi, "$1:currentColor")
+      .trim();
+    return { viewBox, inner };
+  }
+
+  function buildSymbolMarkup(id, viewBox, inner, wrap) {
+    const body = wrap
+      ? '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">' + inner + "</g>"
+      : inner;
+    return '<symbol id="' + attrSafe(id) + '" viewBox="' + attrSafe(viewBox) + '">' + body + "</symbol>";
+  }
+
+  /* ---------- Preview ---------- */
+  function previewSvg(viewBox, inner) {
+    return '<svg viewBox="' + escapeHtml(viewBox) + '" aria-hidden="true">' + inner + "</svg>";
+  }
+
+  /* ---------- Rendering: Icon-Liste ---------- */
+  function currentIds() {
+    if (!rawText) return new Set();
+    return new Set(parseSymbols(rawText).map((s) => s.id.toLowerCase()));
+  }
+
+  function renderList() {
+    if (!rawText) {
+      emptyState.style.display = "block";
+      iconGrid.innerHTML = "";
+      iconCount.textContent = "0";
+      searchInput.disabled = true;
+      return;
+    }
+    const symbols = parseSymbols(rawText);
+    iconCount.textContent = String(symbols.length);
+    emptyState.style.display = symbols.length ? "none" : "block";
+    if (!symbols.length) emptyState.textContent = "Keine <symbol>-Icons in dieser Datei gefunden.";
+    searchInput.disabled = false;
+
+    const q = searchInput.value.trim().toLowerCase();
+    const filtered = q ? symbols.filter((s) => s.id.toLowerCase().includes(q)) : symbols;
+
+    iconGrid.innerHTML = filtered
+      .map((s) => {
+        const idAttr = escapeHtml(s.id);
+        return (
+          '<div class="icon-card" data-id="' + idAttr + '">' +
+            '<div class="preview-tile">' + previewSvg(s.viewBox, s.inner) + "</div>" +
+            '<div class="name-row">' +
+              '<span class="name-text" title="' + idAttr + '">' + idAttr + "</span>" +
+              '<button class="icon-btn small btn-copy" title="ID kopieren">⧉</button>' +
+              '<button class="icon-btn small btn-rename" title="Umbenennen">✎</button>' +
+            "</div>" +
+            '<div class="name-edit">' +
+              '<input type="text" class="rename-input" value="' + idAttr + '" />' +
+            "</div>" +
+            '<div class="meta">viewBox: ' + escapeHtml(s.viewBox) + "</div>" +
+            '<div class="actions">' +
+              '<button class="small btn-confirm-rename" style="display:none;">Speichern</button>' +
+              '<button class="small btn-cancel-rename" style="display:none;">Abbrechen</button>' +
+              '<button class="small danger-ghost btn-delete">Löschen</button>' +
+            "</div>" +
+          "</div>"
+        );
+      })
+      .join("");
+  }
+
+  iconGrid.addEventListener("click", (e) => {
+    const card = e.target.closest(".icon-card");
+    if (!card) return;
+    const id = card.dataset.id;
+
+    if (e.target.closest(".preview-tile")) {
+      openEditModal(id);
+      return;
+    }
+
+    if (e.target.classList.contains("btn-copy")) {
+      navigator.clipboard?.writeText(id).then(
+        () => toast('"' + id + '" kopiert.', "success"),
+        () => toast("Kopieren nicht möglich.", "error")
+      );
+      return;
+    }
+
+    if (e.target.classList.contains("btn-rename")) {
+      card.classList.add("editing");
+      card.querySelector(".name-edit").style.display = "flex";
+      card.querySelector(".btn-confirm-rename").style.display = "inline-block";
+      card.querySelector(".btn-cancel-rename").style.display = "inline-block";
+      const input = card.querySelector(".rename-input");
+      input.focus();
+      input.select();
+      return;
+    }
+
+    if (e.target.classList.contains("btn-cancel-rename")) {
+      renderList();
+      return;
+    }
+
+    if (e.target.classList.contains("btn-confirm-rename")) {
+      const input = card.querySelector(".rename-input");
+      const newId = slugify(input.value) ? withPrefix(slugify(input.value)) : "";
+      if (!newId) { toast("Ungültiger Name.", "error"); return; }
+      if (newId === id) { renderList(); return; }
+      const ids = currentIds();
+      if (ids.has(newId.toLowerCase())) {
+        toast('"' + newId + '" gibt es schon.', "error");
+        return;
+      }
+      try {
+        rawText = renameSymbolInText(rawText, id, newId);
+        setDirty(true);
+        renderList();
+        toast('"' + id + '" -> "' + newId + '" umbenannt. Verweise (category_icons, svg_icon_subset, …) prüfen!');
+      } catch (err) {
+        toast(String(err.message || err), "error");
+      }
+      return;
+    }
+
+    if (e.target.classList.contains("btn-delete")) {
+      if (!confirm('Icon "' + id + '" wirklich löschen?\n\nHinweis: Verweise in Einstellungen (category_icons, icon_overrides, svg_icon_subset) werden dadurch NICHT automatisch entfernt.')) {
+        return;
+      }
+      try {
+        rawText = deleteSymbolInText(rawText, id);
+        setDirty(true);
+        renderList();
+        toast('"' + id + '" gelöscht.');
+      } catch (err) {
+        toast(String(err.message || err), "error");
+      }
+      return;
+    }
+  });
+
+  iconGrid.addEventListener("keydown", (e) => {
+    if (!e.target.classList.contains("rename-input")) return;
+    if (e.key === "Enter") e.target.closest(".icon-card").querySelector(".btn-confirm-rename").click();
+    if (e.key === "Escape") renderList();
+  });
+
+  searchInput.addEventListener("input", renderList);
+
+  /* ---------- SVG-Editor (Klick auf Vorschau-Bild) ---------- */
+  let editingId = null;
+  const editOverlay = $("#edit-modal-overlay");
+  const editViewbox = $("#edit-viewbox");
+  const editMarkup = $("#edit-markup");
+  const editPreview = $("#edit-preview");
+  const editDropZone = $("#edit-drop-zone");
+  const editFileInput = $("#edit-file-input");
+
+  function openEditModal(id) {
+    if (!rawText) return;
+    const symbol = parseSymbols(rawText).find((s) => s.id === id);
+    if (!symbol) { toast('Symbol "' + id + '" nicht gefunden.', "error"); return; }
+    editingId = id;
+    $("#edit-modal-id").textContent = id;
+    editViewbox.value = symbol.viewBox;
+    editMarkup.value = symbol.inner;
+    updateEditPreview();
+    editOverlay.classList.add("open");
+    editMarkup.focus();
+  }
+
+  function closeEditModal() {
+    editOverlay.classList.remove("open");
+    editingId = null;
+  }
+
+  function updateEditPreview() {
+    const vb = editViewbox.value.trim() || "0 0 24 24";
+    editPreview.innerHTML = previewSvg(vb, editMarkup.value);
+  }
+
+  editViewbox.addEventListener("input", updateEditPreview);
+  editMarkup.addEventListener("input", updateEditPreview);
+
+  $("#edit-modal-close").addEventListener("click", closeEditModal);
+  $("#edit-cancel").addEventListener("click", closeEditModal);
+  editOverlay.addEventListener("click", (e) => {
+    if (e.target === editOverlay) closeEditModal();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && editOverlay.classList.contains("open")) closeEditModal();
+  });
+
+  $("#edit-apply").addEventListener("click", () => {
+    if (!editingId) return;
+    const vb = editViewbox.value.trim() || "0 0 24 24";
+    const markup = editMarkup.value.trim();
+    if (!markup) { toast("SVG-Inhalt darf nicht leer sein.", "error"); return; }
+    try {
+      rawText = replaceSymbolInText(rawText, editingId, vb, markup);
+      setDirty(true);
+      const doneId = editingId;
+      closeEditModal();
+      renderList();
+      toast('"' + doneId + '" aktualisiert.', "success");
+    } catch (err) {
+      toast(String(err.message || err), "error");
+    }
+  });
+
+  editDropZone.addEventListener("click", () => editFileInput.click());
+  editDropZone.addEventListener("dragover", (e) => { e.preventDefault(); editDropZone.classList.add("drag"); });
+  editDropZone.addEventListener("dragleave", () => editDropZone.classList.remove("drag"));
+  editDropZone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    editDropZone.classList.remove("drag");
+    replaceFromFile(e.dataTransfer.files[0]);
+  });
+  editFileInput.addEventListener("change", () => {
+    replaceFromFile(editFileInput.files[0]);
+    editFileInput.value = "";
+  });
+
+  async function replaceFromFile(file) {
+    if (!file) return;
+    if (!(file.name.toLowerCase().endsWith(".svg") || file.type === "image/svg+xml")) {
+      toast("Keine SVG-Datei erkannt.", "error");
+      return;
+    }
+    const text = await file.text();
+    const { viewBox, inner } = svgToParts(text);
+    editViewbox.value = viewBox;
+    editMarkup.value =
+      '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">' + inner + "</g>";
+    updateEditPreview();
+    toast('Neue Datei geladen - "Übernehmen" bestätigt die Änderung.');
+  }
+
+  /* ---------- Datei öffnen / speichern ---------- */
+  async function openSprite() {
+    try {
+      if (hasFSA) {
+        const [handle] = await window.showOpenFilePicker({
+          types: [{ description: "SVG-Sprite", accept: { "image/svg+xml": [".svg"] } }],
+        });
+        fileHandle = handle;
+        try {
+          await handle.requestPermission({ mode: "readwrite" });
+        } catch (_) { /* Berechtigung ggf. spaeter beim Speichern erneut angefragt */ }
+        const file = await handle.getFile();
+        rawText = await file.text();
+        fileStatusEl.textContent = "Geladen: " + file.name;
+      } else {
+        $("#file-input-open").click();
+        return;
+      }
+    } catch (err) {
+      if (err?.name !== "AbortError") toast("Öffnen fehlgeschlagen: " + err.message, "error");
+      return;
+    }
+    afterLoad();
+  }
+
+  function afterLoad() {
+    setDirty(false);
+    btnReload.disabled = !fileHandle;
+    btnDownload.disabled = false;
+    btnSubset.disabled = false;
+    renderList();
+    toast("Sprite geladen: " + parseSymbols(rawText).length + " Icons.");
+  }
+
+  async function reloadSprite() {
+    if (!fileHandle) return;
+    if (dirty && !confirm("Ungespeicherte Änderungen verwerfen und neu laden?")) return;
+    const file = await fileHandle.getFile();
+    rawText = await file.text();
+    fileStatusEl.textContent = "Geladen: " + file.name;
+    afterLoad();
+  }
+
+  async function saveSprite() {
+    if (!rawText) return;
+    if (fileHandle) {
+      try {
+        const perm = await fileHandle.requestPermission({ mode: "readwrite" });
+        if (perm !== "granted") throw new Error("Schreibrechte verweigert.");
+        const writable = await fileHandle.createWritable();
+        await writable.write(rawText);
+        await writable.close();
+        setDirty(false);
+        toast("Gespeichert.", "success");
+        return;
+      } catch (err) {
+        toast("Speichern fehlgeschlagen (" + err.message + "). Nutze „Als Kopie herunterladen“.", "error");
+        return;
+      }
+    }
+    downloadCopy();
+  }
+
+  function downloadCopy() {
+    if (!rawText) return;
+    const blob = new Blob([rawText], { type: "image/svg+xml" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "tk-icons.svg";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+    toast("Download gestartet.");
+  }
+
+  function copySubset() {
+    if (!rawText) return;
+    const names = parseSymbols(rawText).map((s) => s.id);
+    const list = names.join(", ");
+    navigator.clipboard?.writeText(list).then(
+      () => toast("svg_icon_subset (" + names.length + " Namen) kopiert.", "success"),
+      () => toast("Kopieren nicht möglich.", "error")
+    );
+  }
+
+  // Fallback-<input> fuers Oeffnen ohne File System Access API
+  const openFallback = document.createElement("input");
+  openFallback.type = "file";
+  openFallback.accept = ".svg,image/svg+xml";
+  openFallback.id = "file-input-open";
+  openFallback.hidden = true;
+  document.body.appendChild(openFallback);
+  openFallback.addEventListener("change", async () => {
+    const file = openFallback.files[0];
+    if (!file) return;
+    fileHandle = null;
+    rawText = await file.text();
+    fileStatusEl.textContent = "Geladen (ohne Schreibzugriff): " + file.name;
+    afterLoad();
+    openFallback.value = "";
+  });
+
+  btnOpen.addEventListener("click", openSprite);
+  btnReload.addEventListener("click", reloadSprite);
+  btnSave.addEventListener("click", saveSprite);
+  btnDownload.addEventListener("click", downloadCopy);
+  btnSubset.addEventListener("click", copySubset);
+
+  window.addEventListener("beforeunload", (e) => {
+    if (dirty) { e.preventDefault(); e.returnValue = ""; }
+  });
+
+  /* ---------- Staging-Bereich (Icons hochladen) ---------- */
+  const dropZone = $("#drop-zone");
+  const fileInput = $("#file-input");
+
+  dropZone.addEventListener("click", () => fileInput.click());
+  dropZone.addEventListener("dragover", (e) => { e.preventDefault(); dropZone.classList.add("drag"); });
+  dropZone.addEventListener("dragleave", () => dropZone.classList.remove("drag"));
+  dropZone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    dropZone.classList.remove("drag");
+    handleFiles(e.dataTransfer.files);
+  });
+  fileInput.addEventListener("change", () => {
+    handleFiles(fileInput.files);
+    fileInput.value = "";
+  });
+
+  function uniqueName(base) {
+    const ids = currentIds();
+    const staged = new Set(stagedUploads.map((s) => s.name.toLowerCase()));
+    let candidate = base;
+    let n = 2;
+    while (ids.has(candidate.toLowerCase()) || staged.has(candidate.toLowerCase())) {
+      candidate = base + "-" + n;
+      n++;
+    }
+    return candidate;
+  }
+
+  async function handleFiles(fileList) {
+    const files = Array.from(fileList || []).filter((f) =>
+      f.name.toLowerCase().endsWith(".svg") || f.type === "image/svg+xml"
+    );
+    if (!files.length) { toast("Keine SVG-Datei erkannt.", "error"); return; }
+    for (const file of files) {
+      const text = await file.text();
+      const { viewBox, inner } = svgToParts(text);
+      const baseName = withPrefix(slugify(file.name.replace(/\.svg$/i, "")));
+      stagedUploads.push({
+        key: "s" + ++stagedSeq,
+        filename: file.name,
+        name: uniqueName(baseName || prefix() + "icon"),
+        viewBox,
+        inner,
+        wrap: true,
+      });
+    }
+    renderStaging();
+  }
+
+  function renderStaging() {
+    if (!stagedUploads.length) {
+      stagingList.innerHTML = "";
+      bulkAddRow.innerHTML = "";
+      return;
+    }
+    const ids = currentIds();
+    stagingList.innerHTML = stagedUploads
+      .map((item) => {
+        const norm = withPrefix(slugify(item.name));
+        const dupInList = stagedUploads.filter((s) => withPrefix(slugify(s.name)) === norm).length > 1;
+        const invalid = !norm || ids.has(norm.toLowerCase()) || dupInList;
+        return (
+          '<div class="staged-item' + (invalid ? " invalid" : "") + '" data-key="' + item.key + '">' +
+            '<div class="preview-tile">' +
+              previewSvg(item.viewBox, item.wrap
+                ? '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">' + item.inner + "</g>"
+                : item.inner) +
+            "</div>" +
+            '<div class="staged-fields">' +
+              '<span class="filename">' + escapeHtml(item.filename) + "</span>" +
+              '<input type="text" class="staged-name" value="' + escapeHtml(item.name) + '" />' +
+              '<span class="warn">Name ungültig oder bereits vergeben</span>' +
+            "</div>" +
+            '<div class="staged-actions">' +
+              '<button class="small primary btn-add-one"' + (invalid ? " disabled" : "") + ">Hinzufügen</button>" +
+              '<button class="small danger-ghost btn-remove-staged">Entfernen</button>' +
+            "</div>" +
+          "</div>"
+        );
+      })
+      .join("");
+
+    const anyValid = stagedUploads.some((item) => {
+      const norm = withPrefix(slugify(item.name));
+      const dupInList = stagedUploads.filter((s) => withPrefix(slugify(s.name)) === norm).length > 1;
+      return norm && !ids.has(norm.toLowerCase()) && !dupInList;
+    });
+    bulkAddRow.innerHTML = stagedUploads.length > 1
+      ? '<button id="btn-add-all" class="primary"' + (anyValid ? "" : " disabled") + ">Alle gültigen hinzufügen</button>"
+      : "";
+    $("#btn-add-all")?.addEventListener("click", addAllValidStaged);
+  }
+
+  stagingList.addEventListener("input", (e) => {
+    if (!e.target.classList.contains("staged-name")) return;
+    const key = e.target.closest(".staged-item").dataset.key;
+    const item = stagedUploads.find((s) => s.key === key);
+    if (item) item.name = e.target.value;
+    renderStaging();
+    // Fokus nach Re-Render auf das gleiche Feld zurueckholen
+    const input = stagingList.querySelector('.staged-item[data-key="' + key + '"] .staged-name');
+    if (input) { input.focus(); input.setSelectionRange(input.value.length, input.value.length); }
+  });
+
+  stagingList.addEventListener("click", (e) => {
+    const row = e.target.closest(".staged-item");
+    if (!row) return;
+    const key = row.dataset.key;
+
+    if (e.target.classList.contains("btn-remove-staged")) {
+      stagedUploads = stagedUploads.filter((s) => s.key !== key);
+      renderStaging();
+      return;
+    }
+
+    if (e.target.classList.contains("btn-add-one")) {
+      addStagedItem(key);
+    }
+  });
+
+  function addStagedItem(key) {
+    const item = stagedUploads.find((s) => s.key === key);
+    if (!item || !rawText) {
+      if (!rawText) toast("Zuerst eine tk-icons.svg öffnen.", "error");
+      return;
+    }
+    const norm = withPrefix(slugify(item.name));
+    if (!norm || currentIds().has(norm.toLowerCase())) {
+      toast("Ungültiger oder bereits vergebener Name.", "error");
+      return;
+    }
+    const markup = buildSymbolMarkup(norm, item.viewBox, item.inner, item.wrap);
+    rawText = addSymbolToText(rawText, markup);
+    setDirty(true);
+    stagedUploads = stagedUploads.filter((s) => s.key !== key);
+    renderList();
+    renderStaging();
+    toast('"' + norm + '" hinzugefügt.', "success");
+  }
+
+  function addAllValidStaged() {
+    const ids = currentIds();
+    const toAdd = stagedUploads.filter((item) => {
+      const norm = withPrefix(slugify(item.name));
+      const dupInList = stagedUploads.filter((s) => withPrefix(slugify(s.name)) === norm).length > 1;
+      return norm && !ids.has(norm.toLowerCase()) && !dupInList;
+    });
+    if (!rawText) { toast("Zuerst eine tk-icons.svg öffnen.", "error"); return; }
+    let added = 0;
+    for (const item of toAdd) {
+      const norm = withPrefix(slugify(item.name));
+      const markup = buildSymbolMarkup(norm, item.viewBox, item.inner, item.wrap);
+      rawText = addSymbolToText(rawText, markup);
+      ids.add(norm.toLowerCase());
+      added++;
+    }
+    stagedUploads = stagedUploads.filter((item) => !toAdd.includes(item));
+    if (added) setDirty(true);
+    renderList();
+    renderStaging();
+    toast(added + " Icon(s) hinzugefügt.", "success");
+  }
+
+  /* ---------- Markup einfuegen (Paste-Fallback) ---------- */
+  const pasteToggle = $("#paste-toggle");
+  const pasteArea = $("#paste-area");
+  pasteToggle.addEventListener("click", () => pasteArea.classList.toggle("open"));
+
+  $("#paste-add").addEventListener("click", () => {
+    const raw = $("#paste-textarea").value.trim();
+    const nameRaw = $("#paste-name").value.trim();
+    if (!raw) { toast("Kein SVG-Markup eingefügt.", "error"); return; }
+    if (!rawText) { toast("Zuerst eine tk-icons.svg öffnen.", "error"); return; }
+    const norm = withPrefix(slugify(nameRaw));
+    if (!norm) { toast("Bitte einen Namen vergeben.", "error"); return; }
+    if (currentIds().has(norm.toLowerCase())) { toast('"' + norm + '" gibt es schon.', "error"); return; }
+    const { viewBox, inner } = svgToParts(raw.includes("<svg") ? raw : "<svg>" + raw + "</svg>");
+    const markup = buildSymbolMarkup(norm, viewBox, inner, true);
+    rawText = addSymbolToText(rawText, markup);
+    setDirty(true);
+    renderList();
+    $("#paste-textarea").value = "";
+    $("#paste-name").value = "";
+    toast('"' + norm + '" hinzugefügt.', "success");
+  });
+
+  prefixInput.addEventListener("input", () => { renderStaging(); });
+})();
+</script>
+</body>
+</html>

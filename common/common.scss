@@ -269,6 +269,19 @@ html.tk-logo .d-header .home-logo {
   }
 }
 
+/* Bug: in einem Thema zeigt Core den Themen-Titel im Header an (ersetzt das
+   Logo) - unsere Nav bleibt aber zusaetzlich stehen und quetscht sich mit
+   dem (nicht kuerzbaren) Titel in dieselbe Zeile. Wann genau Core das
+   umschaltet ist intern/nicht zuverlaessig per CSS-Klasse greifbar -> die
+   Nav daher per Route ausblenden (html.tk-topic, gesetzt in tk-chrome.js
+   fuer jede /t/…-Seite), nicht per Scroll-/Dock-Status raten.
+   .d-header.docked bleibt als zusaetzliches Sicherheitsnetz stehen, falls
+   der Titel ausnahmsweise ausserhalb einer /t/…-Route erscheinen sollte. */
+html.tk-topic .tk-nav,
+.d-header.docked .tk-nav {
+  display: none !important;
+}
+
 /* Auth-Buttons */
 .d-header .login-button,
 .d-header .sign-up-button {
@@ -304,6 +317,46 @@ html.tk-logo .d-header .home-logo {
   &:focus {
     filter: brightness(1.06);
     color: #1a1a1a;
+  }
+}
+
+/* Flache Icon-/Text-Buttons ueberall im UI (Styleguide: "btn-flat").
+   Bug: Core faerbt Hover-/Fokus-/aktiv-/gedrueckt(toggle)-Hintergrund aus
+   einem Palette-Token, das stellenweise hell wird, waehrend Icon/Text hell
+   bleiben -> unlesbar (weiss auf weiss). Nicht auf einen bestimmten
+   Core-Token oder exakten Klassennamen verlassen (der "pressed"/toggle-
+   Zustand im Styleguide reagiert nicht auf :hover/:active): Hintergrund aus
+   der eigenen Textfarbe selbst ableiten + per Teilstring auf jede denkbare
+   Zustandsklasse greifen - kann nie mit dem Text kollidieren, in Dark UND
+   Light, unabhaengig vom genauen Core-Klassennamen. */
+.btn.btn-flat {
+  color: var(--primary);
+
+  .d-icon {
+    color: currentColor;
+  }
+
+  &:hover,
+  &:focus,
+  &:focus-visible,
+  &:not(:disabled):active,
+  &[aria-pressed="true"],
+  &[aria-expanded="true"],
+  &[class*="hover"],
+  &[class*="press"],
+  &[class*="is-active"],
+  &[class*="-active"] {
+    background: rgba(var(--primary-rgb), 0.08) !important;
+    color: var(--primary) !important;
+
+    .d-icon {
+      color: currentColor !important;
+    }
+  }
+
+  &:disabled,
+  &.disabled {
+    opacity: 0.45;
   }
 }
 
@@ -370,14 +423,20 @@ html.tk-logo .d-header .home-logo {
   }
 }
 
-/* ---------- Dropdown-Listen (select-kit · DMenu) ------------------- */
+/* ---------- Dropdown-Listen (select-kit · DMenu · ARIA-Listen) ------ */
 /* Bug: hervorgehobene / fokussierte / gewaehlte Zeile bekommt (aus einem
    hellen Core-Token) einen hellen Hintergrund, die Schrift bleibt hell und
-   ist damit unlesbar – z. B. Benachrichtigungs-Level, Themen-Admin-Menü.
-   Aktiv-Zustaende fest auf die Inhalts-Palette. */
-.select-kit-collection .select-kit-row,
+   ist damit unlesbar – z. B. Themen-Benachrichtigungs-Level, Themen-Admin-
+   Menü. Nicht an eine bestimmte Verschachtelung (.select-kit-collection)
+   oder einen bestimmten Core-Token (--primary-low) binden, da neuere
+   Komponenten wie <TopicNotificationsTracking> abweichendes Markup nutzen
+   koennen - zusaetzlich per ARIA-Rolle greifen, Hintergrund aus der
+   Textfarbe selbst ableiten (kann nie mit dem Text kollidieren). */
+.select-kit-row,
 .dropdown-menu__item .btn,
-.dropdown-menu li > a {
+.dropdown-menu li > a,
+[role="listbox"] [role="option"],
+[role="menu"] [role="menuitem"] {
   color: var(--primary);
 
   .name,
@@ -394,29 +453,51 @@ html.tk-logo .d-header .home-logo {
   }
 }
 
-.select-kit-collection .select-kit-row.is-highlighted,
-.select-kit-collection .select-kit-row.is-selected,
-.select-kit-collection .select-kit-row.is-focused,
-.select-kit-collection .select-kit-row:hover,
+/* "Ausgewaehlt"-Zustand (die aktuelle Auswahl beim Oeffnen, auch ohne Hover)
+   bleibt mit exakten Klassen teils unlesbar - zusaetzlich per Teilstring auf
+   jede denkbare Core-Klasse greifen, unabhaengig vom genauen Namen. */
+.select-kit-row:hover,
+.select-kit-row:focus,
+.select-kit-row.is-highlighted,
+.select-kit-row.is-selected,
+.select-kit-row.is-focused,
+.select-kit-row[aria-selected="true"],
+.select-kit-row[aria-current="true"],
+.select-kit-row[class*="is-select"],
+.select-kit-row[class*="is-highlight"],
+.select-kit-row[class*="is-current"],
+.select-kit-row[class*="is-active"],
+.select-kit-row[class*="-selected"],
 .dropdown-menu__item .btn:hover,
 .dropdown-menu__item .btn:focus,
 .dropdown-menu__item .btn:focus-visible,
 .dropdown-menu li > a:hover,
-.dropdown-menu li > a:focus {
-  background: var(--primary-low) !important;
+.dropdown-menu li > a:focus,
+[role="listbox"] [role="option"]:hover,
+[role="listbox"] [role="option"][aria-selected="true"],
+[role="listbox"] [role="option"][class*="is-select"],
+[role="menu"] [role="menuitem"]:hover,
+[role="menu"] [role="menuitem"]:focus {
+  background: rgba(var(--primary-rgb), 0.14) !important;
   color: var(--primary) !important;
+
+  * {
+    color: var(--primary) !important;
+  }
 
   .name,
   .item-label {
-    color: var(--primary);
+    color: var(--primary) !important;
+    font-weight: 700;
   }
 
   .desc {
-    color: var(--primary-high);
+    color: var(--primary) !important;
+    opacity: 0.75;
   }
 
   .d-icon {
-    color: var(--primary);
+    color: var(--primary) !important;
   }
 }
 

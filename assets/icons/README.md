@@ -7,7 +7,31 @@ als `"icons-sprite"`).
 > **Lizenz:** Streamline-Icons nur mit gültiger Streamline-Lizenz einbinden. Das
 > Repo enthält nur Platzhalter im Streamline-Light-Stil – keine Original-Pfade.
 
-## Workflow
+## Icon-Manager (empfohlen für einzelne Icons)
+
+[`icon-manager.html`](icon-manager.html) – eine eigenständige, lokale Oberfläche
+für `tk-icons.svg`: **öffnen**, alle vorhandenen Icons **auflisten** (mit
+Vorschau), **umbenennen**, **löschen**, neue SVGs per Drag & Drop **hinzufügen**
+(inkl. Namensvergabe + automatischer `currentColor`-Umwandlung) und wieder
+**speichern** – direkt in der Datei auf der Platte, kein Upload, kein Server.
+
+**Nutzung:** `icon-manager.html` doppelklicken (öffnet im Standardbrowser) →
+**„Sprite öffnen…"** → `tk-icons.svg` auswählen. Änderungen sammeln sich im
+Speicher, **„Speichern"** schreibt sie zurück in die Originaldatei.
+
+- Erfordert **Chrome oder Edge** (File System Access API) fürs direkte
+  Speichern. In Firefox/Safari funktioniert Laden + Bearbeiten trotzdem, nur
+  „Speichern" wird zu „Als Kopie herunterladen" – die heruntergeladene Datei
+  dann manuell über `tk-icons.svg` kopieren.
+- **„svg_icon_subset kopieren"** kopiert alle aktuellen Namen kommasepariert
+  in die Zwischenablage – direkt einfügbar in die gleichnamige Site-Einstellung
+  (siehe Schritt 3 unten).
+- Umbenennen/Löschen ändert nur das Sprite. Referenzen in `category_icons`,
+  `icon_overrides` oder `svg_icon_subset` danach von Hand nachziehen.
+- Für Massen-Import ganzer Ordner bleibt [`build-sprite.mjs`](build-sprite.mjs)
+  (unten) die schnellere Wahl.
+
+## Workflow (manuell / Batch)
 
 ### 1 · Icons bei Streamline holen
 
