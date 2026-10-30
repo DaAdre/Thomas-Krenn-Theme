@@ -370,7 +370,11 @@ html.tk-topic .tk-nav,
   &[class*="press"],
   &[class*="is-active"],
   &[class*="-active"] {
-    background: rgba(var(--primary-rgb), 0.08) !important;
+    /* deckender Farbwert statt durchscheinender Tinte - keine Mischrechnung
+       mit einem (teils hellen) Hintergrund dahinter noetig, siehe
+       Farbpaletten-Check: --primary-low ist auf dem Dark-Scheme zuverlaessig
+       dunkel. */
+    background: var(--primary-low) !important;
     color: var(--primary) !important;
 
     .d-icon {
@@ -432,10 +436,11 @@ html.tk-topic .tk-nav,
     color: var(--primary);
   }
 
-  /* Ausgewaehlter/aktiver Tab (z. B. User-Menu-Icon-Leiste rechts) - nicht
-     auf --primary-low oder einen exakten Klassennamen verlassen (war schon
-     einmal nicht ausreichend): selbstreferenzierend tinten + !important +
-     per Teilstring/ARIA auf jede denkbare Zustandsklasse greifen. */
+  /* Ausgewaehlter/aktiver Tab (z. B. User-Menu-Icon-Leiste rechts). Deckender
+     Farbwert statt durchscheinender Tinte: eine rgba()-Tinte ergibt je nach
+     (teils hellem) Hintergrund dahinter wieder hell - --primary-low ist laut
+     Farbpaletten-Check zuverlaessig dunkel, keine Mischrechnung noetig.
+     Per Teilstring/ARIA auf jede denkbare Zustandsklasse greifen. */
   .btn:hover,
   .btn:focus,
   .btn.active,
@@ -447,7 +452,7 @@ html.tk-topic .tk-nav,
   a:hover,
   a:focus,
   li a:focus {
-    background: rgba(var(--primary-rgb), 0.14) !important;
+    background: var(--primary-low) !important;
     color: var(--primary) !important;
 
     * {
@@ -475,7 +480,10 @@ html.tk-topic .tk-nav,
   &:hover,
   &:focus,
   &[aria-selected="true"] {
-    background: rgba(var(--primary-rgb), 0.14) !important;
+    /* deckend statt durchscheinend - siehe Begruendung oben bei den
+       Header-Panels (Computed-Werte zeigten rgba(...,0.14) korrekt gesetzt,
+       aber auf hellem Hintergrund dahinter wieder hell). */
+    background: var(--primary-low) !important;
     color: var(--primary) !important;
 
     .d-icon {
@@ -539,7 +547,9 @@ html.tk-topic .tk-nav,
 [role="listbox"] [role="option"][class*="is-select"],
 [role="menu"] [role="menuitem"]:hover,
 [role="menu"] [role="menuitem"]:focus {
-  background: rgba(var(--primary-rgb), 0.14) !important;
+  /* deckend statt durchscheinend - siehe Begruendung oben bei den
+     Header-Panels. */
+  background: var(--primary-low) !important;
   color: var(--primary) !important;
 
   * {
