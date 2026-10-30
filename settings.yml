@@ -19,7 +19,7 @@ brand_name:
 
 replace_logo:
   type: bool
-  default: true
+  default: false
 
 show_top_nav:
   type: bool
