@@ -69,9 +69,14 @@ Namen, die **nicht fest im Code** stehen (also über Einstellungen gewählt), in
 die Site-Einstellung eintragen:
 
 > Admin → Einstellungen → Filter „icons" → **`svg_icon_subset`**
-> z. B. `tk-server, tk-storage, tk-network, tk-edge, tk-linux, tk-virt,
-> tk-automation, tk-ops, tk-chip, tk-shield, tk-cloud, tk-wrench, tk-book,
-> tk-chat, tk-default`
+> vollständige, aktuelle Liste siehe unten unter „`tk-icons.svg` – aktueller
+> Stand" (oder: `icon-manager.html` öffnen → **„svg_icon_subset kopieren"** →
+> direkt einfügen – immer synchron mit dem tatsächlichen Sprite-Inhalt).
+
+Fehlt ein Name in `svg_icon_subset`, taucht das Icon zwar im eigenen
+Hero-Panel/Kachel-Grid auf (die laufen direkt über das Sprite), aber **nicht**
+im normalen Discourse-Icon-Picker (z. B. „Kategorie bearbeiten → Stil →
+Symbol") – dort durchsucht Core nur Namen aus `svg_icon_subset`.
 
 Danach **Strg + F5**.
 

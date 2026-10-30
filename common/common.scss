@@ -211,8 +211,31 @@ html.tk-logo .d-header .home-logo {
   }
 }
 
+/* Struktureller Schutz, unabhaengig von Core-Klassennamen/Route/Scroll-Status:
+   was auch immer direkt NEBEN .tk-nav in der Kopfzeile sitzt (Logo normal,
+   Themen-/Kategorie-Titel sobald Core ihn einblendet) wird gezwungen, zu
+   schrumpfen statt die Nav zu verdraengen. Beide Richtungen, weil tk-chrome.js
+   die Nav per logo.after(nav) einfuegt - der Core-Titel kann je nach Version
+   sowohl VOR als auch NACH dieser Position im DOM landen. Panel/Icons rechts
+   ausgenommen, damit die nicht versehentlich mitgeschrumpft werden. */
+.d-header .contents > *:has(+ .tk-nav),
+.tk-nav + *:not(.panel):not(.header-buttons):not(.d-header-icons) {
+  flex: 1 1 0%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* Ueberlauf ist behoben, aber Nav und Core-Titel stossen ohne Abstand
+   direkt aneinander ("zusammengestaucht") - etwas Luft dazwischen. */
+.tk-nav + *:not(.panel):not(.header-buttons):not(.d-header-icons) {
+  margin-left: 22px;
+}
+
 /* Zentrierte Kopf-Navigation */
 .tk-nav {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
   display: flex;
   align-items: center;
   gap: 2rem;
@@ -408,17 +431,54 @@ html.tk-topic .tk-nav,
     color: var(--primary);
   }
 
+  /* Ausgewaehlter/aktiver Tab (z. B. User-Menu-Icon-Leiste rechts) - nicht
+     auf --primary-low oder einen exakten Klassennamen verlassen (war schon
+     einmal nicht ausreichend): selbstreferenzierend tinten + !important +
+     per Teilstring/ARIA auf jede denkbare Zustandsklasse greifen. */
   .btn:hover,
   .btn:focus,
   .btn.active,
+  .btn[aria-selected="true"],
+  .btn[aria-current="true"],
+  .btn[class*="active"],
+  .btn[class*="is-select"],
+  [role="tab"][aria-selected="true"],
   a:hover,
   a:focus,
   li a:focus {
-    background: var(--primary-low);
-    color: var(--primary);
+    background: rgba(var(--primary-rgb), 0.14) !important;
+    color: var(--primary) !important;
+
+    * {
+      color: var(--primary) !important;
+    }
 
     .d-icon {
-      color: var(--primary);
+      color: var(--primary) !important;
+    }
+  }
+}
+
+/* Konto-Menü-Tabs (Icon-Leiste rechts: Antworten/Nachrichten/Lesezeichen/…).
+   Echtes Markup geprueft: <a role="tab" class="btn btn-flat btn-icon
+   no-text user-menu-tab" aria-selected="…">. Direkt auf diese Klasse
+   zielen statt auf eine vermutete Vorfahren-Verschachtelung (.user-menu) -
+   das Element kann ausserhalb davon gerendert werden. */
+.user-menu-tab {
+  color: var(--primary);
+
+  .d-icon {
+    color: currentColor;
+  }
+
+  &:hover,
+  &:focus,
+  &[aria-selected="true"] {
+    background: rgba(var(--primary-rgb), 0.14) !important;
+    color: var(--primary) !important;
+
+    .d-icon {
+      color: var(--primary) !important;
     }
   }
 }
