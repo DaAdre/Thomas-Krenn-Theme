@@ -375,6 +375,7 @@ html.tk-topic .tk-nav,
        Farbpaletten-Check: --primary-low ist auf dem Dark-Scheme zuverlaessig
        dunkel. */
     background: var(--primary-low) !important;
+    background: color-mix(in srgb, var(--primary) 14%, var(--secondary) 86%) !important;
     color: var(--primary) !important;
 
     .d-icon {
@@ -453,6 +454,7 @@ html.tk-topic .tk-nav,
   a:focus,
   li a:focus {
     background: var(--primary-low) !important;
+    background: color-mix(in srgb, var(--primary) 14%, var(--secondary) 86%) !important;
     color: var(--primary) !important;
 
     * {
@@ -484,6 +486,7 @@ html.tk-topic .tk-nav,
        Header-Panels (Computed-Werte zeigten rgba(...,0.14) korrekt gesetzt,
        aber auf hellem Hintergrund dahinter wieder hell). */
     background: var(--primary-low) !important;
+    background: color-mix(in srgb, var(--primary) 14%, var(--secondary) 86%) !important;
     color: var(--primary) !important;
 
     .d-icon {
@@ -550,6 +553,7 @@ html.tk-topic .tk-nav,
   /* deckend statt durchscheinend - siehe Begruendung oben bei den
      Header-Panels. */
   background: var(--primary-low) !important;
+  background: color-mix(in srgb, var(--primary) 14%, var(--secondary) 86%) !important;
   color: var(--primary) !important;
 
   * {
