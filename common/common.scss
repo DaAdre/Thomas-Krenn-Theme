@@ -211,14 +211,6 @@ html.tk-logo .d-header .home-logo {
   }
 }
 
-/* Logo-Bereich (links von .tk-nav) bleibt flexibel/kuerzbar, falls die
-   Wortmarke mal laenger wird. */
-.d-header .contents > *:has(+ .tk-nav) {
-  flex: 1 1 0%;
-  min-width: 0;
-  overflow: hidden;
-}
-
 /* Auf Wunsch abgeschaltet statt weiter eingepasst: der von Core beim
    Scrollen in einem Beitrag eingeblendete Themen-/Kategorie-Titel in der
    Kopfzeile. Logo + eigene Nav bleiben so IMMER sichtbar, unabhaengig vom
