@@ -211,13 +211,36 @@ html.tk-logo .d-header .home-logo {
   }
 }
 
-/* Auf Wunsch abgeschaltet statt weiter eingepasst: der von Core beim
-   Scrollen in einem Beitrag eingeblendete Themen-/Kategorie-Titel in der
-   Kopfzeile. Logo + eigene Nav bleiben so IMMER sichtbar, unabhaengig vom
-   Scroll-Status. Trifft, was auch immer direkt nach .tk-nav steht (dort
-   taucht der Core-Titel laut Test auf) - Icons/Panel rechts ausgenommen. */
+/* "Scrolled"-Kopfzeile in einem Beitrag komplett deaktiviert: Core zeigt
+   dort sonst einen Themen-Titel UND verkleinert das Logo (nur Balken, kein
+   "forum"). Beides erzwungen zurueck auf den Normalzustand, unabhaengig
+   vom Scroll-/Dock-Status - der Header sieht in einem Beitrag immer genauso
+   aus wie ganz oben. */
 .tk-nav + *:not(.panel):not(.header-buttons):not(.d-header-icons) {
   display: none !important;
+}
+
+.d-header .extra-info-wrapper,
+.d-header .title-wrapper {
+  display: none !important;
+}
+
+html.tk-logo .d-header .home-logo-wrapper,
+html.tk-logo .d-header .home-logo {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: auto !important;
+  max-width: none !important;
+  overflow: visible !important;
+}
+
+html.tk-logo .d-header .home-logo a::after {
+  content: var(--tk-brand, "forum") !important;
+  display: inline !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  width: auto !important;
 }
 
 /* Zentrierte Kopf-Navigation */
