@@ -193,8 +193,15 @@ html.tk-logo .d-header .home-logo-wrapper-outlet .title {
   }
 
   img,
+  #site-logo,
   #site-text-logo {
     display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    position: absolute !important;
+    pointer-events: none !important;
   }
 
   a::before {
