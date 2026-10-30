@@ -211,24 +211,21 @@ html.tk-logo .d-header .home-logo {
   }
 }
 
-/* Struktureller Schutz, unabhaengig von Core-Klassennamen/Route/Scroll-Status:
-   was auch immer direkt NEBEN .tk-nav in der Kopfzeile sitzt (Logo normal,
-   Themen-/Kategorie-Titel sobald Core ihn einblendet) wird gezwungen, zu
-   schrumpfen statt die Nav zu verdraengen. Beide Richtungen, weil tk-chrome.js
-   die Nav per logo.after(nav) einfuegt - der Core-Titel kann je nach Version
-   sowohl VOR als auch NACH dieser Position im DOM landen. Panel/Icons rechts
-   ausgenommen, damit die nicht versehentlich mitgeschrumpft werden. */
-.d-header .contents > *:has(+ .tk-nav),
-.tk-nav + *:not(.panel):not(.header-buttons):not(.d-header-icons) {
+/* Logo-Bereich (links von .tk-nav) bleibt flexibel/kuerzbar, falls die
+   Wortmarke mal laenger wird. */
+.d-header .contents > *:has(+ .tk-nav) {
   flex: 1 1 0%;
   min-width: 0;
   overflow: hidden;
 }
 
-/* Ueberlauf ist behoben, aber Nav und Core-Titel stossen ohne Abstand
-   direkt aneinander ("zusammengestaucht") - etwas Luft dazwischen. */
+/* Auf Wunsch abgeschaltet statt weiter eingepasst: der von Core beim
+   Scrollen in einem Beitrag eingeblendete Themen-/Kategorie-Titel in der
+   Kopfzeile. Logo + eigene Nav bleiben so IMMER sichtbar, unabhaengig vom
+   Scroll-Status. Trifft, was auch immer direkt nach .tk-nav steht (dort
+   taucht der Core-Titel laut Test auf) - Icons/Panel rechts ausgenommen. */
 .tk-nav + *:not(.panel):not(.header-buttons):not(.d-header-icons) {
-  margin-left: 22px;
+  display: none !important;
 }
 
 /* Zentrierte Kopf-Navigation */
