@@ -125,3 +125,15 @@ show_latest_section_title:
 latest_section_title:
   type: string
   default: "Letzte Beiträge"
+
+# ---- Marken-Icons: Discourse-Standard-Icons global ersetzen -----------
+# Ein Eintrag pro Zeile: "Discourse-Icon-Name,eigener-Sprite-Name". Jeder
+# eigene Name muss als <symbol> in assets/icons/tk-icons.svg liegen (z. B.
+# per icon-manager.html ergaenzt) UND in der Site-Einstellung
+# svg_icon_subset stehen - siehe assets/icons/README.md. Fehlt ein Symbol
+# noch im Sprite, bleibt an der Stelle nur eine leere Flaeche (kein Fehler) -
+# also gefahrlos nach und nach ergaenzbar.
+icon_replacements:
+  type: list
+  list_type: compact
+  default: "bars,tk-menu|magnifying-glass,tk-search|bell,tk-bell|circle-user,tk-user|user,tk-user|gear,tk-settings|house,tk-home|d-chat,tk-message|comment,tk-message|reply,tk-reply|heart,tk-heart|bookmark,tk-bookmark|share-nodes,tk-share|flag,tk-flag|ellipsis,tk-more|ellipsis-vertical,tk-more|link,tk-link|pencil,tk-edit|trash-can,tk-trash|plus,tk-plus|xmark,tk-close|check,tk-check|thumbtack,tk-pin|envelope,tk-mail|eye,tk-eye|eye-slash,tk-eye-slash|lock,tk-lock|chevron-down,tk-chevron-down|chevron-up,tk-chevron-up|chevron-left,tk-chevron-left|chevron-right,tk-chevron-right|angle-down,tk-chevron-down|angle-up,tk-chevron-up|caret-down,tk-caret-down|caret-right,tk-caret-right|arrow-left,tk-arrow-left|arrow-right,tk-arrow-right|arrow-up,tk-arrow-up|arrow-down,tk-arrow-down|circle-exclamation,tk-warning|triangle-exclamation,tk-warning|circle-info,tk-info|circle-question,tk-question|clock,tk-clock|calendar-days,tk-calendar|file-lines,tk-file|image,tk-image|paperclip,tk-attachment|code,tk-code|quote-right,tk-quote|bold,tk-bold|italic,tk-italic|list-ul,tk-list|list-ol,tk-list-numbered|table,tk-table|shield-halved,tk-shield|wrench,tk-wrench|gavel,tk-gavel|ban,tk-ban|users,tk-team|star,tk-star|upload,tk-upload|download,tk-download|rotate,tk-refresh|copy,tk-copy|print,tk-print"

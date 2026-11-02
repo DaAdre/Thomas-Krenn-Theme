@@ -25,3 +25,4 @@ en:
       hide_sidebar_on_home: "Blendet die linke Discourse-Sidebar auf diesen Routen aus. Standardmäßig aus, die Sidebar bleibt also sichtbar, inklusive Admin-Panel."
       show_latest_section_title: "Zeigt eine Überschrift über der Themenliste an."
       latest_section_title: "Text dieser Überschrift, z. B. 'Letzte Beiträge'."
+      icon_replacements: "Discourse-Standard-Icons global durch eigene Sprite-Symbole ersetzen. Ein Eintrag pro Zeile: discourse-name,tk-name. Der eigene Name muss als Symbol in assets/icons/tk-icons.svg liegen (z. B. per icon-manager.html) und in der Site-Einstellung svg_icon_subset stehen."

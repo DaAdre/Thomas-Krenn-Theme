@@ -92,6 +92,84 @@ Danach **Strg + F5**.
 Font-Awesome-Icons (falls doch mal nötig): kein SVG, nur den Namen in
 `svg_icon_subset` (`far-bell`, `fab-github`).
 
+### 5 · Standard-Icons global ersetzen (Marken-Icons)
+
+Die Einstellung **`icon_replacements`** (im Haupttheme, nicht in TK
+Kategorien) ersetzt Discourse-Standard-Icons forumweit durch eigene
+Sprite-Symbole – ein Eintrag pro Zeile: `discourse-name,tk-name`. Technisch
+`api.replaceIcon()` pro Zeile (`javascripts/discourse/api-initializers/
+tk-icon-replace.js`).
+
+**Ablauf:**
+
+1. Icon bei Streamline (o. ä.) holen, in `icon-manager.html` öffnen und als
+   `<symbol>` unter dem **tk-Namen aus der Tabelle unten** hinzufügen.
+2. Namen in **`svg_icon_subset`** eintragen (siehe Schritt 3 oben – auch
+   hier gilt: ohne Eintrag kein Core-Icon-Picker-Treffer, aber `replaceIcon`
+   funktioniert trotzdem, da es direkt das Sprite nutzt).
+3. Fertig – `icon_replacements` ist schon vorausgefüllt und muss i. d. R.
+   nicht geändert werden. Fehlt ein Symbol im Sprite noch, bleibt an der
+   Stelle nur eine leere Fläche (kein Fehler) – also gefahrlos nach und nach
+   ergänzbar.
+
+Vorausgefüllte Zuordnung (Standardwert von `icon_replacements`) – **fett**
+markierte tk-Namen existieren bereits im Sprite:
+
+| Discourse-Icon | tk-Name | Wo im UI |
+| --- | --- | --- |
+| `bars` | `tk-menu` | Hamburger-Menü (Kopfzeile) |
+| `magnifying-glass` | `tk-search` | Suche |
+| `bell` | `tk-bell` | Benachrichtigungen |
+| `circle-user`, `user` | `tk-user` | Profil/Avatar-Platzhalter |
+| `gear` | `tk-settings` | Einstellungen |
+| `house` | `tk-home` | Startseite |
+| `d-chat`, `comment` | `tk-message` | Chat/Kommentar |
+| `reply` | `tk-reply` | Antworten |
+| `heart` | `tk-heart` | Gefällt mir |
+| `bookmark` | `tk-bookmark` | Lesezeichen |
+| `share-nodes` | `tk-share` | Teilen |
+| `flag` | `tk-flag` | Melden |
+| `ellipsis`, `ellipsis-vertical` | `tk-more` | Mehr-Menü |
+| `link` | `tk-link` | Link kopieren |
+| `pencil` | `tk-edit` | Bearbeiten |
+| `trash-can` | `tk-trash` | Löschen |
+| `plus` | `tk-plus` | Neu/Hinzufügen |
+| `xmark` | `tk-close` | Schließen |
+| `check` | `tk-check` | Bestätigen |
+| `thumbtack` | `tk-pin` | Anheften |
+| `envelope` | **`tk-mail`** | E-Mail |
+| `eye`, `eye-slash` | `tk-eye`, `tk-eye-slash` | Beobachten/Stumm |
+| `lock` | `tk-lock` | Geschlossen |
+| `chevron-down`/`-up`/`-left`/`-right`, `angle-down`/`-up` | `tk-chevron-*` | Aufklappen |
+| `caret-down`, `caret-right` | `tk-caret-down`, `tk-caret-right` | Auswahl-Pfeile |
+| `arrow-left`/`-right`/`-up`/`-down` | `tk-arrow-*` | Navigation |
+| `circle-exclamation`, `triangle-exclamation` | `tk-warning` | Warnung |
+| `circle-info` | `tk-info` | Info |
+| `circle-question` | `tk-question` | Hilfe |
+| `clock` | `tk-clock` | Zeit |
+| `calendar-days` | **`tk-calendar`** | Kalender/Termine |
+| `file-lines` | `tk-file` | Datei |
+| `image` | `tk-image` | Bild |
+| `paperclip` | `tk-attachment` | Anhang |
+| `code` | `tk-code` | Code |
+| `quote-right` | `tk-quote` | Zitat |
+| `bold`, `italic` | `tk-bold`, `tk-italic` | Editor-Formatierung |
+| `list-ul`, `list-ol` | `tk-list`, `tk-list-numbered` | Listen |
+| `table` | `tk-table` | Tabelle |
+| `shield-halved` | **`tk-shield`** | Vertrauensstufe/Staff |
+| `wrench` | **`tk-wrench`** | Admin-Werkzeuge |
+| `gavel` | `tk-gavel` | Moderation |
+| `ban` | `tk-ban` | Sperren |
+| `users` | **`tk-team`** | Gruppen/Team |
+| `star` | `tk-star` | Favorit |
+| `upload`, `download` | `tk-upload`, `tk-download` | Datei-Transfer |
+| `rotate` | `tk-refresh` | Aktualisieren |
+| `copy` | `tk-copy` | Kopieren |
+| `print` | `tk-print` | Drucken |
+
+Eigene Zuordnungen hinzufügen/ändern: einfach weitere `name,tk-name`-Zeilen
+in `icon_replacements` ergänzen – kein Code nötig.
+
 ## `tk-icons.svg` – aktueller Stand
 
 **Echte Streamline-Icons** (bereits konvertiert):
@@ -134,5 +212,10 @@ Font-Awesome-Icons (falls doch mal nötig): kein SVG, nur den Namen in
 ```
 tk-server, tk-storage, tk-network, tk-edge, tk-linux, tk-virt, tk-automation, tk-ops, tk-chip, tk-shield, tk-cloud, tk-wrench, tk-book, tk-chat, tk-default, tk-support, tk-calendar, tk-team, tk-faq, tk-rules, tk-mail, tk-welcome, tk-wiki, tk-cart
 ```
+
+Sobald weitere Icons für `icon_replacements` (Abschnitt 5 oben) ergänzt
+werden, deren Namen hier mit aufnehmen – am einfachsten über
+`icon-manager.html` → **„svg_icon_subset kopieren"**, das holt immer den
+kompletten, aktuellen Sprite-Inhalt.
 
 Referenz: [Custom SVG icons in a theme](https://meta.discourse.org/t/replace-discourses-default-svg-icons-with-custom-icons-in-a-theme/115736)
