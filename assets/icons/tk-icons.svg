@@ -331,4 +331,33 @@
     <path d="M4.26 17.84a1.9 1.9 0 1 0 3.8 0 1.9 1.9 0 1 0 -3.8 0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
   </g></g></symbol>
 
+  <symbol id="tk-microphone" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M18 11.25c2.8995 0 5.25 -2.3505 5.25 -5.25 0 -2.89949 -2.3505 -5.25 -5.25 -5.25S12.75 3.10051 12.75 6c0 2.8995 2.3505 5.25 5.25 5.25Z" stroke-width="1.5"></path>
+  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="m13.2271 1.22705 9.546 9.54605" stroke-width="1.5"></path>
+  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="m17.941 11.2501 -10.63004 8.821c-0.28786 0.2318 -0.65119 0.3492 -1.02028 0.3297 -0.3691 -0.0196 -0.71798 -0.1747 -0.97972 -0.4357l-1.276 -1.272c-0.26098 -0.2618 -0.41613 -0.6106 -0.43569 -0.9797 -0.01956 -0.3691 0.09784 -0.7325 0.32969 -1.0203L12.75 6.05908" stroke-width="1.5"></path>
+  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M4.671 19.3291 0.75 23.2501" stroke-width="1.5"></path>
+  <path stroke="currentColor" d="M12.375 12.2085c-0.2071 0 -0.375 -0.1679 -0.375 -0.375s0.1679 -0.375 0.375 -0.375" stroke-width="1.5"></path>
+  <path stroke="currentColor" d="M12.375 12.2085c0.2071 0 0.375 -0.1679 0.375 -0.375s-0.1679 -0.375 -0.375 -0.375" stroke-width="1.5"></path></g></symbol>
+
+  <symbol id="tk-workflow" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><defs></defs>
+  <path d="M16.148 23.25v-0.8a3.4 3.4 0 0 0 -6.8 0v0.8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+  <path d="M10.859 15.469a1.955 1.889 0 1 0 3.91 0 1.955 1.889 0 1 0 -3.91 0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+  <path d="M22.948 23.25v-0.8a3.4 3.4 0 0 0 -6.8 0v0.8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+  <path d="M17.659 15.469a1.955 1.889 0 1 0 3.91 0 1.955 1.889 0 1 0 -3.91 0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+  <path d="M16.048 0.75h6a1 1 0 0 1 1 1v6.5a1 1 0 0 1 -1 1h-7.771" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+  <path d="m16.736 4.412 1.262 1.5 1.682 -1 0.908 1.44" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+  <path d="M2.452 3.305a2.554 2.554 0 1 0 5.108 0 2.554 2.554 0 1 0 -5.108 0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+  <path d="M8.512 14.594v-2.367h0l5.4 -7.061 0.027 -0.034A1.657 1.657 0 1 0 11.3 3.119L8.357 6.9a1.1 1.1 0 0 1 -0.868 0.422H4.267a3.315 3.315 0 0 0 -3.315 3.317v3.87" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></g></symbol>
+
+  <symbol id="tk-navigation1" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><defs></defs>
+  
+  <path d="M2.25 0.753h19.5s1.5 0 1.5 1.5v1.5s0 1.5 -1.5 1.5H2.25s-1.5 0 -1.5 -1.5v-1.5s0 -1.5 1.5 -1.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+  <path d="M2.25 9.753h19.5s1.5 0 1.5 1.5v1.5s0 1.5 -1.5 1.5H2.25s-1.5 0 -1.5 -1.5v-1.5s0 -1.5 1.5 -1.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+  <path d="M2.25 18.753h19.5s1.5 0 1.5 1.5v1.5s0 1.5 -1.5 1.5H2.25s-1.5 0 -1.5 -1.5v-1.5s0 -1.5 1.5 -1.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></g></symbol>
+
+  <symbol id="tk-navigation2" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><defs></defs>
+  
+  <path d="M8.25 0.753h13.5s1.5 0 1.5 1.5v1.5s0 1.5 -1.5 1.5H8.25s-1.5 0 -1.5 -1.5v-1.5s0 -1.5 1.5 -1.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+  <path d="M5.25 9.753h13.5s1.5 0 1.5 1.5v1.5s0 1.5 -1.5 1.5H5.25s-1.5 0 -1.5 -1.5v-1.5s0 -1.5 1.5 -1.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+  <path d="M2.25 18.753h13.5s1.5 0 1.5 1.5v1.5s0 1.5 -1.5 1.5H2.25s-1.5 0 -1.5 -1.5v-1.5s0 -1.5 1.5 -1.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></g></symbol>
+
 </svg>
