@@ -176,6 +176,15 @@ h4 {
   margin-left: auto;
 }
 
+/* Logo-Bild IMMER gleich hoch darstellen, unabhaengig davon, ob gerade das
+   grosse oder das (von tk-chrome.js erzwungene) grosse Bild im normalerweise
+   kleineren "minimiert"-Slot sitzt - sonst wirkt es dort ueberdimensioniert. */
+.d-header .home-logo-wrapper-outlet #site-logo {
+  max-height: 30px;
+  width: auto !important;
+  height: auto;
+}
+
 /* Logo-Zeichen ( ≡ ) + Wortmarke.
    Echtes Markup geprueft: .home-logo-wrapper-outlet > .title > a >
    img#site-logo (.logo-big normal, .logo-small + Zusatzklasse

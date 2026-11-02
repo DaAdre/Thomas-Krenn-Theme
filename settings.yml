@@ -17,9 +17,9 @@ brand_name:
   type: string
   default: "forum"
 
-replace_logo:
-  type: bool
-  default: false
+#replace_logo:
+#  type: bool
+#  default: false
 
 show_top_nav:
   type: bool
@@ -127,6 +127,14 @@ latest_section_title:
   default: "Letzte Beiträge"
 
 # ---- Marken-Icons: Discourse-Standard-Icons global ersetzen -----------
+# Standardmaessig AUS, solange die eigenen Icons noch nicht im Sprite
+# liegen - erst einschalten, wenn assets/icons/tk-icons.svg befuellt ist
+# (siehe assets/icons/README.md, Abschnitt 5), sonst bleiben betroffene
+# Icons leer.
+enable_icon_replacements:
+  type: bool
+  default: false
+
 # Ein Eintrag pro Zeile: "Discourse-Icon-Name,eigener-Sprite-Name". Jeder
 # eigene Name muss als <symbol> in assets/icons/tk-icons.svg liegen (z. B.
 # per icon-manager.html ergaenzt) UND in der Site-Einstellung

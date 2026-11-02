@@ -20,6 +20,9 @@ function splitList(value) {
 }
 
 export default apiInitializer((api) => {
+  if (!settings.enable_icon_replacements) {
+    return;
+  }
   splitList(settings.icon_replacements).forEach((row) => {
     const i = row.indexOf(",");
     if (i === -1) {

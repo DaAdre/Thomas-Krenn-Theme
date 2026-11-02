@@ -147,6 +147,37 @@ export default apiInitializer("1.14.0", (api) => {
     });
   }
 
+  // Core rendert beim Minimieren der Kopfzeile (Scrollen in einem Beitrag)
+  // ein ZWEITES, separat hochgeladenes "kleines Logo" (<img class="logo-
+  // small">) statt des normalen Logos (<img class="logo-big">) - bei
+  // diesem Forum ist das kleine Logo nur die Balken, ohne "forum"-
+  // Schriftzug. Das grosse Bild merken, sobald es sichtbar ist, und beim
+  // Minimieren erzwingen - unabhaengig von der replace_logo-Einstellung.
+  let bigLogoSrc = "";
+  let bigLogoSrcset = "";
+
+  function keepFullLogo() {
+    const img = document.querySelector(
+      ".d-header .home-logo-wrapper-outlet #site-logo"
+    );
+    if (!img) {
+      return;
+    }
+    if (img.classList.contains("logo-big")) {
+      bigLogoSrc = img.currentSrc || img.src;
+      bigLogoSrcset = img.getAttribute("srcset") || "";
+      return;
+    }
+    if (bigLogoSrc && img.src !== bigLogoSrc) {
+      img.src = bigLogoSrc;
+      if (bigLogoSrcset) {
+        img.setAttribute("srcset", bigLogoSrcset);
+      }
+      img.removeAttribute("width");
+      img.removeAttribute("height");
+    }
+  }
+
   function relabelAuthButtons() {
     [
       [".login-button", s.login_button_text],
@@ -181,6 +212,9 @@ export default apiInitializer("1.14.0", (api) => {
     }
     observing = true;
     new MutationObserver(() => {
+      // Logo-Grosse/-klein-Tausch passiert ohne Routenwechsel (reiner
+      // Scroll-Zustand) - daher unabhaengig vom Nav-Check immer pruefen.
+      keepFullLogo();
       if (!document.querySelector(".d-header .tk-nav")) {
         buildTopNav();
         markActiveNav();
@@ -196,6 +230,7 @@ export default apiInitializer("1.14.0", (api) => {
         buildTopNav();
         markActiveNav();
         relabelAuthButtons();
+        keepFullLogo();
         watchHeader();
       } catch (error) {
         // eslint-disable-next-line no-console
