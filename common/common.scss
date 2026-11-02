@@ -296,42 +296,13 @@ html.tk-logo .d-header .home-logo-wrapper-outlet .title {
   }
 }
 
-/* Schmale Breiten: Nav nicht mehr verstecken, sondern in eine eigene,
-   zentrierte zweite Zeile umbrechen (bricht bei Bedarf auch selbst in
-   mehrere Zeilen um, statt Eintraege abzuschneiden). Reihenfolge/Schrumpfen
-   der ersten Zeile explizit festlegen - sonst entscheidet der Browser beim
-   Umbruch selbst, was auf Zeile 1 bleibt, und Hamburger/Suche/Avatar
-   koennen dabei unvorhersehbar mit umbrechen/verschwinden. */
+/* Schmale Breiten: zurueckgesetzt auf den zuletzt bekannt funktionierenden
+   Zustand (Nav ausgeblendet) - zwei Versuche, sie stattdessen umbrechen zu
+   lassen, haben Hamburger/Logo/Icons im Header durcheinandergebracht.
+   Hamburger/Logo/Icons bleiben dadurch unangetastet und zuverlaessig. */
 @media (max-width: 1100px) {
-  .d-header .contents {
-    flex-wrap: wrap;
-    row-gap: 6px;
-  }
-
-  .d-header .contents > .header-sidebar-toggle,
-  .d-header .contents > .home-logo-wrapper-outlet {
-    order: 1;
-    flex-shrink: 0;
-  }
-
-  .d-header .panel,
-  .d-header .header-buttons {
-    order: 2;
-    flex-shrink: 0;
-    margin-left: auto;
-  }
-
   .tk-nav {
-    order: 3;
-    flex: 1 1 100%;
-    width: 100%;
-    margin-left: 0;
-    justify-content: center;
-    flex-wrap: wrap;
-    row-gap: 2px;
-    overflow: visible;
-    white-space: normal;
-    padding-bottom: 4px;
+    display: none !important;
   }
 }
 
