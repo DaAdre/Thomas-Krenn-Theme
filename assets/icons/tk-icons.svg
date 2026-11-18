@@ -360,17 +360,43 @@
   <path d="M5.25 9.753h13.5s1.5 0 1.5 1.5v1.5s0 1.5 -1.5 1.5H5.25s-1.5 0 -1.5 -1.5v-1.5s0 -1.5 1.5 -1.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
   <path d="M2.25 18.753h13.5s1.5 0 1.5 1.5v1.5s0 1.5 -1.5 1.5H2.25s-1.5 0 -1.5 -1.5v-1.5s0 -1.5 1.5 -1.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></g></symbol>
 
-  <symbol id="tk-chat-bubble" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M21.75 18.75h-10.5l-6 4.5v-4.5h-3c-0.39782 0 -0.77936 -0.158 -1.06066 -0.4393C0.908035 18.0294 0.75 17.6478 0.75 17.25v-15c0 -0.39782 0.158035 -0.77936 0.43934 -1.06066C1.47064 0.908035 1.85218 0.75 2.25 0.75h19.5c0.3978 0 0.7794 0.158035 1.0607 0.43934 0.2813 0.2813 0.4393 0.66284 0.4393 1.06066v15c0 0.3978 -0.158 0.7794 -0.4393 1.0607s-0.6629 0.4393 -1.0607 0.4393Z" stroke-width="1.5"></path>
-  <path stroke="currentColor" d="M12 10.125c-0.2071 0 -0.375 -0.16789 -0.375 -0.375s0.1679 -0.375 0.375 -0.375" stroke-width="1.5"></path>
-  <path stroke="currentColor" d="M12 10.125c0.2071 0 0.375 -0.16789 0.375 -0.375s-0.1679 -0.375 -0.375 -0.375" stroke-width="1.5"></path>
-  <path stroke="currentColor" d="M7.5 10.125c-0.20711 0 -0.375 -0.16789 -0.375 -0.375s0.16789 -0.375 0.375 -0.375" stroke-width="1.5"></path>
-  <path stroke="currentColor" d="M7.5 10.125c0.20711 0 0.375 -0.16789 0.375 -0.375s-0.16789 -0.375 -0.375 -0.375" stroke-width="1.5"></path>
-  <g>
-    <path stroke="currentColor" d="M16.5 10.125c-0.2071 0 -0.375 -0.16789 -0.375 -0.375s0.1679 -0.375 0.375 -0.375" stroke-width="1.5"></path>
-    <path stroke="currentColor" d="M16.5 10.125c0.2071 0 0.375 -0.16789 0.375 -0.375s-0.1679 -0.375 -0.375 -0.375" stroke-width="1.5"></path>
-  </g></g></symbol>
+  <symbol id="tk-chat-bubble" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12.75 0.75a10.485 10.485 0 0 0 -8.917 16.025L0.75 23.25l6.474 -3.083A10.5 10.5 0 1 0 12.75 0.75Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></g></symbol>
 
   <symbol id="tk-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M1.4720451262 13.356970375A9.063 9.063 0 1 0 18.154024235 6.267298379a9.063 9.063 0 1 0 -16.6819791088 7.089671996Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
   <path d="m16.221 16.22 7.029 7.03" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></g></symbol>
+
+  <symbol id="tk-alert-bell-notification" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M17.25 12.75c3.3137 0 6 -2.6863 6 -6 0 -3.31371 -2.6863 -6 -6 -6s-6 2.68629 -6 6c0 3.3137 2.6863 6 6 6" stroke-width="1.5"></path>
+  <path stroke="currentColor" d="M17.25 9.75c-0.2071 0 -0.375 -0.16789 -0.375 -0.375S17.0429 9 17.25 9" stroke-width="1.5"></path>
+  <path stroke="currentColor" d="M17.25 9.75c0.2071 0 0.375 -0.16789 0.375 -0.375S17.4571 9 17.25 9" stroke-width="1.5"></path>
+  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75v-3" stroke-width="1.5"></path>
+  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M17.505 15.862c0.2022 1.0411 0.6269 2.0262 1.245 2.888h-18s1.5 -2.329 1.5 -8.25c0 -1.98912 0.79018 -3.89678 2.1967 -5.3033S7.76088 3 9.75 3V0.75" stroke-width="1.5"></path>
+  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M7.74799 21.75c0.12701 0.4327 0.39076 0.8126 0.75175 1.0828 0.36099 0.2703 0.7998 0.4164 1.25075 0.4164 0.45091 0 0.88971 -0.1461 1.25071 -0.4164 0.361 -0.2702 0.6248 -0.6501 0.7518 -1.0828" stroke-width="1.5"></path></g></symbol>
+
+  <symbol id="tk-bookmark-cancel" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="m18.8 15.6448 0 -12.07534c0 -0.8 -0.6 -1.40003 -1.4 -1.40003H6.49999c-0.8 0 -1.4 0.60003 -1.4 1.40003v2.53085" stroke-width="1.5"></path>
+  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M5.19999 9.31299V21.113c0 0.6 0.6 0.9 1.1 0.6l5.70001 -4 5.7 4c0.5 0.3 1.1 0 1.1 -0.6v-2" stroke-width="1.5"></path>
+  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M23.2 18.7133 0.800011 3.11328" stroke-width="1.5"></path></g></symbol>
+
+  <symbol id="tk-alarm-bell-off" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><defs></defs>
+  
+  <path d="m22.501 2.25 -21 21" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+  <path d="M10 21.75a2.087 2.087 0 0 0 4.005 0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+  <path d="m12.001 3 0 -2.25" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+  <path d="M10.5 18.75H21s-1.5 -1.2 -1.5 -8.25a7.271 7.271 0 0 0 -0.093 -0.915" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+  <path d="M16.212 4.3A7.5 7.5 0 0 0 4.5 10.5v5.25" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></g></symbol>
+
+  <symbol id="tk-bookmark" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M6.2998 21.7052c-0.5 0.3 -1.2 0 -1.2 -0.6V3.57715c0 -0.8 0.6 -1.40003 1.4 -1.40003h10.9c0.8 0 1.4 0.60003 1.4 1.40003V21.1052c0 0.6 -0.6 0.9 -1.1 0.6l-5.7 -4 -5.7 4Z" stroke-width="1.5"></path></g></symbol>
+
+  <symbol id="tk-envelope" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><defs></defs>
+  
+  <path d="M2.25 4.5h19.5s1.5 0 1.5 1.5v12s0 1.5 -1.5 1.5H2.25s-1.5 0 -1.5 -1.5V6s0 -1.5 1.5 -1.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+  <path d="M15.687 9.975 19.5 13.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+  <path d="M8.313 9.975 4.5 13.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+  <path d="m22.88 5.014 -9.513 6.56a2.406 2.406 0 0 1 -2.734 0L1.12 5.014" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></g></symbol>
+
+  <symbol id="tk-reply" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9.709 6.837a1.5 1.5 0 0 0 -2.6 -1.018l-5.461 5.914a1.5 1.5 0 0 0 0 2.034l5.458 5.914a1.5 1.5 0 0 0 2.6 -1.018V15.75h6a7.5 7.5 0 0 1 7.5 7.5v-6a7.5 7.5 0 0 0 -7.5 -7.5h-6Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></g></symbol>
+
+  <symbol id="tk-alarm-bell" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M16.3029 9.23371c-0.2196 -0.66785 -0.5937 -1.28184 -1.1001 -1.78825 -0.4478 -0.44774 -0.9796 -0.79207 -1.5584 -1.01759 -0.1818 -0.07085 -0.3683 -0.12997 -0.5582 -0.17689" stroke-width="1.5"></path>
+  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M12 3c-1.9891 0 -3.89678 0.79018 -5.3033 2.1967S4.5 8.51088 4.5 10.5c0 5.921 -1.5 8.25 -1.5 8.25h18s-1.5 -2.329 -1.5 -8.25c0 -1.98912 -0.7902 -3.89678 -2.1967 -5.3033S13.9891 3 12 3m0 0V0.75" stroke-width="1.5"></path>
+  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M9.59052 21.752c0.18615 0.3769 0.45918 0.7069 0.79908 0.9614 0.465 0.3481 1.0301 0.5362 1.6109 0.5362s1.1459 -0.1881 1.6109 -0.5362c0.3399 -0.2545 0.6129 -0.5845 0.7991 -0.9614" stroke-width="1.5"></path></g></symbol>
 
 </svg>
