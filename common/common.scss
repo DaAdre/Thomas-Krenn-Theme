@@ -124,6 +124,20 @@
   --tk-hover: rgba(var(--tertiary-rgb), 0.09);
   --tk-panel-border: rgba(var(--tertiary-rgb), 0.6);
   --tk-brand: "forum";
+
+  /* Core-Design-Token fuer Hover-Hintergruende im neueren UI (u. a. Chat-
+     Nachrichtenzeilen "plugins/chat/.../chat-message.scss" und die Konto-
+     Menü-Tabs "menu-panel.scss" - per Quellcode bestaetigt, beide nutzen
+     "background: var(--d-hover)"). Core kompiliert dafuer einen fest
+     einprogrammierten hellen Default (~#f2f2f2), unabhaengig vom aktiven
+     Color Scheme -> auf unserem Dark-Scheme wird jede Hover-Zeile weiss,
+     Text/Icon (hell) darauf unsichtbar. Hier EINMAL zentral ueberschrieben,
+     deckend statt durchscheinend (siehe Begruendung bei den Header-Panels
+     weiter unten) - behebt dadurch automatisch jede aktuelle UND kuenftige
+     Core-Komponente, die denselben Token verwendet, statt jede einzeln
+     patchen zu muessen. */
+  --d-hover: var(--primary-low);
+  --d-hover: color-mix(in srgb, var(--primary) 14%, var(--secondary) 86%);
 }
 
 /* ---------- Basis / Typografie ------------------------------------------ */
@@ -516,20 +530,12 @@ html.tk-topic .tk-nav,
   }
 }
 
-/* Bug-Ursache jetzt per Core-Quelltext bestaetigt (menu-panel.scss): Core
-   setzt den Hover-Hintergrund NICHT auf <a.user-menu-tab> selbst (dort steht
-   explizit background: none), sondern auf das verschachtelte .d-icon
-   ("background-color: var(--d-hover)") - unsere obige Regel auf dem
-   Tab-Element lief deshalb ins Leere. --d-hover scheint auf diesem Dark-
-   Scheme hell zu rendern -> helle Icon-Farbe auf hellem --d-hover-Hintergrund
-   = unsichtbar. Exakt Cores verschachtelten Selektor treffen und dort den
-   deckenden Hintergrund erzwingen. */
-.user-menu.revamped .tabs-list .btn:not(.active):hover .d-icon,
-.user-menu.revamped .tabs-list .btn:not(.active):focus-visible .d-icon {
-  background-color: var(--primary-low) !important;
-  background-color: color-mix(in srgb, var(--primary) 14%, var(--secondary) 86%) !important;
-  color: var(--primary) !important;
-}
+/* Bug-Ursache war Cores --d-hover-Token (siehe zentrale Ueberschreibung ganz
+   oben im :root-Block) - Core setzt den Hover-Hintergrund auf das
+   verschachtelte .d-icon ("background-color: var(--d-hover)"), nicht auf
+   <a.user-menu-tab> selbst (dort steht explizit background: none). Mit dem
+   global ueberschriebenen --d-hover ist das jetzt automatisch mit abgedeckt,
+   kein eigener Patch mehr noetig. */
 
 /* ---------- Dropdown-Listen (select-kit · DMenu · ARIA-Listen) ------ */
 /* Bug: hervorgehobene / fokussierte / gewaehlte Zeile bekommt (aus einem
