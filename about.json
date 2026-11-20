@@ -1,9 +1,9 @@
 {
-  "name": "TK Forum Theme",
+  "name": "Thomas-Krenn.AG Forum Theme",
   "about_url": "https://www.thomas-krenn.com/",
   "license_url": "https://opensource.org/licenses/MIT",
   "authors": "Adrian Zillner, Miriam Boxleitner",
-  "theme_version": "1.6.5",
+  "theme_version": "1.6.6",
   "minimum_discourse_version": "3.4.0",
   "component": false,
   "assets": {
