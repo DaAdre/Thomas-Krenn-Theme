@@ -516,6 +516,21 @@ html.tk-topic .tk-nav,
   }
 }
 
+/* Bug-Ursache jetzt per Core-Quelltext bestaetigt (menu-panel.scss): Core
+   setzt den Hover-Hintergrund NICHT auf <a.user-menu-tab> selbst (dort steht
+   explizit background: none), sondern auf das verschachtelte .d-icon
+   ("background-color: var(--d-hover)") - unsere obige Regel auf dem
+   Tab-Element lief deshalb ins Leere. --d-hover scheint auf diesem Dark-
+   Scheme hell zu rendern -> helle Icon-Farbe auf hellem --d-hover-Hintergrund
+   = unsichtbar. Exakt Cores verschachtelten Selektor treffen und dort den
+   deckenden Hintergrund erzwingen. */
+.user-menu.revamped .tabs-list .btn:not(.active):hover .d-icon,
+.user-menu.revamped .tabs-list .btn:not(.active):focus-visible .d-icon {
+  background-color: var(--primary-low) !important;
+  background-color: color-mix(in srgb, var(--primary) 14%, var(--secondary) 86%) !important;
+  color: var(--primary) !important;
+}
+
 /* ---------- Dropdown-Listen (select-kit · DMenu · ARIA-Listen) ------ */
 /* Bug: hervorgehobene / fokussierte / gewaehlte Zeile bekommt (aus einem
    hellen Core-Token) einen hellen Hintergrund, die Schrift bleibt hell und
@@ -554,15 +569,13 @@ html.tk-topic .tk-nav,
 .select-kit-row.is-highlighted,
 .select-kit-row.is-selected,
 .select-kit-row.is-focused,
-.select-kit-row.selected,
 .select-kit-row[aria-selected="true"],
 .select-kit-row[aria-current="true"],
-.select-kit-row[aria-checked="true"],
 .select-kit-row[class*="is-select"],
 .select-kit-row[class*="is-highlight"],
 .select-kit-row[class*="is-current"],
 .select-kit-row[class*="is-active"],
-.select-kit-row[class*="selected"],
+.select-kit-row[class*="-selected"],
 .dropdown-menu__item .btn:hover,
 .dropdown-menu__item .btn:focus,
 .dropdown-menu__item .btn:focus-visible,
@@ -570,20 +583,9 @@ html.tk-topic .tk-nav,
 .dropdown-menu li > a:focus,
 [role="listbox"] [role="option"]:hover,
 [role="listbox"] [role="option"][aria-selected="true"],
-[role="listbox"] [role="option"][class*="selected"],
+[role="listbox"] [role="option"][class*="is-select"],
 [role="menu"] [role="menuitem"]:hover,
-[role="menu"] [role="menuitem"]:focus,
-[role="menu"] [role="menuitem"][class*="selected"],
-/* manche neueren Core-Komponenten (z. B. Themen-Benachrichtigungsstufe:
-   Beobachten/Verfolgen/Normal/Stummgeschaltet) markieren die aktuelle Wahl
-   nur ueber eine nackte .selected-Klasse auf der Zeile, ohne select-kit-
-   Verschachtelung - deshalb containerbezogen zusaetzlich greifen. */
-.select-kit-content .selected,
-.select-kit-collection .selected,
-.fk-d-menu__inner-content .selected,
-.dropdown-menu .selected,
-[role="listbox"] .selected,
-[role="menu"] .selected {
+[role="menu"] [role="menuitem"]:focus {
   /* deckend statt durchscheinend - siehe Begruendung oben bei den
      Header-Panels. */
   background: var(--primary-low) !important;
@@ -601,6 +603,31 @@ html.tk-topic .tk-nav,
   }
 
   .desc {
+    color: var(--primary) !important;
+    opacity: 0.75;
+  }
+
+  .d-icon {
+    color: var(--primary) !important;
+  }
+}
+
+/* Themen-Benachrichtigungsstufe (Beobachten/Verfolgen/Normal/Stummgeschaltet):
+   echtes Markup geprueft, kein select-kit - eigene Komponente
+   <button class="btn no-text notifications-tracking-btn -selected"
+   data-level-name="…">. Die aktuell aktive Stufe traegt dauerhaft die
+   Klasse "-selected" (mit Bindestrich-Praefix, gueltiger CSS-Klassenname). */
+.notifications-tracking-btn.-selected {
+  background: var(--primary-low) !important;
+  background: color-mix(in srgb, var(--primary) 14%, var(--secondary) 86%) !important;
+  color: var(--primary) !important;
+
+  .notifications-tracking-btn__label {
+    color: var(--primary) !important;
+    font-weight: 700;
+  }
+
+  .notifications-tracking-btn__description {
     color: var(--primary) !important;
     opacity: 0.75;
   }
