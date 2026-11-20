@@ -490,20 +490,28 @@ html.tk-topic .tk-nav,
 
   .d-icon {
     color: currentColor;
+    fill: currentColor;
   }
 
   &:hover,
   &:focus,
-  &[aria-selected="true"] {
+  &:focus-visible,
+  &[aria-selected="true"],
+  &[class*="active"],
+  &[class*="hover"] {
     /* deckend statt durchscheinend - siehe Begruendung oben bei den
        Header-Panels (Computed-Werte zeigten rgba(...,0.14) korrekt gesetzt,
-       aber auf hellem Hintergrund dahinter wieder hell). */
+       aber auf hellem Hintergrund dahinter wieder hell). Zusaetzlich fill
+       hart erzwingen, falls das SVG-Icon seine Farbe nicht per currentColor
+       sondern per eigenem fill-Wert bekommt (sonst bleibt das Icon trotz
+       korrektem Text unsichtbar). */
     background: var(--primary-low) !important;
     background: color-mix(in srgb, var(--primary) 14%, var(--secondary) 86%) !important;
     color: var(--primary) !important;
 
     .d-icon {
       color: var(--primary) !important;
+      fill: var(--primary) !important;
     }
   }
 }
@@ -546,13 +554,15 @@ html.tk-topic .tk-nav,
 .select-kit-row.is-highlighted,
 .select-kit-row.is-selected,
 .select-kit-row.is-focused,
+.select-kit-row.selected,
 .select-kit-row[aria-selected="true"],
 .select-kit-row[aria-current="true"],
+.select-kit-row[aria-checked="true"],
 .select-kit-row[class*="is-select"],
 .select-kit-row[class*="is-highlight"],
 .select-kit-row[class*="is-current"],
 .select-kit-row[class*="is-active"],
-.select-kit-row[class*="-selected"],
+.select-kit-row[class*="selected"],
 .dropdown-menu__item .btn:hover,
 .dropdown-menu__item .btn:focus,
 .dropdown-menu__item .btn:focus-visible,
@@ -560,9 +570,20 @@ html.tk-topic .tk-nav,
 .dropdown-menu li > a:focus,
 [role="listbox"] [role="option"]:hover,
 [role="listbox"] [role="option"][aria-selected="true"],
-[role="listbox"] [role="option"][class*="is-select"],
+[role="listbox"] [role="option"][class*="selected"],
 [role="menu"] [role="menuitem"]:hover,
-[role="menu"] [role="menuitem"]:focus {
+[role="menu"] [role="menuitem"]:focus,
+[role="menu"] [role="menuitem"][class*="selected"],
+/* manche neueren Core-Komponenten (z. B. Themen-Benachrichtigungsstufe:
+   Beobachten/Verfolgen/Normal/Stummgeschaltet) markieren die aktuelle Wahl
+   nur ueber eine nackte .selected-Klasse auf der Zeile, ohne select-kit-
+   Verschachtelung - deshalb containerbezogen zusaetzlich greifen. */
+.select-kit-content .selected,
+.select-kit-collection .selected,
+.fk-d-menu__inner-content .selected,
+.dropdown-menu .selected,
+[role="listbox"] .selected,
+[role="menu"] .selected {
   /* deckend statt durchscheinend - siehe Begruendung oben bei den
      Header-Panels. */
   background: var(--primary-low) !important;
