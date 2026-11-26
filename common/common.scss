@@ -405,6 +405,38 @@ html.tk-topic .tk-nav,
   }
 }
 
+/* Sidebar-Toggle im Header (echtes Markup geprueft: <button class="btn
+   btn-flat btn-sidebar-toggle no-text btn-icon" aria-expanded="true">) -
+   aria-expanded="true" ist hier der normale Dauerzustand bei eingeblendeter
+   Sidebar, keine kurzzeitige "gedrueckt"-Aktion wie bei anderen Buttons. Die
+   generische .btn.btn-flat-Regel oben greift darueber trotzdem (triggert via
+   [aria-expanded="true"]) und laesst den Button dauerhaft wie ausgewaehlt
+   aussehen - laut Vorgabe nicht gewuenscht, hier gezielt zurueckgesetzt. */
+.d-header .btn-sidebar-toggle {
+  &[aria-expanded="true"],
+  &.active,
+  &[class*="is-active"],
+  &[class*="-active"] {
+    background: transparent !important;
+    color: var(--header_primary) !important;
+
+    .d-icon {
+      color: var(--header_primary) !important;
+    }
+  }
+
+  &:hover,
+  &:focus,
+  &:focus-visible {
+    background: color-mix(in srgb, var(--header_primary) 12%, transparent) !important;
+    color: var(--header_primary) !important;
+
+    .d-icon {
+      color: var(--header_primary) !important;
+    }
+  }
+}
+
 /* Header-Icon-Buttons (Suche · Menü · Konto · Chat … inkl. Burgermenü) — NUR
    die Ausloeser, nicht die geoeffneten Panels darunter (daher direkte
    Kind-Kombinatoren). Bug: Core faerbt Hover-/Aktiv-Hintergrund aus der
