@@ -165,7 +165,11 @@ h4 {
 
 .btn-primary {
   color: #1a1a1a;
-  font-weight: 600;
+  /* 700 statt 600: "TK Theme Font" registriert nur 300/400/700 (siehe
+     @font-face oben) - bei 600 greift kein exaktes Gewicht, der Browser
+     gleicht das durch Synthese aus, die neben der echten Bold-Schriftdatei
+     (z. B. bei "Neues Thema") sichtbar anders/uneinheitlich wirkt. */
+  font-weight: 700;
 }
 
 /* ---------- Header ----------------------------------------------------- */
@@ -240,7 +244,7 @@ html.tk-logo .d-header .home-logo-wrapper-outlet .title {
     content: var(--tk-brand, "forum");
     font-size: 1.85rem;
     font-weight: 800;
-    color: #fff;
+    color: var(--header_primary);
     letter-spacing: -0.02em;
   }
 }
@@ -267,7 +271,10 @@ html.tk-logo .d-header .home-logo-wrapper-outlet .title {
 
   a {
     position: relative;
-    color: rgba(255, 255, 255, 0.82);
+    /* leicht abgesetzt von header_primary statt voller Deckkraft - dezenter
+       als die aktiven/gehoverten Links, passt sich per color-mix() automatisch
+       an Hell- und Dunkel-Schema an (header_primary kippt mit). */
+    color: color-mix(in srgb, var(--header_primary) 82%, transparent);
     font-size: 0.98rem;
     font-weight: 500;
     line-height: 1;
@@ -293,7 +300,7 @@ html.tk-logo .d-header .home-logo-wrapper-outlet .title {
     &:hover,
     &:focus-visible,
     &.active {
-      color: #fff;
+      color: var(--header_primary);
     }
 
     &:hover::after,
@@ -348,14 +355,14 @@ html.tk-topic .tk-nav,
 
 .d-header .login-button {
   background: transparent;
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: var(--header_primary);
+  border: 1px solid color-mix(in srgb, var(--header_primary) 35%, transparent);
 
   &:hover,
   &:focus {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: #fff;
-    color: #fff;
+    background: color-mix(in srgb, var(--header_primary) 8%, transparent);
+    border-color: var(--header_primary);
+    color: var(--header_primary);
   }
 }
 
@@ -416,24 +423,26 @@ html.tk-topic .tk-nav,
   }
 }
 
-/* Header-Icon-Buttons (Suche · Menü · Konto · Chat …) — NUR die Ausloeser,
-   nicht die geoeffneten Panels darunter (daher direkte Kind-Kombinatoren).
-   Bug: Core faerbt Hover-/Aktiv-Hintergrund aus der Inhalts-Palette -> im
-   Dark-Scheme hell, das weisse Icon wird unsichtbar. Fest auf die
-   Header-Farbwelt ziehen (transparent + zarter Weiss-Ton). */
+/* Header-Icon-Buttons (Suche · Menü · Konto · Chat … inkl. Burgermenü) — NUR
+   die Ausloeser, nicht die geoeffneten Panels darunter (daher direkte
+   Kind-Kombinatoren). Bug: Core faerbt Hover-/Aktiv-Hintergrund aus der
+   Inhalts-Palette -> im Dark-Scheme hell, das weisse Icon wird unsichtbar.
+   Fest auf die Header-Farbwelt ziehen - ueber header_primary statt
+   hartkodiertem Weiss, damit es mit dem Schema kippt (dunkler Header = helle
+   Icons, heller Header im Light-Scheme = dunkle Icons). */
 .d-header .d-header-icons > li > .btn,
 .d-header .d-header-icons > li > .icon,
 .d-header .d-header-icons > li > .header-dropdown-toggle > .btn,
 .d-header .d-header-icons > .header-dropdown-toggle > .btn,
 .d-header #search-button,
 .d-header #toggle-hamburger-menu {
-  color: #fff;
+  color: var(--header_primary);
   background: transparent;
   border-radius: 8px;
   transition: background-color 0.15s ease;
 
   .d-icon {
-    color: #fff;
+    color: var(--header_primary);
   }
 
   &:hover,
@@ -441,11 +450,11 @@ html.tk-topic .tk-nav,
   &:focus-visible,
   &.active,
   &[aria-expanded="true"] {
-    background: rgba(255, 255, 255, 0.12) !important;
-    color: #fff;
+    background: color-mix(in srgb, var(--header_primary) 12%, transparent) !important;
+    color: var(--header_primary);
 
     .d-icon {
-      color: #fff;
+      color: var(--header_primary);
     }
   }
 }
@@ -990,9 +999,15 @@ html.tk-hide-sidebar.tk-home {
   height: 38px;
   display: grid;
   place-items: center;
-  border: 1px solid var(--tk-hairline);
+  /* --tk-hairline (10% Deckkraft) + --tk-ink-muted (60%) sind auf dem
+     Dark-Scheme (helle Tinte auf fast-schwarzem Grund) gut lesbar, auf dem
+     Light-Scheme (dunkle Tinte auf fast-weissem Grund) aber beides zu
+     schwach - Rahmen kaum sichtbar, Icon wirkt blass. Hier dediziert
+     kraeftiger, unabhaengig vom globalen --tk-hairline/--tk-ink-muted-Wert
+     an anderen Stellen. */
+  border: 1px solid rgba(var(--primary-rgb), 0.22);
   border-radius: 9px;
-  color: var(--tk-cat-color, var(--tk-ink-muted));
+  color: var(--tk-cat-color, rgba(var(--primary-rgb), 0.78));
   transition: color 0.15s ease, border-color 0.15s ease;
 }
 
