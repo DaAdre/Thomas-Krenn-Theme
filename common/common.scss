@@ -123,6 +123,13 @@
   --tk-brand: "forum";
   --d-hover: var(--primary-low);
   --d-hover: color-mix(in srgb, var(--primary) 14%, var(--secondary) 86%);
+  /* Cores generierter --tertiary-hover wird im Light Scheme Richtung Schwarz
+     abgedunkelt - bei unserem Orange wird daraus ein schmutziges Braun statt
+     eines knackigen Hover-Tons. Stattdessen immer leicht aufhellen (Richtung
+     Weiss), das funktioniert in Light und Dark gleich gut, da --tertiary in
+     beiden Schemata derselbe Hex-Wert ist. */
+  --tertiary-hover: var(--tertiary);
+  --tertiary-hover: color-mix(in srgb, var(--tertiary) 85%, white 15%);
 }
 
 /* ---------- Basis / Typografie ------------------------------------------ */
@@ -155,6 +162,15 @@ h4 {
      gleicht das durch Synthese aus, die neben der echten Bold-Schriftdatei
      (z. B. bei "Neues Thema") sichtbar anders/uneinheitlich wirkt. */
   font-weight: 700;
+
+  /* Direkte Absicherung zusaetzlich zur --tertiary-hover-Ueberschreibung
+     oben, falls Core den Hover-Hintergrund nicht (nur) ueber diese Variable
+     setzt. */
+  &:hover,
+  &:focus-visible {
+    background: var(--tertiary-hover);
+    color: #1a1a1a;
+  }
 }
 
 /* ---------- Header ----------------------------------------------------- */
