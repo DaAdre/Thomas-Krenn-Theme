@@ -441,6 +441,18 @@ html.tk-topic .tk-nav,
   }
 }
 
+/* Burger-Button behielt die "aktiv"-Optik (Cores .active-Klasse) auch nach
+   dem Schliessen des Menüs - erzwingen, dass er nur bei tatsaechlich
+   offenem Menü (aria-expanded="true") hervorgehoben bleibt. */
+.d-header #toggle-hamburger-menu:not([aria-expanded="true"]) {
+  background: transparent !important;
+  color: var(--header_primary) !important;
+
+  .d-icon {
+    color: var(--header_primary) !important;
+  }
+}
+
 /* Geoeffnete Header-Panels (Suchergebnisse, Menü, Konto-/Benachrichtigungs-
    Menü) laufen in der Inhalts-Palette – nicht die Header-Weisstoene erben. */
 .d-header .menu-panel,
@@ -1446,17 +1458,20 @@ html.tk-category-tiles-active #main-outlet {
 }
 
 /* ---------- Kategorie-Header (Komp. "TK Kategorien") --------------- */
+/* Farbverlauf laeuft oben nahtlos in die Header-Farbe (--header_background)
+   und unten nahtlos in die Seiten-Hintergrundfarbe (--secondary) - kein
+   harter Rand mehr zum Kopf- oder Hauptteil (daher auch kein border-bottom
+   mehr). Der warme Akzent-Glow sitzt als eigene Ebene obendrauf. */
 .tk-cat-header {
   --tk-cat-accent: var(--tk-orange);
-  border-bottom: 1px solid var(--tk-hairline);
   padding: 46px 1rem 40px;
   background:
     radial-gradient(
-      130% 150% at 50% -10%,
-      rgba(var(--tertiary-rgb), 0.12),
-      transparent 62%
+      120% 160% at 50% 0%,
+      rgba(var(--tertiary-rgb), 0.22),
+      transparent 65%
     ),
-    var(--tk-card-bg);
+    linear-gradient(180deg, var(--header_background) 0%, var(--secondary) 100%);
 }
 
 .tk-cat-header__inner {

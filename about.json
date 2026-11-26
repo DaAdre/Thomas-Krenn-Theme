@@ -3,7 +3,7 @@
   "about_url": "https://www.thomas-krenn.com/",
   "license_url": "https://opensource.org/licenses/MIT",
   "authors": "Adrian Zillner, Miriam Boxleitner",
-  "theme_version": "1.8.2",
+  "theme_version": "1.9.0",
   "minimum_discourse_version": "3.4.0",
   "component": false,
   "assets": {
