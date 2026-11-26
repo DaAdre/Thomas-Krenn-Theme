@@ -103,62 +103,21 @@
 }
 
 :root {
-  /* "TK Theme Font" greift nur, wenn oben ein @font-face registriert wurde -
-     sonst faellt der Stack automatisch auf Inter -> System-Sans zurueck. */
   --tk-font: "TK Theme Font", "Inter", -apple-system, BlinkMacSystemFont,
     "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial,
     sans-serif;
-
-  /* Alle Inhalts-Farben leiten sich aus dem aktiven Color Scheme ab
-     (--primary / --secondary / --tertiary) und flippen so automatisch
-     zwischen "TK Forum Dark" und "TK Forum Light". Der Header bleibt in
-     beiden Schemata dunkel (header_background). */
   --tk-orange: var(--tertiary);
   --tk-text: var(--primary);
   --tk-text-soft: rgba(var(--primary-rgb), 0.82);
-  /* 0.65 statt 0.6: rechnerisch (aus den Hex-Werten) lag "muted" Text im
-     TK-Forum-Light-Schema bei ~4.33:1 - knapp unter dem WCAG-Minimum 4.5:1
-     fuer Fliesstext <=17pt (accessibility.md). 0.65 ergibt ~4.9:1. */
   --tk-ink-muted: rgba(var(--primary-rgb), 0.65);
   --tk-ink-dim: rgba(var(--primary-rgb), 0.45);
   --tk-hairline: rgba(var(--primary-rgb), 0.1);
   --tk-border-strong: rgba(var(--primary-rgb), 0.16);
   --tk-card-bg: rgba(var(--primary-rgb), 0.04);
   --tk-hover: rgba(var(--tertiary-rgb), 0.09);
-  /* Textsichere, dunklere Variante von --tk-orange: aus den Hex-Werten
-     berechnet ist --tertiary (#d97e12 im Light-Schema) als TEXTFARBE auf
-     hellem Grund nur ~2.6-2.85:1 Kontrast - faellt selbst die abgeschwaechte
-     3:1-Schwelle fuer fette/grosse Schrift durch (accessibility.md). Als
-     Hintergrund/Rahmen (z. B. "Neues Thema"-Button) ist --tertiary dagegen
-     unproblematisch, dort bleibt es unveraendert. Formel mischt mit
-     --primary statt einem festen Schwarz, damit sie automatisch in die
-     richtige Richtung wirkt: im Light-Schema dunkler (primary ist dunkel),
-     im Dark-Schema sogar noch heller/kontrastreicher (primary ist hell) -
-     rechnerisch Light ~4.68:1, Dark ~9.65:1 statt vorher ~7.1:1. */
-  --tk-orange-text: var(--tk-orange);
-  --tk-orange-text: color-mix(in srgb, var(--tertiary) 70%, var(--primary) 30%);
-  /* --tk-panel-border nutzte zuvor dieselbe zu helle --tertiary-Tinte als
-     Rahmenfarbe (~1.85:1 gegen den Panel-Hintergrund) - jetzt auf Basis der
-     textsicheren Variante, bei 80% Deckkraft rechnerisch ~3.3:1 (ueber dem
-     3:1-Richtwert fuer bedeutungstragende UI-Grenzen, WCAG 1.4.11), bleibt
-     dabei als weicher Farbrand statt voller Flaeche erkennbar. Opake Zeile
-     zuerst als Fallback (Browser ohne color-mix()), siehe Begruendung bei
-     den Header-Panels weiter unten. */
-  --tk-panel-border: var(--tk-orange-text);
-  --tk-panel-border: color-mix(in srgb, var(--tk-orange-text) 80%, transparent);
+  --tk-orange-text: var(--tertiary);
+  --tk-panel-border: var(--tertiary);
   --tk-brand: "forum";
-
-  /* Core-Design-Token fuer Hover-Hintergruende im neueren UI (u. a. Chat-
-     Nachrichtenzeilen "plugins/chat/.../chat-message.scss" und die Konto-
-     Menü-Tabs "menu-panel.scss" - per Quellcode bestaetigt, beide nutzen
-     "background: var(--d-hover)"). Core kompiliert dafuer einen fest
-     einprogrammierten hellen Default (~#f2f2f2), unabhaengig vom aktiven
-     Color Scheme -> auf unserem Dark-Scheme wird jede Hover-Zeile weiss,
-     Text/Icon (hell) darauf unsichtbar. Hier EINMAL zentral ueberschrieben,
-     deckend statt durchscheinend (siehe Begruendung bei den Header-Panels
-     weiter unten) - behebt dadurch automatisch jede aktuelle UND kuenftige
-     Core-Komponente, die denselben Token verwendet, statt jede einzeln
-     patchen zu muessen. */
   --d-hover: var(--primary-low);
   --d-hover: color-mix(in srgb, var(--primary) 14%, var(--secondary) 86%);
 }
@@ -731,7 +690,7 @@ html.tk-hide-sidebar.tk-home {
 .tk-hero__main {
   grid-area: main;
   min-width: 0;
-  border: 1px solid var(--tk-panel-border);
+  border: 2px solid var(--tk-panel-border);
   border-radius: 16px;
   background: var(--tk-card-bg);
   padding: clamp(26px, 3.4vw, 40px);
@@ -910,7 +869,7 @@ html.tk-hide-sidebar.tk-home {
 
 /* ---------- Slot-Inhalt: Kategorien-Panel (Komp. "TK Kategorien") ---- */
 .tk-panel {
-  border: 1px solid var(--tk-panel-border);
+  border: 2px solid var(--tk-panel-border);
   border-radius: 16px;
   background: var(--tk-card-bg);
   padding: 20px 18px;
