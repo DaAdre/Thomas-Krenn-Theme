@@ -116,7 +116,10 @@
   --tk-card-bg: rgba(var(--primary-rgb), 0.04);
   --tk-hover: rgba(var(--tertiary-rgb), 0.09);
   --tk-orange-text: var(--tertiary);
-  --tk-panel-border: var(--tertiary);
+  /* Neutral statt Orange: Orange soll nur noch am Hero-Akzent und am
+     Primaer-Button stehen, nicht an jedem Kartenrand/jeder Ueberschrift -
+     sonst verliert die Farbe ihre Signalwirkung. */
+  --tk-panel-border: rgba(var(--primary-rgb), 0.3);
   --tk-brand: "forum";
   --d-hover: var(--primary-low);
   --d-hover: color-mix(in srgb, var(--primary) 14%, var(--secondary) 86%);
@@ -933,7 +936,7 @@ html.tk-hide-sidebar.tk-home {
 
 .tk-panel__head h2 {
   margin: 0 0 6px;
-  color: var(--tk-orange-text);
+  color: var(--tk-text);
   font-size: 1.12rem;
   font-weight: 800;
 }
@@ -1393,7 +1396,7 @@ html.tk-category-tiles-active #main-outlet {
 
 .tk-categories-page__title {
   margin: 6px 0 12px;
-  color: var(--tk-orange-text);
+  color: var(--tk-text);
   font-size: clamp(1.8rem, 3vw, 2.4rem);
   font-weight: 800;
   letter-spacing: -0.02em;
