@@ -131,6 +131,10 @@
      Hex-Wert hat. */
   --tertiary-hover: var(--tertiary);
   --tertiary-hover: color-mix(in srgb, var(--tertiary) 75%, black 25%);
+  /* Header soll keine eigene Farbe mehr haben, sondern exakt in die
+     Seitenhintergrundfarbe uebergehen - kein zweiter, leicht abweichender
+     Dunkelton mehr oben auf der Seite. */
+  --header_background: var(--secondary);
 }
 
 /* ---------- Basis / Typografie ------------------------------------------ */
