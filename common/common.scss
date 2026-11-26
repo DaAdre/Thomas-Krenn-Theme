@@ -1503,52 +1503,19 @@ html.tk-category-tiles-active #main-outlet {
 }
 
 /* ---------- Kategorie-Header (Komp. "TK Kategorien") --------------- */
-/* Oben nahtlos zur Header-Farbe (--header_background, identisch zum
-   .d-header-Hintergrund), unten nahtlos zur Seiten-Hintergrundfarbe
-   (--secondary) - kein harter Rand mehr. Der warme Akzent-Glow ist an
-   festen Pixelwerten um das Icon verankert statt an Prozentwerten der
-   Boxhoehe: so faellt er bei jeder Titellaenge zuverlaessig vollstaendig
-   ab, bevor die Box endet (die alte prozentuale Variante erzeugte bei
-   hohen Boxen eine sichtbare "Kante" aus Farbbanding). Die zweite Ebene
-   blendet unten zusaetzlich hart auf --secondary ab, damit der Uebergang
-   unabhaengig vom Glow garantiert pixelgenau sitzt. */
+/* Kein Gradient mehr: flache Flaeche in --header_background (identisch
+   zum .d-header-Hintergrund direkt darueber, daher oben immer nahtlos,
+   in Light wie in Dark) mit einer duennen Haarlinie als unterem
+   Abschluss statt eines Farbverlaufs. Das Orange sitzt gebuendelt als
+   eine klare, gefuellte Icon-Kachel - ein Akzent statt einer Flaeche. */
 .tk-cat-header {
   --tk-cat-accent: var(--tk-orange);
-  position: relative;
-  padding: 46px 1rem 40px;
+  padding: 40px 1rem 34px;
   background: var(--header_background);
-  overflow: hidden;
-
-  &::before,
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-  }
-
-  &::before {
-    background: radial-gradient(
-      ellipse 520px 280px at 50% 0px,
-      rgba(var(--tertiary-rgb), 0.24),
-      rgba(var(--tertiary-rgb), 0.08) 45%,
-      transparent 72%
-    );
-  }
-
-  &::after {
-    background: linear-gradient(
-      180deg,
-      transparent 0%,
-      transparent 55%,
-      var(--secondary) 100%
-    );
-  }
+  border-bottom: 1px solid var(--tk-hairline);
 }
 
 .tk-cat-header__inner {
-  position: relative;
-  z-index: 1;
   max-width: 720px;
   margin: 0 auto;
   display: flex;
@@ -1564,9 +1531,9 @@ html.tk-category-tiles-active #main-outlet {
   height: 58px;
   display: grid;
   place-items: center;
-  border: 1px solid var(--tk-cat-accent);
+  background: var(--tk-cat-accent);
   border-radius: 15px;
-  color: var(--tk-cat-accent);
+  color: #1a1a1a;
   overflow: hidden;
 
   svg {
