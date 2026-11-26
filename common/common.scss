@@ -426,7 +426,13 @@ html.tk-topic .tk-nav,
   .d-icon {
     color: var(--header_primary);
   }
+}
 
+.d-header .d-header-icons > li > .btn,
+.d-header .d-header-icons > li > .icon,
+.d-header .d-header-icons > li > .header-dropdown-toggle > .btn,
+.d-header .d-header-icons > .header-dropdown-toggle > .btn,
+.d-header #search-button {
   &:hover,
   &:focus,
   &:focus-visible,
@@ -441,15 +447,19 @@ html.tk-topic .tk-nav,
   }
 }
 
-/* Burger-Button behielt die "aktiv"-Optik (Cores .active-Klasse) auch nach
-   dem Schliessen des Menüs - erzwingen, dass er nur bei tatsaechlich
-   offenem Menü (aria-expanded="true") hervorgehoben bleibt. */
-.d-header #toggle-hamburger-menu:not([aria-expanded="true"]) {
-  background: transparent !important;
-  color: var(--header_primary) !important;
+/* Burgermenü bewusst ohne "aktiv/ausgewaehlt"-Optik - weder ueber Cores
+   .active-Klasse noch aria-expanded, braucht es laut Vorgabe nicht. Nur
+   normales Hover-/Fokus-Feedback bleibt. */
+.d-header #toggle-hamburger-menu {
+  &:hover,
+  &:focus,
+  &:focus-visible {
+    background: color-mix(in srgb, var(--header_primary) 12%, transparent) !important;
+    color: var(--header_primary);
 
-  .d-icon {
-    color: var(--header_primary) !important;
+    .d-icon {
+      color: var(--header_primary);
+    }
   }
 }
 
