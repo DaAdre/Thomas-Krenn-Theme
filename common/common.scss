@@ -1503,23 +1503,52 @@ html.tk-category-tiles-active #main-outlet {
 }
 
 /* ---------- Kategorie-Header (Komp. "TK Kategorien") --------------- */
-/* Farbverlauf laeuft oben nahtlos in die Header-Farbe (--header_background)
-   und unten nahtlos in die Seiten-Hintergrundfarbe (--secondary) - kein
-   harter Rand mehr zum Kopf- oder Hauptteil (daher auch kein border-bottom
-   mehr). Der warme Akzent-Glow sitzt als eigene Ebene obendrauf. */
+/* Oben nahtlos zur Header-Farbe (--header_background, identisch zum
+   .d-header-Hintergrund), unten nahtlos zur Seiten-Hintergrundfarbe
+   (--secondary) - kein harter Rand mehr. Der warme Akzent-Glow ist an
+   festen Pixelwerten um das Icon verankert statt an Prozentwerten der
+   Boxhoehe: so faellt er bei jeder Titellaenge zuverlaessig vollstaendig
+   ab, bevor die Box endet (die alte prozentuale Variante erzeugte bei
+   hohen Boxen eine sichtbare "Kante" aus Farbbanding). Die zweite Ebene
+   blendet unten zusaetzlich hart auf --secondary ab, damit der Uebergang
+   unabhaengig vom Glow garantiert pixelgenau sitzt. */
 .tk-cat-header {
   --tk-cat-accent: var(--tk-orange);
+  position: relative;
   padding: 46px 1rem 40px;
-  background:
-    radial-gradient(
-      120% 160% at 50% 0%,
-      rgba(var(--tertiary-rgb), 0.22),
-      transparent 65%
-    ),
-    linear-gradient(180deg, var(--header_background) 0%, var(--secondary) 100%);
+  background: var(--header_background);
+  overflow: hidden;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  &::before {
+    background: radial-gradient(
+      ellipse 520px 280px at 50% 0px,
+      rgba(var(--tertiary-rgb), 0.24),
+      rgba(var(--tertiary-rgb), 0.08) 45%,
+      transparent 72%
+    );
+  }
+
+  &::after {
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      transparent 55%,
+      var(--secondary) 100%
+    );
+  }
 }
 
 .tk-cat-header__inner {
+  position: relative;
+  z-index: 1;
   max-width: 720px;
   margin: 0 auto;
   display: flex;
