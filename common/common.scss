@@ -123,13 +123,14 @@
   --tk-brand: "forum";
   --d-hover: var(--primary-low);
   --d-hover: color-mix(in srgb, var(--primary) 14%, var(--secondary) 86%);
-  /* Cores generierter --tertiary-hover wird im Light Scheme Richtung Schwarz
-     abgedunkelt - bei unserem Orange wird daraus ein schmutziges Braun statt
-     eines knackigen Hover-Tons. Stattdessen immer leicht aufhellen (Richtung
-     Weiss), das funktioniert in Light und Dark gleich gut, da --tertiary in
-     beiden Schemata derselbe Hex-Wert ist. */
+  /* Cores generierter --tertiary-hover war im Light Scheme inkonsistent (teils
+     Richtung Schwarz abgedunkelt, wirkte mit schwarzem Text schmutzig/ohne
+     Kontrast). Jetzt fest definiert: ein deutlich dunklerer, aber weiterhin
+     erkennbar oranger Ton - passt zum weissen Button-Text (siehe .btn-primary
+     unten) und ist in Light und Dark identisch, da --tertiary denselben
+     Hex-Wert hat. */
   --tertiary-hover: var(--tertiary);
-  --tertiary-hover: color-mix(in srgb, var(--tertiary) 85%, white 15%);
+  --tertiary-hover: color-mix(in srgb, var(--tertiary) 75%, black 25%);
 }
 
 /* ---------- Basis / Typografie ------------------------------------------ */
@@ -156,7 +157,11 @@ h4 {
 }
 
 .btn-primary {
-  color: #1a1a1a;
+  /* Weiss statt Schwarz (bewusste Entscheidung trotz schwaecherem Kontrast
+     ca. 2.3:1 auf dem hellen Orange - faellt rechnerisch unter WCAG AA,
+     wurde aber ausdruecklich so gewuenscht). Der Hover-Ton unten ist bewusst
+     deutlich dunkler, dort liegt der Kontrast mit Weiss bei ca. 4:1. */
+  color: #fff;
   /* 700 statt 600: "TK Theme Font" registriert nur 300/400/700 (siehe
      @font-face oben) - bei 600 greift kein exaktes Gewicht, der Browser
      gleicht das durch Synthese aus, die neben der echten Bold-Schriftdatei
@@ -169,7 +174,7 @@ h4 {
   &:hover,
   &:focus-visible {
     background: var(--tertiary-hover);
-    color: #1a1a1a;
+    color: #fff;
   }
 }
 
